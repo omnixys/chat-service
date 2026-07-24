@@ -2,7 +2,7 @@ import asyncio
 from logging.config import fileConfig
 
 from alembic import context
-from omnixys_database import Base
+from database import Base
 from sqlalchemy.ext.asyncio import create_async_engine
 
 from chat.config import settings

@@ -13,7 +13,7 @@
 #
 # For more information, visit <https://www.gnu.org/licenses/>.
 # ---------------------------------------------------------------------------------------
-# Dockerfile – Omnixys Communication Gateway Service
+# Dockerfile – Omnixys Communication Chat Service
 # Multi-stage build optimized for security, reproducibility, and minimal runtime size.
 # ---------------------------------------------------------------------------------------
 # syntax=docker/dockerfile:1.14.0
@@ -113,4 +113,4 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=10s \
 # ----- Start command -----
 # tini ensures proper signal forwarding and zombie process cleanup.
 ENTRYPOINT ["tini", "--"]
-CMD ["sh", "-c", "alembic upgrade head && exec gateway"]
+CMD ["sh", "-c", "alembic upgrade head && exec chat"]
