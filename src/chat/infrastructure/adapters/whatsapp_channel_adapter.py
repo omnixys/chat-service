@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import logging
-
 from chat.application.ports.channel_adapter import ChannelAdapter
 from chat.application.ports.realtime_publisher import RealtimePublisher
 from chat.domain.enums import ChannelType, DeliveryStatus
@@ -11,7 +9,7 @@ from chat.domain.models.conversation import Conversation
 from chat.domain.models.message import Message
 from chat.infrastructure.gateway.gateway_client import GatewayClient
 
-logger = logging.getLogger(__name__)
+logger = __import__("structlog").get_logger(__name__)
 
 
 class WhatsAppChannelAdapter(ChannelAdapter):
@@ -40,20 +38,32 @@ class WhatsAppChannelAdapter(ChannelAdapter):
         )
 
     async def send(self, message: Message, conversation: Conversation) -> None:
-        extra = {
-            "message_id": message.id,
-            "conversation_id": message.conversation_id,
-            "channel": "WHATSAPP",
-        }
-        logger.info("adapter_whatsapp_send_start %s", extra)
+        logger.info(
+            "adapter_whatsapp_send_start",
+            message_id=message.id,
+            conversation_id=message.conversation_id,
+            channel="WHATSAPP",
+        )
         result = await self._gateway.send(message, conversation)
         if result.success:
             message.delivery_status = result.status
             message.provider_message_id = result.provider_message_id
-            logger.info("adapter_whatsapp_send_sent status=%s %s", result.status.value, extra)
+            logger.info(
+                "adapter_whatsapp_send_sent",
+                message_id=message.id,
+                conversation_id=message.conversation_id,
+                channel="WHATSAPP",
+                status=result.status.value,
+            )
         else:
             message.delivery_status = DeliveryStatus.FAILED
-            logger.warning("adapter_whatsapp_send_failed error=%s %s", result.error, extra)
+            logger.warning(
+                "adapter_whatsapp_send_failed",
+                message_id=message.id,
+                conversation_id=message.conversation_id,
+                channel="WHATSAPP",
+                error=result.error,
+            )
 
         event = MessageCreatedEvent(
             message_id=message.id,
