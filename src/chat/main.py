@@ -22,6 +22,7 @@ from chat.api.health import router as health_router
 from chat.api.health import run_health_checks
 from chat.api.internal.inbound import router as inbound_router
 from chat.api.internal.inbound import set_realtime
+from chat.api.middleware import ContextBridgeMiddleware
 from chat.application.services.conversation_service import ConversationService
 from chat.application.services.message_dispatcher import MessageDispatcher
 from chat.application.services.message_router import MessageRouter
@@ -107,6 +108,7 @@ def create_application() -> FastAPI:
         ],
         internal_api_key=settings.core.internal_api_key,
     )
+    app.add_middleware(ContextBridgeMiddleware)
 
     app.include_router(health_router)
     app.include_router(inbound_router)
