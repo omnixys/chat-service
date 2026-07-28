@@ -37,9 +37,7 @@ def _token_from_connection(
     authorization = connection.headers.get("authorization", "")
     if isinstance(connection_params, dict):
         authorization = str(
-            connection_params.get("Authorization")
-            or connection_params.get("authorization")
-            or authorization,
+            connection_params.get("Authorization") or connection_params.get("authorization") or authorization,
         )
     if authorization.lower().startswith("bearer "):
         return authorization[7:].strip()
@@ -71,7 +69,8 @@ async def authenticate_connection(
     except ValueError as exc:
         logger.warning("auth_invalid_token", error=str(exc))
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="invalid access token",
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="invalid access token",
         ) from exc
 
     user_id = claims.sub or ""

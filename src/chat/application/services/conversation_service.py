@@ -41,11 +41,7 @@ class ConversationService:
             raise ValueError("In-app conversations must be DIRECT or SUPPORT")
 
         participant_key = build_direct_participant_key(user_a_id, user_b_id)
-        key = (
-            participant_key
-            if conversation_type is ConversationType.DIRECT
-            else f"support:{participant_key}"
-        )
+        key = participant_key if conversation_type is ConversationType.DIRECT else f"support:{participant_key}"
 
         existing = await self.conversation_repo.find_by_participant_pair_key(key)
         if existing is not None:
@@ -73,7 +69,10 @@ class ConversationService:
         return conversation
 
     async def create_whatsapp_conversation(
-        self, owner_user_id: str, phone_number: str, display_name: str | None = None,
+        self,
+        owner_user_id: str,
+        phone_number: str,
+        display_name: str | None = None,
     ) -> Conversation:
         address = normalize_e164(phone_number)
         existing = await self.conversation_repo.find_by_external_address(address)
@@ -92,7 +91,12 @@ class ConversationService:
         await self.conversation_repo.add_participant(conversation.id, owner_user_id)
         await self.session.commit()
         conversation.participant_ids = [owner_user_id]
-        logger.info("whatsapp_conversation_created", conversation_id=conversation.id, address=address, owner=owner_user_id)
+        logger.info(
+            "whatsapp_conversation_created",
+            conversation_id=conversation.id,
+            address=address,
+            owner=owner_user_id,
+        )
         return conversation
 
     async def get_conversation(self, conversation_id: str, user_id: str) -> Conversation:
@@ -111,7 +115,9 @@ class ConversationService:
         read_state = await self.read_state_repo.find(conversation_id, user_id)
         last_read_at = read_state.last_read_at if read_state else None
         conversation.unread_count = await self.message_repo.count_unread(
-            conversation_id, user_id, last_read_at,
+            conversation_id,
+            user_id,
+            last_read_at,
         )
 
         participant_ids = await self.conversation_repo.get_participant_ids(conversation_id)

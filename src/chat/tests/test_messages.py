@@ -88,7 +88,10 @@ class TestReadMessages:
 
         before_time = all_msgs[3].created_at
         older_msgs = await message_service.get_messages(
-            conv.id, "caleb", limit=50, before=before_time,
+            conv.id,
+            "caleb",
+            limit=50,
+            before=before_time,
         )
         assert len(older_msgs) == 3
 

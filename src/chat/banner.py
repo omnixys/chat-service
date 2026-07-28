@@ -67,7 +67,7 @@ def print_banner(settings: ChatSettings, health: dict[str, Any] | None = None) -
     banner = f"""
 {_GREEN}  ╔══════════════════════════════════════════════════╗
   ║{_CYAN}{name:^48}{_GREEN}  ║
-  ║{_YELLOW}{'Omnixys Technologies':^48}{_GREEN}  ║
+  ║{_YELLOW}{"Omnixys Technologies":^48}{_GREEN}  ║
   ╚══════════════════════════════════════════════════╝{_RESET}"""
     print(banner)  # noqa: T201
 

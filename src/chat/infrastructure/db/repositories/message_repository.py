@@ -50,7 +50,12 @@ class SqlAlchemyMessageRepository(MessageRepositoryPort):
         )
         self.session.add(model)
         await self.session.flush()
-        logger.debug("message_save", message_id=message.id, conversation_id=message.conversation_id, channel=message.channel.type.value)
+        logger.debug(
+            "message_save",
+            message_id=message.id,
+            conversation_id=message.conversation_id,
+            channel=message.channel.type.value,
+        )
         return message
 
     async def count_unread(
@@ -96,7 +101,10 @@ class SqlAlchemyMessageRepository(MessageRepositoryPort):
         return self._to_domain(row) if row else None
 
     async def update_delivery_status(
-        self, message_id: str, status: str, provider_message_id: str | None = None,
+        self,
+        message_id: str,
+        status: str,
+        provider_message_id: str | None = None,
     ) -> Message | None:
         model = await self.session.get(MessageModel, message_id)
         if model is None:

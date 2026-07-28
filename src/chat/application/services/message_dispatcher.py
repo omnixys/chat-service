@@ -13,12 +13,22 @@ class MessageDispatcher:
 
     async def dispatch(self, message: Message, conversation: Conversation) -> None:
         channels = await self._policy.determine_channels(message, conversation)
-        logger.info("dispatch_started", message_id=message.id, conversation_id=conversation.id, channels=[c.type.value for c in channels])
+        logger.info(
+            "dispatch_started",
+            message_id=message.id,
+            conversation_id=conversation.id,
+            channels=[c.type.value for c in channels],
+        )
         for channel in channels:
             try:
                 adapter = self._router.get_adapter(channel)
                 await adapter.send(message, conversation)
                 logger.info("dispatch_channel_sent", message_id=message.id, channel=channel.type.value)
             except Exception as exc:
-                logger.error("dispatch_channel_failed", message_id=message.id, channel=channel.type.value, error=str(exc))
+                logger.error(
+                    "dispatch_channel_failed",
+                    message_id=message.id,
+                    channel=channel.type.value,
+                    error=str(exc),
+                )
                 raise

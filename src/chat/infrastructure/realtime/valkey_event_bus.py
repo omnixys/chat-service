@@ -61,7 +61,6 @@ class ValkeyEventBus(RealtimePublisher):
 
     async def unsubscribe(self, channel: str, queue_id: str) -> None:
         logger.debug("unsubscribe_noop", channel=channel)
-        return None
 
     async def health(self) -> bool:
         return bool(await self._redis.ping())

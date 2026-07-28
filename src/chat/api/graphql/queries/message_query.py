@@ -20,7 +20,10 @@ class MessageQuery:
         service = get_message_service(info)
         principal = await get_principal(info)
         msgs = await service.get_messages(
-            str(conversation_id), principal.user_id, limit=limit, before=before,
+            str(conversation_id),
+            principal.user_id,
+            limit=limit,
+            before=before,
         )
         return [
             Message(

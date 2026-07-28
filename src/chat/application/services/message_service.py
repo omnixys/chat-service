@@ -50,7 +50,12 @@ class MessageService:
 
             raise ConversationNotFoundError(conversation_id)
 
-        logger.info("send_message", conversation_id=conversation_id, sender_id=sender_id, channel=conversation.channel.value)
+        logger.info(
+            "send_message",
+            conversation_id=conversation_id,
+            sender_id=sender_id,
+            channel=conversation.channel.value,
+        )
 
         message = Message(
             conversation_id=conversation_id,
@@ -75,7 +80,12 @@ class MessageService:
                     db_message.provider_message_id = message.provider_message_id
                     await self.session.commit()
 
-        logger.info("send_message_completed", message_id=message.id, conversation_id=conversation_id, status=message.delivery_status.value)
+        logger.info(
+            "send_message_completed",
+            message_id=message.id,
+            conversation_id=conversation_id,
+            status=message.delivery_status.value,
+        )
         return message
 
     async def get_messages(

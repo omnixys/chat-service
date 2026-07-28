@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import logging
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -49,7 +48,12 @@ class GatewayClient:
             "metadata": {"conversationId": conversation.id},
         }
 
-        logger.info("gateway_outbound_start", message_id=message.id, conversation_id=message.conversation_id, channel=message.channel.type.value)
+        logger.info(
+            "gateway_outbound_start",
+            message_id=message.id,
+            conversation_id=message.conversation_id,
+            channel=message.channel.type.value,
+        )
 
         try:
             response = await self._client.post(
@@ -89,7 +93,11 @@ class GatewayClient:
             )
 
         except httpx.ConnectError:
-            logger.warning("gateway_outbound_unreachable", message_id=message.id, conversation_id=message.conversation_id)
+            logger.warning(
+                "gateway_outbound_unreachable",
+                message_id=message.id,
+                conversation_id=message.conversation_id,
+            )
             return GatewayResult(
                 success=False,
                 status=DeliveryStatus.FAILED,
@@ -97,7 +105,12 @@ class GatewayClient:
             )
 
         except Exception as exc:
-            logger.error("gateway_outbound_error", message_id=message.id, conversation_id=message.conversation_id, error=str(exc))
+            logger.error(
+                "gateway_outbound_error",
+                message_id=message.id,
+                conversation_id=message.conversation_id,
+                error=str(exc),
+            )
             return GatewayResult(
                 success=False,
                 status=DeliveryStatus.FAILED,

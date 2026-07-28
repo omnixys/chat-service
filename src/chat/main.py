@@ -103,8 +103,12 @@ def create_application() -> FastAPI:
         SecurityMiddleware,
         jwt_validator=jwt_validator,
         exclude_paths=[
-            "/health", "/health/live", "/health/ready",
-            "/health/liveness", "/health/readiness", "/api/v1/internal",
+            "/health",
+            "/health/live",
+            "/health/ready",
+            "/health/liveness",
+            "/health/readiness",
+            "/api/v1/internal",
         ],
         internal_api_key=settings.core.internal_api_key,
     )
@@ -163,8 +167,7 @@ def ensure_bind_available(host: str, port: int) -> None:
         if exc.errno == errno.EADDRINUSE:
             logger.critical("port_in_use", host=host, port=port)
             raise SystemExit(
-                f"Chat cannot start: {host}:{port} is already in use. "
-                "Set PORT or stop the conflicting process.",
+                f"Chat cannot start: {host}:{port} is already in use. Set PORT or stop the conflicting process.",
             ) from None
         raise
     finally:

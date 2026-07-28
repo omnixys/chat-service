@@ -35,5 +35,8 @@ class MessageRepository(ABC):
 
     @abstractmethod
     async def update_delivery_status(
-        self, message_id: str, status: str, provider_message_id: str | None = None,
+        self,
+        message_id: str,
+        status: str,
+        provider_message_id: str | None = None,
     ) -> Message | None: ...

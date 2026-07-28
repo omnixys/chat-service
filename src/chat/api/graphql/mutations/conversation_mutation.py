@@ -51,7 +51,9 @@ class ConversationMutation:
         principal = await get_principal(info)
         logger.info("graphql_create_whatsapp_conversation", user_id=principal.user_id, phone_number=phone_number)
         c = await service.create_whatsapp_conversation(
-            principal.user_id, phone_number, display_name,
+            principal.user_id,
+            phone_number,
+            display_name,
         )
         return Conversation(
             id=strawberry.ID(c.id),

@@ -42,14 +42,21 @@ def _to_conversation_graphql(event: MessageCreatedEvent) -> Conversation:
 class MessageSubscription:
     @strawberry.subscription
     async def message_received(
-        self, info: Info, conversation_id: strawberry.ID,
+        self,
+        info: Info,
+        conversation_id: strawberry.ID,
     ) -> AsyncGenerator[Message]:
         realtime = get_realtime_service(info)
         principal = await get_principal(info)
         await get_conversation_service(info).verify_participant(
-            str(conversation_id), principal.user_id,
+            str(conversation_id),
+            principal.user_id,
         )
-        logger.debug("subscription_message_received_started", user_id=principal.user_id, conversation_id=str(conversation_id))
+        logger.debug(
+            "subscription_message_received_started",
+            user_id=principal.user_id,
+            conversation_id=str(conversation_id),
+        )
         channel = f"conversation:{conversation_id}"
         async for event in realtime.subscribe(channel):
             yield _to_message_graphql(event)

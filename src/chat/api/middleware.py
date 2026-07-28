@@ -24,7 +24,6 @@ class ContextBridgeMiddleware:
                 obs_ctx = ObservabilityRequestContext(
                     user_id=security_ctx.user_id,
                     organization_id=security_ctx.organization_id,
-                    tenant_id=security_ctx.tenant_id,
                     roles=security_ctx.roles,
                     scope=security_ctx.scopes,
                     correlation_id=security_ctx.correlation_id,

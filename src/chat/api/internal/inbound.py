@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import logging
 from typing import Any
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Response, status
@@ -68,6 +67,45 @@ def _assert_internal_key(value: str) -> None:
         raise HTTPException(status_code=401, detail="unauthorized")
 
 
+async def _resolve_conversation(
+    repo: ConversationRepository,
+    payload: InboundMessagePayload,
+) -> Conversation:
+    if payload.conversation_id:
+        conversation = await repo.find_by_id(payload.conversation_id)
+        if conversation is None:
+            logger.warning(
+                "inbound_conversation_not_found",
+                conversation_id=payload.conversation_id,
+                channel=payload.channel,
+            )
+            raise HTTPException(
+                status_code=422,
+                detail={
+                    "code": "UNMATCHED_INBOUND_MESSAGE",
+                    "message": f"Conversation '{payload.conversation_id}' not found",
+                },
+            )
+        return conversation
+
+    if payload.from_:
+        try:
+            conversation = await repo.find_by_external_address(normalize_e164(payload.from_))
+            if conversation is not None:
+                return conversation
+        except ValueError:
+            pass
+
+    logger.warning("inbound_unmatched", channel=payload.channel, from_=payload.from_, user_id=payload.user_id)
+    raise HTTPException(
+        status_code=422,
+        detail={
+            "code": "UNMATCHED_INBOUND_MESSAGE",
+            "message": "Cannot resolve conversation for inbound message",
+        },
+    )
+
+
 @router.get("/conversations/{conversation_id}/participants/{user_id}")
 async def verify_conversation_participant(
     conversation_id: str,
@@ -90,12 +128,6 @@ async def receive_inbound_message(
     x_api_key: str = Header(default=""),
     session: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
-    extra = {
-        "channel": payload.channel,
-        "from_": payload.from_,
-        "user_id": payload.user_id,
-        "conversation_id": payload.conversation_id,
-    }
 
     try:
         _assert_internal_key(x_api_key)
@@ -119,39 +151,7 @@ async def receive_inbound_message(
             "duplicate": True,
         }
 
-    conversation: Conversation | None = None
-
-    if payload.conversation_id:
-        conversation = await conversation_repo.find_by_id(payload.conversation_id)
-        if conversation is None:
-            logger.warning(
-                "inbound_conversation_not_found", conversation_id=payload.conversation_id, channel=payload.channel,
-            )
-            raise HTTPException(
-                status_code=422,
-                detail={
-                    "code": "UNMATCHED_INBOUND_MESSAGE",
-                    "message": f"Conversation '{payload.conversation_id}' not found",
-                },
-            )
-
-    if conversation is None and payload.from_:
-        try:
-            conversation = await conversation_repo.find_by_external_address(
-                normalize_e164(payload.from_),
-            )
-        except ValueError:
-            conversation = None
-
-    if conversation is None:
-        logger.warning("inbound_unmatched", channel=payload.channel, from_=payload.from_, user_id=payload.user_id)
-        raise HTTPException(
-            status_code=422,
-            detail={
-                "code": "UNMATCHED_INBOUND_MESSAGE",
-                "message": "Cannot resolve conversation for inbound message",
-            },
-        )
+    conversation = await _resolve_conversation(conversation_repo, payload)
 
     channel_type = ChannelType(payload.channel.upper())
     content_type = MessageContentType(payload.content_type.upper())
@@ -169,7 +169,12 @@ async def receive_inbound_message(
         await message_repo.save(message)
         await session.commit()
     except Exception as exc:
-        logger.exception("inbound_db_error", message_id=payload.message_id, conversation_id=conversation.id, error=str(exc))
+        logger.exception(
+            "inbound_db_error",
+            message_id=payload.message_id,
+            conversation_id=conversation.id,
+            error=str(exc),
+        )
         raise
 
     event = MessageCreatedEvent(
@@ -189,9 +194,19 @@ async def receive_inbound_message(
         for uid in conversation.participant_ids:
             await realtime.publish(f"user:{uid}", event)
     except Exception as exc:
-        logger.error("realtime_publish_error", message_id=message.id, conversation_id=message.conversation_id, error=str(exc))
+        logger.error(
+            "realtime_publish_error",
+            message_id=message.id,
+            conversation_id=message.conversation_id,
+            error=str(exc),
+        )
 
-    logger.info("inbound_message_processed", message_id=message.id, conversation_id=message.conversation_id, channel=payload.channel)
+    logger.info(
+        "inbound_message_processed",
+        message_id=message.id,
+        conversation_id=message.conversation_id,
+        channel=payload.channel,
+    )
 
     return {
         "id": message.id,
@@ -236,12 +251,20 @@ async def receive_delivery_status(
         DeliveryStatus.FAILED: set(),
     }
     if target != message.delivery_status and target not in transitions.get(
-        message.delivery_status, set(),
+        message.delivery_status,
+        set(),
     ):
-        logger.warning("delivery_status_invalid_transition", message_id=message.id, current_status=message.delivery_status.value, attempted_status=target.value)
+        logger.warning(
+            "delivery_status_invalid_transition",
+            message_id=message.id,
+            current_status=message.delivery_status.value,
+            attempted_status=target.value,
+        )
         raise HTTPException(status_code=409, detail={"code": "INVALID_STATUS_TRANSITION"})
     updated = await repo.update_delivery_status(
-        message.id, target.value, payload.provider_message_id,
+        message.id,
+        target.value,
+        payload.provider_message_id,
     )
     await session.commit()
     assert updated is not None
