@@ -8,6 +8,7 @@ import respx
 from httpx import Response
 
 from chat.application.ports.realtime_publisher import RealtimePublisher
+from chat.config import settings
 from chat.domain.enums import ChannelType, DeliveryStatus
 from chat.domain.events import MessageCreatedEvent
 from chat.domain.models.communication_channel import CommunicationChannel
@@ -40,7 +41,11 @@ def conversation() -> Conversation:
 
 @pytest.fixture
 def client() -> GatewayClient:
-    return GatewayClient()
+    original_url = settings.communication_gateway_url
+    settings.communication_gateway_url = "http://localhost:8002"
+    c = GatewayClient()
+    settings.communication_gateway_url = original_url
+    return c
 
 
 class TestGatewayClientSend:

@@ -34,6 +34,17 @@ async def _create_tables() -> AsyncGenerator[None]:
         await conn.run_sync(Base.metadata.drop_all)
 
 
+@pytest.fixture(autouse=True)
+async def _clear_api_keys() -> AsyncGenerator[None]:
+    original_chat = settings.chat_service_api_key
+    original_gw = settings.communication_gateway_api_key
+    settings.chat_service_api_key = ""
+    settings.communication_gateway_api_key = ""
+    yield
+    settings.chat_service_api_key = original_chat
+    settings.communication_gateway_api_key = original_gw
+
+
 @pytest.fixture
 def app() -> FastAPI:
     app = FastAPI()
