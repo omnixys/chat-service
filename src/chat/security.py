@@ -7,6 +7,8 @@ from security import JwtValidator
 
 from chat.config import settings
 
+logger = __import__("structlog").get_logger(__name__)
+
 
 @dataclass(frozen=True)
 class Principal:
@@ -58,6 +60,7 @@ async def authenticate_connection(
 
     token = _token_from_connection(connection, connection_params)
     if not token:
+        logger.warning("auth_missing_token")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="authentication required",
@@ -66,14 +69,17 @@ async def authenticate_connection(
     try:
         claims = await _get_jwt_validator().validate(token)
     except ValueError as exc:
+        logger.warning("auth_invalid_token", error=str(exc))
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="invalid access token",
         ) from exc
 
     user_id = claims.sub or ""
     if not user_id:
+        logger.warning("auth_missing_subject")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="token subject missing",
         )
+    logger.debug("auth_success", user_id=user_id)
     return Principal(user_id=user_id, username=claims.preferred_username or "")

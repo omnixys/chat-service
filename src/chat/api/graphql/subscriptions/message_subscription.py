@@ -8,6 +8,8 @@ from chat.api.graphql.types.conversation import Conversation, ConversationType
 from chat.api.graphql.types.message import Message
 from chat.domain.events import MessageCreatedEvent
 
+logger = __import__("structlog").get_logger(__name__)
+
 
 def _to_message_graphql(event: MessageCreatedEvent) -> Message:
     return Message(
@@ -47,6 +49,7 @@ class MessageSubscription:
         await get_conversation_service(info).verify_participant(
             str(conversation_id), principal.user_id,
         )
+        logger.debug("subscription_message_received_started", user_id=principal.user_id, conversation_id=str(conversation_id))
         channel = f"conversation:{conversation_id}"
         async for event in realtime.subscribe(channel):
             yield _to_message_graphql(event)
@@ -55,6 +58,7 @@ class MessageSubscription:
     async def conversation_updated(self, info: Info) -> AsyncGenerator[Conversation]:
         realtime = get_realtime_service(info)
         principal = await get_principal(info)
+        logger.debug("subscription_conversation_updated_started", user_id=principal.user_id)
         channel = f"user:{principal.user_id}"
         async for event in realtime.subscribe(channel):
             yield _to_conversation_graphql(event)

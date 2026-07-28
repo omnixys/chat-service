@@ -4,6 +4,8 @@ from strawberry.types import Info
 from chat.api.graphql.context import get_message_service, get_principal
 from chat.api.graphql.types.message import Message
 
+logger = __import__("structlog").get_logger(__name__)
+
 
 @strawberry.type
 class MessageMutation:
@@ -16,6 +18,7 @@ class MessageMutation:
     ) -> Message:
         service = get_message_service(info)
         principal = await get_principal(info)
+        logger.info("graphql_send_message", user_id=principal.user_id, conversation_id=str(conversation_id))
         m = await service.send_message(
             str(conversation_id),
             principal.user_id,

@@ -9,6 +9,8 @@ from chat.domain.models.conversation import Conversation
 from chat.domain.utils import generate_uuid, utcnow
 from chat.infrastructure.db.models import ConversationModel, ConversationParticipantModel
 
+logger = __import__("structlog").get_logger(__name__)
+
 
 class SqlAlchemyConversationRepository(ConversationRepositoryPort):
     def __init__(self, session: AsyncSession) -> None:
@@ -66,6 +68,7 @@ class SqlAlchemyConversationRepository(ConversationRepositoryPort):
         )
         self.session.add(model)
         await self.session.flush()
+        logger.debug("conversation_save", conversation_id=conversation.id, type=conversation.type.value)
         return conversation
 
     async def add_participant(self, conversation_id: str, user_id: str) -> None:

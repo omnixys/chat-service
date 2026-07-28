@@ -6,6 +6,8 @@ from chat.domain.models.channel_capabilities import ChannelCapabilities
 from chat.domain.models.conversation import Conversation
 from chat.domain.models.message import Message
 
+logger = __import__("structlog").get_logger(__name__)
+
 
 class InAppChannelAdapter(ChannelAdapter):
     def __init__(self, realtime: RealtimePublisher) -> None:
@@ -32,6 +34,7 @@ class InAppChannelAdapter(ChannelAdapter):
         )
 
     async def send(self, message: Message, conversation: Conversation) -> None:
+        logger.info("in_app_send", message_id=message.id, conversation_id=message.conversation_id)
         event = MessageCreatedEvent(
             message_id=message.id,
             conversation_id=message.conversation_id,

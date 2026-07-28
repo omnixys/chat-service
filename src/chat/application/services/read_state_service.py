@@ -8,6 +8,8 @@ from chat.application.ports.read_state_repository import ReadStateRepository
 from chat.domain.models.read_state import ReadState
 from chat.domain.utils import utcnow
 
+logger = __import__("structlog").get_logger(__name__)
+
 
 class ReadStateService:
     def __init__(
@@ -38,4 +40,5 @@ class ReadStateService:
         )
         await self.read_state_repo.upsert(read_state)
         await self.session.commit()
+        logger.debug("mark_read", conversation_id=conversation_id, user_id=user_id, last_message_id=last_message_id)
         return True

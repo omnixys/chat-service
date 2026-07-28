@@ -8,6 +8,8 @@ from chat.domain.models.read_state import ReadState
 from chat.domain.utils import generate_uuid
 from chat.infrastructure.db.models import ReadStateModel
 
+logger = __import__("structlog").get_logger(__name__)
+
 
 class SqlAlchemyReadStateRepository(ReadStateRepositoryPort):
     def __init__(self, session: AsyncSession) -> None:
@@ -36,6 +38,7 @@ class SqlAlchemyReadStateRepository(ReadStateRepositoryPort):
             existing.last_read_at = read_state.last_read_at
             existing.last_read_message_id = read_state.last_read_message_id
             await self.session.flush()
+            logger.debug("read_state_update", conversation_id=read_state.conversation_id, user_id=read_state.user_id)
             return existing
         model = ReadStateModel(
             id=generate_uuid(),
@@ -46,4 +49,5 @@ class SqlAlchemyReadStateRepository(ReadStateRepositoryPort):
         )
         self.session.add(model)
         await self.session.flush()
+        logger.debug("read_state_create", conversation_id=read_state.conversation_id, user_id=read_state.user_id)
         return read_state

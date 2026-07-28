@@ -25,7 +25,7 @@ from chat.infrastructure.db.repositories.message_repository import (
     SqlAlchemyMessageRepository,
 )
 
-logger = logging.getLogger(__name__)
+logger = __import__("structlog").get_logger(__name__)
 
 router = APIRouter(prefix="/api/v1/internal", tags=["internal"])
 
@@ -100,7 +100,7 @@ async def receive_inbound_message(
     try:
         _assert_internal_key(x_api_key)
     except HTTPException:
-        logger.warning("inbound_unauthorized %s", extra)
+        logger.warning("inbound_unauthorized", channel=payload.channel, from_=payload.from_, user_id=payload.user_id)
         raise HTTPException(status_code=401, detail="unauthorized")
 
     conversation_repo: ConversationRepository = SqlAlchemyConversationRepository(session)
@@ -125,7 +125,7 @@ async def receive_inbound_message(
         conversation = await conversation_repo.find_by_id(payload.conversation_id)
         if conversation is None:
             logger.warning(
-                "inbound_conversation_not_found reason=unknown_conversation_id %s", extra,
+                "inbound_conversation_not_found", conversation_id=payload.conversation_id, channel=payload.channel,
             )
             raise HTTPException(
                 status_code=422,
@@ -144,7 +144,7 @@ async def receive_inbound_message(
             conversation = None
 
     if conversation is None:
-        logger.warning("inbound_unmatched %s", extra)
+        logger.warning("inbound_unmatched", channel=payload.channel, from_=payload.from_, user_id=payload.user_id)
         raise HTTPException(
             status_code=422,
             detail={
@@ -165,8 +165,12 @@ async def receive_inbound_message(
         delivery_status=DeliveryStatus.DELIVERED,
         provider_message_id=payload.message_id,
     )
-    await message_repo.save(message)
-    await session.commit()
+    try:
+        await message_repo.save(message)
+        await session.commit()
+    except Exception as exc:
+        logger.exception("inbound_db_error", message_id=payload.message_id, conversation_id=conversation.id, error=str(exc))
+        raise
 
     event = MessageCreatedEvent(
         message_id=message.id,
@@ -180,11 +184,14 @@ async def receive_inbound_message(
     )
 
     realtime = get_realtime()
-    await realtime.publish(f"conversation:{message.conversation_id}", event)
-    for uid in conversation.participant_ids:
-        await realtime.publish(f"user:{uid}", event)
+    try:
+        await realtime.publish(f"conversation:{message.conversation_id}", event)
+        for uid in conversation.participant_ids:
+            await realtime.publish(f"user:{uid}", event)
+    except Exception as exc:
+        logger.error("realtime_publish_error", message_id=message.id, conversation_id=message.conversation_id, error=str(exc))
 
-    logger.info("inbound_message_processed message_id=%s %s", message.id, extra)
+    logger.info("inbound_message_processed", message_id=message.id, conversation_id=message.conversation_id, channel=payload.channel)
 
     return {
         "id": message.id,
@@ -204,6 +211,7 @@ async def receive_delivery_status(
     x_api_key: str = Header(default=""),
     session: AsyncSession = Depends(get_db),
 ) -> dict[str, Any]:
+    logger.info("delivery_status_received", provider_msg_id=payload.provider_message_id, status=payload.status)
     _assert_internal_key(x_api_key)
     repo = SqlAlchemyMessageRepository(session)
     message = None
@@ -215,6 +223,7 @@ async def receive_delivery_status(
     if message is None:
         message = await repo.find_by_provider_message_id(payload.provider_message_id)
     if message is None:
+        logger.warning("delivery_status_message_not_found", provider_msg_id=payload.provider_message_id)
         raise HTTPException(status_code=404, detail={"code": "MESSAGE_NOT_FOUND"})
 
     target = DeliveryStatus(payload.status.upper())
@@ -229,10 +238,12 @@ async def receive_delivery_status(
     if target != message.delivery_status and target not in transitions.get(
         message.delivery_status, set(),
     ):
+        logger.warning("delivery_status_invalid_transition", message_id=message.id, current_status=message.delivery_status.value, attempted_status=target.value)
         raise HTTPException(status_code=409, detail={"code": "INVALID_STATUS_TRANSITION"})
     updated = await repo.update_delivery_status(
         message.id, target.value, payload.provider_message_id,
     )
     await session.commit()
     assert updated is not None
+    logger.info("delivery_status_applied", message_id=updated.id, status=updated.delivery_status.value)
     return {"id": updated.id, "status": updated.delivery_status.value}

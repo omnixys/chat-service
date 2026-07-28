@@ -15,6 +15,8 @@ from chat.domain.errors import (
 )
 from chat.domain.models.conversation import Conversation, build_direct_participant_key
 
+logger = __import__("structlog").get_logger(__name__)
+
 
 class ConversationService:
     def __init__(
@@ -47,6 +49,7 @@ class ConversationService:
 
         existing = await self.conversation_repo.find_by_participant_pair_key(key)
         if existing is not None:
+            logger.debug("conversation_already_exists", conversation_id=existing.id, key=key)
             return existing
 
         conversation = Conversation(type=conversation_type, participant_pair_key=key)
@@ -57,6 +60,7 @@ class ConversationService:
         try:
             await self.session.flush()
         except IntegrityError:
+            logger.info("conversation_concurrent_create", key=key)
             await self.session.rollback()
             existing = await self.conversation_repo.find_by_participant_pair_key(key)
             if existing is None:
@@ -65,6 +69,7 @@ class ConversationService:
 
         await self.session.commit()
         conversation.participant_ids = [user_a_id, user_b_id]
+        logger.info("conversation_created", conversation_id=conversation.id, type=conversation_type.value, key=key)
         return conversation
 
     async def create_whatsapp_conversation(
@@ -75,6 +80,7 @@ class ConversationService:
         if existing is not None:
             if not await self.conversation_repo.is_participant(existing.id, owner_user_id):
                 raise ValueError("WhatsApp contact already belongs to another conversation")
+            logger.debug("whatsapp_conversation_already_exists", conversation_id=existing.id, address=address)
             return existing
         conversation = Conversation(
             participant_pair_key=f"whatsapp:{address}",
@@ -86,6 +92,7 @@ class ConversationService:
         await self.conversation_repo.add_participant(conversation.id, owner_user_id)
         await self.session.commit()
         conversation.participant_ids = [owner_user_id]
+        logger.info("whatsapp_conversation_created", conversation_id=conversation.id, address=address, owner=owner_user_id)
         return conversation
 
     async def get_conversation(self, conversation_id: str, user_id: str) -> Conversation:

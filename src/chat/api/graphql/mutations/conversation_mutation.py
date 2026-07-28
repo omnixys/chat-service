@@ -4,6 +4,8 @@ from strawberry.types import Info
 from chat.api.graphql.context import get_conversation_service, get_principal, get_read_state_service
 from chat.api.graphql.types.conversation import Conversation, ConversationType, Participant
 
+logger = __import__("structlog").get_logger(__name__)
+
 
 def _participants_from_ids(ids: list[str]) -> list[Participant]:
     return [Participant(user_id=strawberry.ID(uid)) for uid in ids]
@@ -20,6 +22,7 @@ class ConversationMutation:
     ) -> Conversation:
         service = get_conversation_service(info)
         principal = await get_principal(info)
+        logger.info("graphql_create_in_app_conversation", user_id=principal.user_id, participant=participant_user_id)
         c = await service.create_direct_conversation(
             principal.user_id,
             participant_user_id,
@@ -46,6 +49,7 @@ class ConversationMutation:
     ) -> Conversation:
         service = get_conversation_service(info)
         principal = await get_principal(info)
+        logger.info("graphql_create_whatsapp_conversation", user_id=principal.user_id, phone_number=phone_number)
         c = await service.create_whatsapp_conversation(
             principal.user_id, phone_number, display_name,
         )

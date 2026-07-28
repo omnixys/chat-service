@@ -9,6 +9,8 @@ from chat.domain.models.communication_channel import CommunicationChannel
 from chat.domain.models.message import Message
 from chat.infrastructure.db.models import MessageModel
 
+logger = __import__("structlog").get_logger(__name__)
+
 
 class SqlAlchemyMessageRepository(MessageRepositoryPort):
     def __init__(self, session: AsyncSession) -> None:
@@ -48,6 +50,7 @@ class SqlAlchemyMessageRepository(MessageRepositoryPort):
         )
         self.session.add(model)
         await self.session.flush()
+        logger.debug("message_save", message_id=message.id, conversation_id=message.conversation_id, channel=message.channel.type.value)
         return message
 
     async def count_unread(

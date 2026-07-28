@@ -12,6 +12,8 @@ from chat.domain.errors import EmptyMessageError
 from chat.domain.models.communication_channel import CommunicationChannel
 from chat.domain.models.message import Message
 
+logger = __import__("structlog").get_logger(__name__)
+
 
 class MessageService:
     def __init__(
@@ -48,6 +50,8 @@ class MessageService:
 
             raise ConversationNotFoundError(conversation_id)
 
+        logger.info("send_message", conversation_id=conversation_id, sender_id=sender_id, channel=conversation.channel.value)
+
         message = Message(
             conversation_id=conversation_id,
             sender_id=sender_id,
@@ -71,6 +75,7 @@ class MessageService:
                     db_message.provider_message_id = message.provider_message_id
                     await self.session.commit()
 
+        logger.info("send_message_completed", message_id=message.id, conversation_id=conversation_id, status=message.delivery_status.value)
         return message
 
     async def get_messages(

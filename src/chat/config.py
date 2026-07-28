@@ -40,4 +40,7 @@ def validate_production_settings() -> None:
     }
     missing = [name for name, value in required.items() if not value]
     if missing:
+        import logging
+
+        logging.getLogger(__name__).error("missing_production_settings", settings=missing)
         raise RuntimeError(f"Missing required production settings: {', '.join(missing)}")

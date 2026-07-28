@@ -11,6 +11,8 @@ from chat.application.services.message_service import MessageService
 from chat.application.services.read_state_service import ReadStateService
 from chat.security import Principal, authenticate_connection
 
+logger = __import__("structlog").get_logger(__name__)
+
 
 @dataclass
 class GraphQLContext(BaseContext):
@@ -52,10 +54,13 @@ async def get_principal(info: Info[GraphQLContext, Any]) -> Principal:
             user_id=req_ctx.user_id,
             username=req_ctx.username or "",
         )
+        logger.debug("principal_from_request_context", user_id=ctx.principal.user_id)
         return ctx.principal
 
     if ctx.request is not None:
         ctx.principal = await authenticate_connection(ctx.request, ctx.connection_params)
+        logger.debug("principal_from_http_auth", user_id=ctx.principal.user_id)
         return ctx.principal
 
+    logger.warning("principal_authentication_required")
     raise PermissionError("authentication required")

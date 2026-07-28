@@ -11,6 +11,8 @@ from sqlalchemy import text
 from chat.config import settings
 from chat.database import manager
 
+logger = __import__("structlog").get_logger(__name__)
+
 router = APIRouter()
 
 
@@ -25,6 +27,7 @@ async def _postgres_check() -> dict[str, Any]:
             await session.execute(text("SELECT 1"))
         return {"postgres": {"status": "up", "latencyMs": _elapsed_ms(started)}}
     except Exception as exc:
+        logger.warning("health_check_failed", check="postgres", error=str(exc))
         return {"postgres": {"status": "down", "message": str(exc), "latencyMs": _elapsed_ms(started)}}
 
 
@@ -35,6 +38,7 @@ async def _cache_check() -> dict[str, Any]:
         healthy = await cache.ping()
         return {"cache": {"status": "up" if healthy else "down", "healthy": healthy, "latencyMs": _elapsed_ms(started)}}
     except Exception as exc:
+        logger.warning("health_check_failed", check="cache", error=str(exc))
         return {"cache": {"status": "down", "healthy": False, "latencyMs": _elapsed_ms(started), "message": str(exc)}}
     finally:
         await cache.close()
@@ -48,6 +52,7 @@ async def _http_ping_check(name: str, url: str) -> dict[str, Any]:
                 return {name: {"status": "up"}}
             return {name: {"status": "down", "message": f"HTTP {resp.status_code}"}}
     except Exception as exc:
+        logger.warning("health_check_failed", check=name, url=url, error=str(exc))
         return {name: {"status": "down", "message": str(exc)}}
 
 

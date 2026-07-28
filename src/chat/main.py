@@ -161,6 +161,7 @@ def ensure_bind_available(host: str, port: int) -> None:
         probe.bind((host, port))
     except OSError as exc:
         if exc.errno == errno.EADDRINUSE:
+            logger.critical("port_in_use", host=host, port=port)
             raise SystemExit(
                 f"Chat cannot start: {host}:{port} is already in use. "
                 "Set PORT or stop the conflicting process.",

@@ -11,7 +11,7 @@ from chat.domain.enums import DeliveryStatus
 from chat.domain.models.conversation import Conversation
 from chat.domain.models.message import Message
 
-logger = logging.getLogger(__name__)
+logger = __import__("structlog").get_logger(__name__)
 
 
 @dataclass
@@ -49,12 +49,7 @@ class GatewayClient:
             "metadata": {"conversationId": conversation.id},
         }
 
-        extra = {
-            "message_id": message.id,
-            "conversation_id": message.conversation_id,
-            "channel": message.channel.type.value,
-        }
-        logger.info("gateway_outbound_start %s", extra)
+        logger.info("gateway_outbound_start", message_id=message.id, conversation_id=message.conversation_id, channel=message.channel.type.value)
 
         try:
             response = await self._client.post(
@@ -63,9 +58,9 @@ class GatewayClient:
             )
             data = response.json()
             logger.info(
-                "gateway_outbound_response status=%s %s",
-                response.status_code,
-                extra,
+                "gateway_outbound_response",
+                message_id=message.id,
+                status_code=response.status_code,
             )
 
             if response.is_success and data.get("success"):
@@ -86,7 +81,7 @@ class GatewayClient:
             )
 
         except httpx.TimeoutException:
-            logger.warning("gateway_outbound_timeout %s", extra)
+            logger.warning("gateway_outbound_timeout", message_id=message.id, conversation_id=message.conversation_id)
             return GatewayResult(
                 success=False,
                 status=DeliveryStatus.FAILED,
@@ -94,7 +89,7 @@ class GatewayClient:
             )
 
         except httpx.ConnectError:
-            logger.warning("gateway_outbound_unreachable %s", extra)
+            logger.warning("gateway_outbound_unreachable", message_id=message.id, conversation_id=message.conversation_id)
             return GatewayResult(
                 success=False,
                 status=DeliveryStatus.FAILED,
@@ -102,7 +97,7 @@ class GatewayClient:
             )
 
         except Exception as exc:
-            logger.error("gateway_outbound_error exc=%s %s", exc, extra)
+            logger.error("gateway_outbound_error", message_id=message.id, conversation_id=message.conversation_id, error=str(exc))
             return GatewayResult(
                 success=False,
                 status=DeliveryStatus.FAILED,
