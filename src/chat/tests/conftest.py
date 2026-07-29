@@ -49,6 +49,11 @@ async def session() -> AsyncGenerator[AsyncSession]:
         await s.rollback()
 
 
+@pytest_asyncio.fixture(name="session_factory")
+async def session_factory_fixture() -> async_sessionmaker[AsyncSession]:
+    return session_factory
+
+
 @pytest_asyncio.fixture
 async def conversation_repo(session: AsyncSession) -> ConversationRepository:
     return SqlAlchemyConversationRepository(session)

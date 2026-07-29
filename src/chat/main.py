@@ -1,11 +1,15 @@
 from __future__ import annotations
 
+import asyncio
+import contextlib
 import errno
 import socket
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 
+from aiokafka import AIOKafkaProducer
 from fastapi import FastAPI
+from kafka import AIOKafkaEventProducer
 from observability import (
     configure_observability,
     instrument_fastapi,
@@ -35,6 +39,7 @@ from chat.domain.enums import ChannelType
 from chat.infrastructure.adapters.default_delivery_policy import DefaultDeliveryPolicy
 from chat.infrastructure.adapters.in_app_channel_adapter import InAppChannelAdapter
 from chat.infrastructure.adapters.whatsapp_channel_adapter import WhatsAppChannelAdapter
+from chat.infrastructure.analytics.outbox import AnalyticsFactWriter, AnalyticsOutboxPublisher
 from chat.infrastructure.db.repositories.conversation_repository import SqlAlchemyConversationRepository
 from chat.infrastructure.db.repositories.message_repository import SqlAlchemyMessageRepository
 from chat.infrastructure.db.repositories.read_state_repository import SqlAlchemyReadStateRepository
@@ -59,6 +64,54 @@ router = MessageRouter(
 
 policy = DefaultDeliveryPolicy()
 dispatcher = MessageDispatcher(policy, router)
+_analytics_outbox_stop: asyncio.Event | None = None
+_analytics_outbox_task: asyncio.Task[None] | None = None
+_analytics_kafka_producer: AIOKafkaEventProducer | None = None
+
+
+async def _run_analytics_outbox(
+    publisher: AnalyticsOutboxPublisher,
+    stop: asyncio.Event,
+) -> None:
+    while not stop.is_set():
+        try:
+            await publisher.process_batch(limit=50)
+        except Exception:
+            logger.exception("analytics_outbox_batch_failed")
+        try:
+            await asyncio.wait_for(stop.wait(), timeout=1)
+        except TimeoutError:
+            continue
+
+
+async def _start_analytics_outbox() -> None:
+    global _analytics_kafka_producer, _analytics_outbox_stop, _analytics_outbox_task
+
+    if not settings.kafka.bootstrap_servers:
+        logger.warning("analytics_outbox_disabled", reason="Kafka bootstrap servers are not configured")
+        return
+    raw = AIOKafkaProducer(
+        bootstrap_servers=settings.kafka.bootstrap_servers,
+        client_id=f"{settings.kafka.client_id}-analytics-outbox",
+        acks=settings.kafka.acks,
+    )
+    producer = AIOKafkaEventProducer(producer=raw)
+    await producer.start()
+    stop = asyncio.Event()
+    publisher = AnalyticsOutboxPublisher(manager.session_factory, producer)
+    _analytics_kafka_producer = producer
+    _analytics_outbox_stop = stop
+    _analytics_outbox_task = asyncio.create_task(_run_analytics_outbox(publisher, stop))
+
+
+async def _stop_analytics_outbox() -> None:
+    if _analytics_outbox_stop is not None:
+        _analytics_outbox_stop.set()
+    if _analytics_outbox_task is not None:
+        with contextlib.suppress(asyncio.CancelledError):
+            await _analytics_outbox_task
+    if _analytics_kafka_producer is not None:
+        await _analytics_kafka_producer.stop()
 
 
 @asynccontextmanager
@@ -76,12 +129,14 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
     instrument_fastapi(app)
 
     validate_production_settings()
+    await _start_analytics_outbox()
     logger.info("application_started")
 
     try:
         yield
     finally:
         logger.info("application_shutdown")
+        await _stop_analytics_outbox()
         uninstrument_fastapi(app)
         shutdown_observability()
         await gateway_client.close()
@@ -122,6 +177,7 @@ def create_application() -> FastAPI:
             conversation_repo = SqlAlchemyConversationRepository(session)
             message_repo = SqlAlchemyMessageRepository(session)
             read_state_repo = SqlAlchemyReadStateRepository(session)
+            analytics = AnalyticsFactWriter(session)
 
             yield GraphQLContext(
                 conversation_service=ConversationService(
@@ -129,6 +185,7 @@ def create_application() -> FastAPI:
                     conversation_repo=conversation_repo,
                     message_repo=message_repo,
                     read_state_repo=read_state_repo,
+                    analytics=analytics,
                 ),
                 message_service=MessageService(
                     session=session,
@@ -136,6 +193,7 @@ def create_application() -> FastAPI:
                     message_repo=message_repo,
                     read_state_repo=read_state_repo,
                     dispatcher=dispatcher,
+                    analytics=analytics,
                 ),
                 read_state_service=ReadStateService(
                     session=session,

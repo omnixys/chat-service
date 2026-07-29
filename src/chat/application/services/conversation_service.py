@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+from typing import TYPE_CHECKING
 
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -15,6 +16,9 @@ from chat.domain.errors import (
 )
 from chat.domain.models.conversation import Conversation, build_direct_participant_key
 
+if TYPE_CHECKING:
+    from chat.infrastructure.analytics.outbox import AnalyticsFactWriter
+
 logger = __import__("structlog").get_logger(__name__)
 
 
@@ -25,11 +29,13 @@ class ConversationService:
         conversation_repo: ConversationRepository,
         message_repo: MessageRepository,
         read_state_repo: ReadStateRepository,
+        analytics: AnalyticsFactWriter | None = None,
     ) -> None:
         self.session = session
         self.conversation_repo = conversation_repo
         self.message_repo = message_repo
         self.read_state_repo = read_state_repo
+        self.analytics = analytics
 
     async def create_direct_conversation(
         self,
@@ -63,6 +69,19 @@ class ConversationService:
                 raise
             return existing
 
+        if self.analytics is not None:
+            await self.analytics.enqueue(
+                topic="chat.conversation.created.v1",
+                event_name="ConversationCreated",
+                aggregate_id=conversation.id,
+                aggregate_type="conversation",
+                subject_id=user_a_id,
+                properties={
+                    "channel": conversation.channel.value,
+                    "conversationType": conversation.type.value,
+                    "participantCount": 2,
+                },
+            )
         await self.session.commit()
         conversation.participant_ids = [user_a_id, user_b_id]
         logger.info("conversation_created", conversation_id=conversation.id, type=conversation_type.value, key=key)
@@ -89,6 +108,19 @@ class ConversationService:
         )
         conversation = await self.conversation_repo.save(conversation)
         await self.conversation_repo.add_participant(conversation.id, owner_user_id)
+        if self.analytics is not None:
+            await self.analytics.enqueue(
+                topic="chat.conversation.created.v1",
+                event_name="ConversationCreated",
+                aggregate_id=conversation.id,
+                aggregate_type="conversation",
+                subject_id=owner_user_id,
+                properties={
+                    "channel": conversation.channel.value,
+                    "conversationType": conversation.type.value,
+                    "participantCount": 1,
+                },
+            )
         await self.session.commit()
         conversation.participant_ids = [owner_user_id]
         logger.info(

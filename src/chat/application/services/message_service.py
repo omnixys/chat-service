@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -12,23 +13,28 @@ from chat.domain.errors import EmptyMessageError
 from chat.domain.models.communication_channel import CommunicationChannel
 from chat.domain.models.message import Message
 
+if TYPE_CHECKING:
+    from chat.infrastructure.analytics.outbox import AnalyticsFactWriter
+
 logger = __import__("structlog").get_logger(__name__)
 
 
 class MessageService:
-    def __init__(
+    def __init__(  # noqa: PLR0913
         self,
         session: AsyncSession,
         conversation_repo: ConversationRepository,
         message_repo: MessageRepository,
         read_state_repo: ReadStateRepository,
         dispatcher: MessageDispatcher,
+        analytics: AnalyticsFactWriter | None = None,
     ) -> None:
         self.session = session
         self.conversation_repo = conversation_repo
         self.message_repo = message_repo
         self.read_state_repo = read_state_repo
         self.dispatcher = dispatcher
+        self.analytics = analytics
 
     async def send_message(
         self,
@@ -65,6 +71,19 @@ class MessageService:
         )
         message = await self.message_repo.save(message)
 
+        if self.analytics is not None:
+            await self.analytics.enqueue(
+                topic="chat.message.sent.v1",
+                event_name="MessageSent",
+                aggregate_id=message.id,
+                aggregate_type="message",
+                subject_id=sender_id,
+                properties={
+                    "channel": message.channel.type.value,
+                    "contentType": message.content_type.value,
+                    "conversationId": conversation_id,
+                },
+            )
         await self.session.commit()
 
         if conversation is not None:
