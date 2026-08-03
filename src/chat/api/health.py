@@ -101,13 +101,11 @@ async def run_health_checks() -> dict[str, Any]:
 
 
 @router.get("/health/liveness")
-@router.get("/health/live")
 async def health_liveness() -> dict[str, Any]:
     return _aggregate([_app_check()])
 
 
 @router.get("/health/readiness")
-@router.get("/health/ready")
 async def health_readiness(response: Response) -> dict[str, Any]:
     result = await _run_readiness_checks()
     if result["status"] == "error":

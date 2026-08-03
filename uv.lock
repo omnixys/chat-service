@@ -311,8 +311,8 @@ requires-dist = [
     { name = "omnixys-commons", git = "https://github.com/omnixys/commons-python.git" },
     { name = "omnixys-config", git = "https://github.com/omnixys/config-python.git" },
     { name = "omnixys-database", git = "https://github.com/omnixys/database-python.git" },
-    { name = "omnixys-kafka", editable = "../../packages/python/kafka" },
-    { name = "omnixys-observability", git = "https://github.com/omnixys/observability-python.git" },
+    { name = "omnixys-kafka", git = "https://github.com/omnixys/kafka-python.git" },
+    { name = "omnixys-observability", specifier = ">=2.0.4" },
     { name = "omnixys-security", git = "https://github.com/omnixys/security-python.git" },
     { name = "pydantic", specifier = ">=2.13.4" },
     { name = "pydantic-settings", specifier = ">=2.14.1" },
@@ -797,7 +797,8 @@ dependencies = [
 
 [[package]]
 name = "omnixys-kafka"
-source = { editable = "../../packages/python/kafka" }
+version = "3.0.0"
+source = { git = "https://github.com/omnixys/kafka-python.git#02154d1529a5b3726df96c021aa071797cb17d17" }
 dependencies = [
     { name = "aiokafka" },
     { name = "opentelemetry-api" },
@@ -805,27 +806,10 @@ dependencies = [
     { name = "opentelemetry-sdk" },
 ]
 
-[package.metadata]
-requires-dist = [
-    { name = "aiokafka", specifier = ">=0.14.0" },
-    { name = "opentelemetry-api", specifier = ">=1.42.1" },
-    { name = "opentelemetry-instrumentation-aiokafka", specifier = ">=0.63b1" },
-    { name = "opentelemetry-sdk", specifier = ">=1.42.1" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "dishka", specifier = ">=1.10.1" },
-    { name = "mypy", specifier = ">=2.3.0" },
-    { name = "pytest", specifier = ">=9.1.0" },
-    { name = "pytest-asyncio", specifier = ">=0.26.0" },
-    { name = "ruff", specifier = ">=0.15.21" },
-]
-
 [[package]]
 name = "omnixys-observability"
 version = "2.0.4"
-source = { git = "https://github.com/omnixys/observability-python.git#d00d72e5d41f1a41e0be3ad733ca709cb6813a60" }
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "fastapi" },
     { name = "httpx" },
@@ -840,6 +824,10 @@ dependencies = [
     { name = "opentelemetry-sdk" },
     { name = "prometheus-client" },
     { name = "structlog" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/3a/2d/45dcbaff96d6419e01e0d0a38e5dc31553b15a957ddfc78032313542f385/omnixys_observability-2.0.4.tar.gz", hash = "sha256:35093238cc8ad692ee96a2e9a2710b19bee90bf05d37761bfeb344fb6c069cb4", size = 38496, upload-time = "2026-07-28T08:50:27.796Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/32/f6/c74a9e18e65d17d24abb2e243927289ffbcf43693457f0d6339b9d496de0/omnixys_observability-2.0.4-py3-none-any.whl", hash = "sha256:705824a9ca32e16ad596fb805c09956b36eb28a6f8eb6a23e00dc2e051ee38bd", size = 7380, upload-time = "2026-07-28T08:50:26.766Z" },
 ]
 
 [[package]]
