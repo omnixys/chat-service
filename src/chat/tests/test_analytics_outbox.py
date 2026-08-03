@@ -43,7 +43,8 @@ def _verified_context() -> Generator[None]:
     set_request_context(
         RequestContext(
             user_id="user-1",
-            organization_id=TENANT_ID,
+            tenant_ids=[TENANT_ID],
+            tenant_id=TENANT_ID,
             correlation_id="correlation-1",
             is_authenticated=True,
         ),

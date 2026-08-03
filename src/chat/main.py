@@ -3,7 +3,6 @@ from __future__ import annotations
 import asyncio
 import contextlib
 import errno
-import logging
 import socket
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
@@ -117,10 +116,6 @@ async def _stop_analytics_outbox() -> None:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
-    logging.basicConfig(
-        level=getattr(logging, settings.core.log_level.upper(), logging.INFO),
-        format="%(message)s",
-    )
     configure_observability(
         service_name=settings.core.service_name,
         otlp_endpoint=settings.observability.otlp_endpoint,

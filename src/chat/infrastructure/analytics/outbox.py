@@ -68,7 +68,7 @@ class AnalyticsFactWriter:
         subject_id: str | None = None,
     ) -> str:
         context = current_request_context()
-        tenant_id = context.organization_id
+        tenant_id = context.tenant_id
         if not context.is_authenticated or tenant_id is None:
             raise ValueError("Verified organization context is required for analytics facts")
         try:
