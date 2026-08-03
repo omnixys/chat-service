@@ -312,8 +312,8 @@ requires-dist = [
     { name = "omnixys-config", git = "https://github.com/omnixys/config-python.git" },
     { name = "omnixys-database", git = "https://github.com/omnixys/database-python.git" },
     { name = "omnixys-kafka", git = "https://github.com/omnixys/kafka-python.git" },
-    { name = "omnixys-observability", specifier = ">=2.0.4" },
-    { name = "omnixys-security", git = "https://github.com/omnixys/security-python.git" },
+    { name = "omnixys-observability", specifier = ">=3.0.0" },
+    { name = "omnixys-security", specifier = ">=3.0.0" },
     { name = "pydantic", specifier = ">=2.13.4" },
     { name = "pydantic-settings", specifier = ">=2.14.1" },
     { name = "python-multipart", specifier = ">=0.0.20" },
@@ -808,7 +808,7 @@ dependencies = [
 
 [[package]]
 name = "omnixys-observability"
-version = "2.0.4"
+version = "3.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "fastapi" },
@@ -825,18 +825,22 @@ dependencies = [
     { name = "prometheus-client" },
     { name = "structlog" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/3a/2d/45dcbaff96d6419e01e0d0a38e5dc31553b15a957ddfc78032313542f385/omnixys_observability-2.0.4.tar.gz", hash = "sha256:35093238cc8ad692ee96a2e9a2710b19bee90bf05d37761bfeb344fb6c069cb4", size = 38496, upload-time = "2026-07-28T08:50:27.796Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/b5/8c/cb2f686b746c7e596750dc23cd2ac59c814b4b39fe40160264741f2711e5/omnixys_observability-3.0.0.tar.gz", hash = "sha256:019baf92faee9ed9c7adb0855be6f9beb03c8ceb805f6d16bc0d2bb8e9f5236d", size = 41161, upload-time = "2026-08-03T11:47:04.002Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/32/f6/c74a9e18e65d17d24abb2e243927289ffbcf43693457f0d6339b9d496de0/omnixys_observability-2.0.4-py3-none-any.whl", hash = "sha256:705824a9ca32e16ad596fb805c09956b36eb28a6f8eb6a23e00dc2e051ee38bd", size = 7380, upload-time = "2026-07-28T08:50:26.766Z" },
+    { url = "https://files.pythonhosted.org/packages/08/2d/439a170554437d52e607e09f8da8231a7176803e1333a0695342a8601172/omnixys_observability-3.0.0-py3-none-any.whl", hash = "sha256:b8d80b3619281ab95ef61daa3e0c0969a77effbac097ad58d6251fb8d2757908", size = 7993, upload-time = "2026-08-03T11:47:02.996Z" },
 ]
 
 [[package]]
 name = "omnixys-security"
 version = "3.0.0"
-source = { git = "https://github.com/omnixys/security-python.git#8aab887415d18002166017633794d31dba5733eb" }
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "httpx" },
     { name = "python-jose", extra = ["cryptography"] },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/35/ec/7514384b6cb5e52b8fd839ec6c0551ae7f8e83a55483f564a51663abb409/omnixys_security-3.0.0.tar.gz", hash = "sha256:2be81b73d140c2e342a5fe23c7e95cf153e91655f3b20f17025a5c084a318d74", size = 36971, upload-time = "2026-08-03T11:47:10.747Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/da/70/70455549c5c67537d666fde6fe4bd6ad0e974138de3585fb093d9617e908/omnixys_security-3.0.0-py3-none-any.whl", hash = "sha256:8a866c6626de28ee38e163b48c4960d554afb90c823f1da7fdf9d7844ea598fb", size = 6056, upload-time = "2026-08-03T11:47:09.787Z" },
 ]
 
 [[package]]
