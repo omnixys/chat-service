@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 
-from chat.domain.models.communication_channel import CommunicationChannel
-from chat.domain.models.conversation import Conversation
-from chat.domain.models.message import Message
+from chat.conversation.models.domain.communication_channel import CommunicationChannel
+from chat.conversation.models.domain.conversation import Conversation
+from chat.message.models.domain.message import Message
 
 
 class DeliveryPolicy(ABC):

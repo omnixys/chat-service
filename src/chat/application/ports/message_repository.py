@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
 
-from chat.domain.models.message import Message
+from chat.message.models.domain.message import Message
 
 
 class MessageRepository(ABC):

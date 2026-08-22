@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from chat.domain.models.conversation import Conversation
+from chat.conversation.models.domain.conversation import Conversation
 
 
 class ConversationRepository(ABC):

@@ -1,0 +1,129 @@
+from __future__ import annotations
+
+import re
+from typing import TYPE_CHECKING
+
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from chat.application.ports.conversation_repository import ConversationRepository
+from chat.conversation.models.domain.conversation import Conversation, build_direct_participant_key
+from chat.conversation.models.enums.conversation import ChannelType, ConversationType
+
+if TYPE_CHECKING:
+    from chat.analytics.outbox import AnalyticsFactWriter
+
+logger = __import__("structlog").get_logger(__name__)
+
+
+class ConversationWriteService:
+    def __init__(
+        self,
+        session: AsyncSession,
+        conversation_repo: ConversationRepository,
+        analytics: AnalyticsFactWriter | None = None,
+    ) -> None:
+        self.session = session
+        self.conversation_repo = conversation_repo
+        self.analytics = analytics
+
+    async def create_direct_conversation(
+        self,
+        user_a_id: str,
+        user_b_id: str,
+        conversation_type: ConversationType = ConversationType.DIRECT,
+    ) -> Conversation:
+        if conversation_type not in {ConversationType.DIRECT, ConversationType.SUPPORT}:
+            raise ValueError("In-app conversations must be DIRECT or SUPPORT")
+
+        participant_key = build_direct_participant_key(user_a_id, user_b_id)
+        key = participant_key if conversation_type is ConversationType.DIRECT else f"support:{participant_key}"
+
+        existing = await self.conversation_repo.find_by_participant_pair_key(key)
+        if existing is not None:
+            logger.debug("conversation_already_exists", conversation_id=existing.id, key=key)
+            return existing
+
+        conversation = Conversation(type=conversation_type, participant_pair_key=key)
+        conversation = await self.conversation_repo.save(conversation)
+        await self.conversation_repo.add_participant(conversation.id, user_a_id)
+        await self.conversation_repo.add_participant(conversation.id, user_b_id)
+
+        try:
+            await self.session.flush()
+        except IntegrityError:
+            logger.info("conversation_concurrent_create", key=key)
+            await self.session.rollback()
+            existing = await self.conversation_repo.find_by_participant_pair_key(key)
+            if existing is None:
+                raise
+            return existing
+
+        if self.analytics is not None:
+            await self.analytics.enqueue(
+                topic="chat.conversation.created.v1",
+                event_name="ConversationCreated",
+                aggregate_id=conversation.id,
+                aggregate_type="conversation",
+                subject_id=user_a_id,
+                properties={
+                    "channel": conversation.channel.value,
+                    "conversationType": conversation.type.value,
+                    "participantCount": 2,
+                },
+            )
+        await self.session.commit()
+        conversation.participant_ids = [user_a_id, user_b_id]
+        logger.info("conversation_created", conversation_id=conversation.id, type=conversation_type.value, key=key)
+        return conversation
+
+    async def create_whatsapp_conversation(
+        self,
+        owner_user_id: str,
+        phone_number: str,
+        display_name: str | None = None,
+    ) -> Conversation:
+        address = normalize_e164(phone_number)
+        existing = await self.conversation_repo.find_by_external_address(address)
+        if existing is not None:
+            if not await self.conversation_repo.is_participant(existing.id, owner_user_id):
+                raise ValueError("WhatsApp contact already belongs to another conversation")
+            logger.debug("whatsapp_conversation_already_exists", conversation_id=existing.id, address=address)
+            return existing
+        conversation = Conversation(
+            participant_pair_key=f"whatsapp:{address}",
+            channel=ChannelType.WHATSAPP,
+            external_address=address,
+            external_display_name=display_name.strip() if display_name else None,
+        )
+        conversation = await self.conversation_repo.save(conversation)
+        await self.conversation_repo.add_participant(conversation.id, owner_user_id)
+        if self.analytics is not None:
+            await self.analytics.enqueue(
+                topic="chat.conversation.created.v1",
+                event_name="ConversationCreated",
+                aggregate_id=conversation.id,
+                aggregate_type="conversation",
+                subject_id=owner_user_id,
+                properties={
+                    "channel": conversation.channel.value,
+                    "conversationType": conversation.type.value,
+                    "participantCount": 1,
+                },
+            )
+        await self.session.commit()
+        conversation.participant_ids = [owner_user_id]
+        logger.info(
+            "whatsapp_conversation_created",
+            conversation_id=conversation.id,
+            address=address,
+            owner=owner_user_id,
+        )
+        return conversation
+
+
+def normalize_e164(value: str) -> str:
+    normalized = re.sub(r"[\s().-]", "", value.strip())
+    if not re.fullmatch(r"\+[1-9]\d{7,14}", normalized):
+        raise ValueError("phone number must use E.164 format")
+    return normalized

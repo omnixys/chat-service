@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from collections.abc import AsyncGenerator
 
-from chat.domain.events import MessageCreatedEvent
+from chat.message.models.events.message import MessageCreatedEvent
 
 
 class RealtimePublisher(ABC):

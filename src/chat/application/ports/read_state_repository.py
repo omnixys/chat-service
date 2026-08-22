@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from chat.domain.models.read_state import ReadState
+from chat.message.models.domain.read_state import ReadState
 
 
 class ReadStateRepository(ABC):

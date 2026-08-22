@@ -5,8 +5,8 @@ from alembic import context
 from database import Base
 from sqlalchemy.ext.asyncio import create_async_engine
 
-from chat.config import settings
-from chat.infrastructure.db.models import *  # noqa: F403
+from chat.config.settings import settings
+from chat.db.models import *  # noqa: F403
 
 config = context.config
 if config.config_file_name is not None:

@@ -56,11 +56,11 @@ target-version = "py314"
 select = ["ALL"]
 
 [tool.ruff.lint.per-file-ignores]
-"src/chat/tests/**" = [
+"tests/**" = [
     "ANN401", "S101",
     "T20", "FBT", "D", "INP001",
-    "PLR2004", "TC001", "TC003", "PLC0415",
-    "SLF001", "EM101",
+    "PLR2004", "TC001", "TC002", "TC003", "PLC0415",
+    "SLF001", "EM101", "TRY003",
 ]
 "src/**" = [
     "D", "ANN401", "ARG002", "S104", "S105", "S107",
@@ -102,5 +102,5 @@ ignore_missing_imports = true
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "session"
 asyncio_default_test_loop_scope = "session"
-testpaths = ["src/chat/tests"]
+testpaths = ["tests"]
 pythonpath = ["src"]

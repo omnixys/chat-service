@@ -9,20 +9,21 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from chat.application.ports.conversation_repository import ConversationRepository
 from chat.application.ports.message_repository import MessageRepository
 from chat.application.ports.realtime_publisher import RealtimePublisher
-from chat.application.services.conversation_service import normalize_e164
-from chat.config import settings
-from chat.database import get_db
-from chat.domain.enums import ChannelType, DeliveryStatus, MessageContentType
-from chat.domain.events import MessageCreatedEvent
-from chat.domain.models.communication_channel import CommunicationChannel
-from chat.domain.models.conversation import Conversation
-from chat.domain.models.message import Message
-from chat.infrastructure.db.repositories.conversation_repository import (
+from chat.config.settings import settings
+from chat.conversation.models.domain.communication_channel import CommunicationChannel
+from chat.conversation.models.domain.conversation import Conversation
+from chat.conversation.models.enums.conversation import ChannelType
+from chat.conversation.services.conversation_write_service import normalize_e164
+from chat.db.repositories.conversation_repository import (
     SqlAlchemyConversationRepository,
 )
-from chat.infrastructure.db.repositories.message_repository import (
+from chat.db.repositories.message_repository import (
     SqlAlchemyMessageRepository,
 )
+from chat.db.session import get_db
+from chat.message.models.domain.message import Message
+from chat.message.models.enums.message import DeliveryStatus, MessageContentType
+from chat.message.models.events.message import MessageCreatedEvent
 
 logger = __import__("structlog").get_logger(__name__)
 
@@ -231,7 +232,7 @@ async def receive_delivery_status(
     repo = SqlAlchemyMessageRepository(session)
     message = None
     if payload.internal_message_id:
-        from chat.infrastructure.db.models import MessageModel
+        from chat.db.models import MessageModel
 
         model = await session.get(MessageModel, payload.internal_message_id)
         message = repo._to_domain(model) if model else None

@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 
-from chat.domain.enums import ChannelType
-from chat.domain.models.channel_capabilities import ChannelCapabilities
-from chat.domain.models.conversation import Conversation
-from chat.domain.models.message import Message
+from chat.conversation.models.domain.channel_capabilities import ChannelCapabilities
+from chat.conversation.models.domain.conversation import Conversation
+from chat.conversation.models.enums.conversation import ChannelType
+from chat.message.models.domain.message import Message
 
 
 class ChannelAdapter(ABC):
