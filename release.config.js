@@ -140,7 +140,7 @@ export default {
     [
       "@semantic-release/git",
       {
-        assets: ["pyproject.toml", "uv.lock", "CHANGELOG.md"],
+        assets: ["pyproject.toml", "uv.lock", "CHANGELOG.md", "package-lock.json"],
         message:
           "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}",
       },
