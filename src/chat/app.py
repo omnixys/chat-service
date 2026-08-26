@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import contextlib
+import os
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 
@@ -117,11 +118,12 @@ async def _stop_analytics_outbox() -> None:
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
     configure_observability(
-        service_name=settings.core.service_name,
-        otlp_endpoint=settings.observability.otlp_endpoint,
+        service_name=os.getenv("OTEL_SERVICE_NAME", settings.core.service_name),
+        otlp_endpoint=os.getenv("OTEL_EXPORTER_OTLP_ENDPOINT", settings.observability.otlp_endpoint),
         environment=settings.core.environment,
         log_level=settings.core.log_level,
         tracing_enabled=settings.observability.tracing_enabled,
+        logs_enabled=os.getenv("OTEL_LOGS_ENABLED", "true").lower() == "true",
         sampling_probability=settings.observability.sampling_probability,
     )
     health = await run_health_checks()
