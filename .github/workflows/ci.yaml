@@ -115,16 +115,7 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Install semantic-release plugins
-        run: |
-          npm install -g \
-            semantic-release \
-            @semantic-release/commit-analyzer \
-            @semantic-release/release-notes-generator \
-            @semantic-release/changelog \
-            @semantic-release/exec \
-            @semantic-release/git \
-            @semantic-release/github \
-            conventional-changelog-conventionalcommits
+        run: npm ci
 
       - name: 🚀 Run semantic-release
         id: semantic
