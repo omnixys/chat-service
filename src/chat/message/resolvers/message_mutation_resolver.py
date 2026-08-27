@@ -1,8 +1,9 @@
 import strawberry
-from strawberry.types import Info
+from strawberry.types import Info  # noqa: TC002
 
 from chat.core.graphql import get_message_write_service, get_principal
 from chat.message.models.payloads.message import Message
+from chat.security.http.guards import require_verified_tenant
 
 logger = __import__("structlog").get_logger(__name__)
 
@@ -16,8 +17,9 @@ class MessageMutation:
         conversation_id: strawberry.ID,
         body: str,
     ) -> Message:
-        service = get_message_write_service(info)
         principal = await get_principal(info)
+        require_verified_tenant()
+        service = get_message_write_service(info)
         logger.info("graphql_send_message", user_id=principal.user_id, conversation_id=str(conversation_id))
         m = await service.send_message(
             str(conversation_id),
