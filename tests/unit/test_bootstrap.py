@@ -3,13 +3,14 @@ from pathlib import Path
 
 import pytest
 
-from chat.config.settings import _CHAT_PKG_DIR
+from chat.config.settings import ChatSettings, _CHAT_PKG_DIR
 from chat.main import ensure_bind_available
 
 
 def test_settings_load_service_root_env_file() -> None:
     assert Path(__file__).resolve().parents[2] == _CHAT_PKG_DIR
-    assert (_CHAT_PKG_DIR / ".env").is_file()
+    assert ChatSettings.model_config["env_file"] == str(_CHAT_PKG_DIR / ".env")
+    assert ChatSettings.model_config["env_file_encoding"] == "utf-8"
 
 
 class FakeSocket:

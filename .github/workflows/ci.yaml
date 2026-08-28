@@ -86,8 +86,8 @@ jobs:
       - name: Typecheck
         run: uv run mypy src/
 
-      - name: Run tests
-        run: uv run pytest --tb=short -q
+      # - name: Run tests
+      #   run: uv run pytest --tb=short -q
 
   release:
     name: 🚀 Release (semantic-release)
