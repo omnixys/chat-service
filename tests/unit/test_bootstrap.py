@@ -1,8 +1,15 @@
 import errno
+from pathlib import Path
 
 import pytest
 
+from chat.config.settings import _CHAT_PKG_DIR
 from chat.main import ensure_bind_available
+
+
+def test_settings_load_service_root_env_file() -> None:
+    assert Path(__file__).resolve().parents[2] == _CHAT_PKG_DIR
+    assert (_CHAT_PKG_DIR / ".env").is_file()
 
 
 class FakeSocket:

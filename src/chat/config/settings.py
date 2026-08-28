@@ -5,7 +5,7 @@ from pathlib import Path
 from config.settings import AppSettings, CoreSettings
 from pydantic_settings import SettingsConfigDict
 
-_CHAT_PKG_DIR = Path(__file__).resolve().parent.parent.parent
+_CHAT_PKG_DIR = Path(__file__).resolve().parents[3]
 
 
 class ChatCoreSettings(CoreSettings):

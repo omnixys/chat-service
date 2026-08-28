@@ -1,5 +1,5 @@
 import strawberry
-from strawberry.types import Info  # noqa: TC002
+from strawberry.types import Info
 
 from chat.core.graphql import get_message_write_service, get_principal
 from chat.message.models.payloads.message import Message
