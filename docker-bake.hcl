@@ -31,7 +31,7 @@ variable "APP_VERSION" {
 }
 
 variable "PYTHON_VERSION" {
-  default = "3.14"
+  default = "3.14.7"
 }
 
 variable "CREATED" {
