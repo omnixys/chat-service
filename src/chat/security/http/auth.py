@@ -73,12 +73,12 @@ async def authenticate_connection(
             detail="invalid access token",
         ) from exc
 
-    user_id = claims.sub or ""
+    user_id = claims.user_id or ""
     if not user_id:
-        logger.warning("auth_missing_subject")
+        logger.warning("auth_missing_user_id")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="token subject missing",
+            detail="token user id missing",
         )
     logger.debug("auth_success", user_id=user_id)
     return Principal(user_id=user_id, username=claims.preferred_username or "")

@@ -1,6 +1,11 @@
 from collections.abc import Mapping
+from types import SimpleNamespace
 
-from chat.security.http.auth import _token_from_connection
+import pytest
+from fastapi import HTTPException
+
+from chat.security.http import auth
+from chat.security.http.auth import Principal, _token_from_connection, authenticate_connection
 
 
 class FakeConnection:
@@ -28,3 +33,39 @@ def test_graphql_transport_ws_connection_params_are_supported() -> None:
         )
         == "websocket-token"
     )
+
+
+class FakeClaims:
+    user_id: str | None
+    preferred_username: str | None
+
+    def __init__(self, user_id: str | None, preferred_username: str | None = None) -> None:
+        self.user_id = user_id
+        self.preferred_username = preferred_username
+
+
+class FakeValidator:
+    def __init__(self, claims: FakeClaims) -> None:
+        self._claims = claims
+
+    async def validate(self, _token: str) -> FakeClaims:
+        return self._claims
+
+
+async def test_authenticate_connection_resolves_internal_user_id(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(auth, "_get_jwt_validator", lambda: FakeValidator(FakeClaims("user-1", "jdoe")))
+    monkeypatch.setattr("chat.security.http.auth.settings", SimpleNamespace(auth_enabled=True))
+
+    principal = await authenticate_connection(FakeConnection(headers={"authorization": "Bearer t"}))  # type: ignore[arg-type]
+
+    assert principal == Principal(user_id="user-1", username="jdoe")
+
+
+async def test_authenticate_connection_fails_closed_without_user_id(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(auth, "_get_jwt_validator", lambda: FakeValidator(FakeClaims(None, "jdoe")))
+    monkeypatch.setattr("chat.security.http.auth.settings", SimpleNamespace(auth_enabled=True))
+
+    with pytest.raises(HTTPException) as excinfo:
+        await authenticate_connection(FakeConnection(headers={"authorization": "Bearer t"}))  # type: ignore[arg-type]
+
+    assert excinfo.value.status_code == 401
