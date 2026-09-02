@@ -17,7 +17,7 @@ class TestEventBus:
         event = MessageCreatedEvent(
             message_id="msg-1",
             conversation_id="conv-1",
-            sender_id="caleb",
+            sender_id="01920000-1000-7000-8000-000000000001",
             body="Hello",
             content_type=MessageContentType.TEXT,
             channel=CommunicationChannel(type=ChannelType.IN_APP),
@@ -37,7 +37,7 @@ class TestEventBus:
         result = await asyncio.gather(subscriber(), publisher())
         received = result[0]
         assert received.body == "Hello"
-        assert received.sender_id == "caleb"
+        assert received.sender_id == "01920000-1000-7000-8000-000000000001"
 
     async def test_subscription_cleanup_after_disconnect(self, realtime: InMemoryEventBus) -> None:
 
@@ -60,10 +60,17 @@ class TestEventBus:
         message_write_service: MessageWriteService,
         message_read_service: MessageReadService,
     ) -> None:
-        conv = await conversation_write_service.create_direct_conversation("caleb", "rachel")
-        await message_write_service.send_message(conv.id, "caleb", "Message while offline")
+        conv = await conversation_write_service.create_direct_conversation(
+            "01920000-1000-7000-8000-000000000001",
+            "01920000-1000-7000-8000-000000000002",
+        )
+        await message_write_service.send_message(
+            conv.id,
+            "01920000-1000-7000-8000-000000000001",
+            "Message while offline",
+        )
 
-        msgs = await message_read_service.get_messages(conv.id, "rachel")
+        msgs = await message_read_service.get_messages(conv.id, "01920000-1000-7000-8000-000000000002")
         assert len(msgs) == 1
         assert msgs[0].body == "Message while offline"
 
@@ -75,8 +82,14 @@ class TestEndToEndRealtime:
         message_write_service: MessageWriteService,
         realtime: InMemoryEventBus,
     ) -> None:
-        conv = await conversation_write_service.create_direct_conversation("caleb", "rachel")
-        received: dict[str, asyncio.Event] = {"caleb": asyncio.Event(), "rachel": asyncio.Event()}
+        conv = await conversation_write_service.create_direct_conversation(
+            "01920000-1000-7000-8000-000000000001",
+            "01920000-1000-7000-8000-000000000002",
+        )
+        received: dict[str, asyncio.Event] = {
+            "01920000-1000-7000-8000-000000000001": asyncio.Event(),
+            "01920000-1000-7000-8000-000000000002": asyncio.Event(),
+        }
         results: dict[str, str] = {}
 
         async def subscribe_and_capture(user_id: str) -> None:
@@ -86,17 +99,17 @@ class TestEndToEndRealtime:
                 break
 
         tasks = [
-            asyncio.create_task(subscribe_and_capture("caleb")),
-            asyncio.create_task(subscribe_and_capture("rachel")),
+            asyncio.create_task(subscribe_and_capture("01920000-1000-7000-8000-000000000001")),
+            asyncio.create_task(subscribe_and_capture("01920000-1000-7000-8000-000000000002")),
         ]
         await asyncio.sleep(0.05)
 
-        await message_write_service.send_message(conv.id, "caleb", "Hallo Rachel!")
+        await message_write_service.send_message(conv.id, "01920000-1000-7000-8000-000000000001", "Hallo Rachel!")
 
         await asyncio.wait_for(
             asyncio.gather(
-                asyncio.create_task(received["caleb"].wait()),
-                asyncio.create_task(received["rachel"].wait()),
+                asyncio.create_task(received["01920000-1000-7000-8000-000000000001"].wait()),
+                asyncio.create_task(received["01920000-1000-7000-8000-000000000002"].wait()),
             ),
             timeout=5.0,
         )
@@ -104,8 +117,8 @@ class TestEndToEndRealtime:
         for t in tasks:
             t.cancel()
 
-        assert results.get("caleb") == "Hallo Rachel!"
-        assert results.get("rachel") == "Hallo Rachel!"
+        assert results.get("01920000-1000-7000-8000-000000000001") == "Hallo Rachel!"
+        assert results.get("01920000-1000-7000-8000-000000000002") == "Hallo Rachel!"
 
     async def test_non_participant_does_not_receive(
         self,
@@ -113,26 +126,29 @@ class TestEndToEndRealtime:
         message_write_service: MessageWriteService,
         realtime: InMemoryEventBus,
     ) -> None:
-        conv = await conversation_write_service.create_direct_conversation("caleb", "rachel")
+        conv = await conversation_write_service.create_direct_conversation(
+            "01920000-1000-7000-8000-000000000001",
+            "01920000-1000-7000-8000-000000000002",
+        )
         received_eve = asyncio.Event()
         results: dict[str, str] = {}
 
         async def subscribe_eve() -> None:
-            async for msg in realtime.subscribe("user:eve"):
-                results["eve"] = msg.body
+            async for msg in realtime.subscribe("user:01920000-1000-7000-8000-000000000003"):
+                results["01920000-1000-7000-8000-000000000003"] = msg.body
                 received_eve.set()
                 break
 
         task = asyncio.create_task(subscribe_eve())
         await asyncio.sleep(0.05)
 
-        await message_write_service.send_message(conv.id, "caleb", "Secret")
+        await message_write_service.send_message(conv.id, "01920000-1000-7000-8000-000000000001", "Secret")
 
         with pytest.raises(asyncio.TimeoutError):
             await asyncio.wait_for(received_eve.wait(), timeout=0.5)
 
         task.cancel()
-        assert "eve" not in results
+        assert "01920000-1000-7000-8000-000000000003" not in results
 
     async def test_conversation_subscription_gets_event(
         self,
@@ -140,7 +156,10 @@ class TestEndToEndRealtime:
         message_write_service: MessageWriteService,
         realtime: InMemoryEventBus,
     ) -> None:
-        conv = await conversation_write_service.create_direct_conversation("caleb", "rachel")
+        conv = await conversation_write_service.create_direct_conversation(
+            "01920000-1000-7000-8000-000000000001",
+            "01920000-1000-7000-8000-000000000002",
+        )
         received = asyncio.Event()
         results: dict[str, str] = {}
 
@@ -153,7 +172,11 @@ class TestEndToEndRealtime:
         task = asyncio.create_task(subscribe_conversation())
         await asyncio.sleep(0.05)
 
-        await message_write_service.send_message(conv.id, "caleb", "Hello via conversation channel")
+        await message_write_service.send_message(
+            conv.id,
+            "01920000-1000-7000-8000-000000000001",
+            "Hello via conversation channel",
+        )
 
         await asyncio.wait_for(received.wait(), timeout=5.0)
         task.cancel()

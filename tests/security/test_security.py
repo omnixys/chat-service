@@ -53,12 +53,16 @@ class FakeValidator:
 
 
 async def test_authenticate_connection_resolves_internal_user_id(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr(auth, "_get_jwt_validator", lambda: FakeValidator(FakeClaims("user-1", "jdoe")))
+    monkeypatch.setattr(
+        auth,
+        "_get_jwt_validator",
+        lambda: FakeValidator(FakeClaims("01920000-1000-7000-8000-000000000008", "jdoe")),
+    )
     monkeypatch.setattr("chat.security.http.auth.settings", SimpleNamespace(auth_enabled=True))
 
     principal = await authenticate_connection(FakeConnection(headers={"authorization": "Bearer t"}))  # type: ignore[arg-type]
 
-    assert principal == Principal(user_id="user-1", username="jdoe")
+    assert principal == Principal(user_id="01920000-1000-7000-8000-000000000008", username="jdoe")
 
 
 async def test_authenticate_connection_fails_closed_without_user_id(monkeypatch: pytest.MonkeyPatch) -> None:

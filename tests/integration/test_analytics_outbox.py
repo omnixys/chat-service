@@ -40,7 +40,7 @@ class FakeProducer:
 def _verified_context() -> Generator[None]:
     set_request_context(
         RequestContext(
-            user_id="user-1",
+            user_id="01920000-1000-7000-8000-000000000008",
             tenant_ids=[TENANT_ID],
             tenant_id=TENANT_ID,
             correlation_id="correlation-1",
@@ -61,7 +61,10 @@ async def test_conversation_and_fact_are_committed_atomically(
         AnalyticsFactWriter(session),
     )
 
-    conversation = await service.create_direct_conversation("user-1", "user-2")
+    conversation = await service.create_direct_conversation(
+        "01920000-1000-7000-8000-000000000008",
+        "01920000-1000-7000-8000-000000000009",
+    )
 
     stored = await session.scalar(
         select(AnalyticsOutboxModel).where(
@@ -92,7 +95,10 @@ async def test_writer_failure_rolls_back_conversation_and_outbox(
     )
 
     with pytest.raises(RuntimeError, match="outbox unavailable"):
-        await service.create_direct_conversation("user-1", "user-3")
+        await service.create_direct_conversation(
+            "01920000-1000-7000-8000-000000000008",
+            "01920000-1000-7000-8000-000000000010",
+        )
     await session.rollback()
 
     assert await session.scalar(select(func.count(ConversationModel.id))) == 0
@@ -108,7 +114,7 @@ async def test_publisher_retries_by_event_id_without_duplicate_processing(
         event_name="MessageSent",
         aggregate_id="message-1",
         aggregate_type="message",
-        subject_id="user-1",
+        subject_id="01920000-1000-7000-8000-000000000008",
         properties={"channel": "IN_APP", "contentType": "TEXT"},
     )
     await session.commit()

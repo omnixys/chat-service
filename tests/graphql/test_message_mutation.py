@@ -31,7 +31,7 @@ async def test_send_message_rejects_missing_verified_tenant_before_service_call(
     service = FailingMessageService()
     set_request_context(
         RequestContext(
-            user_id="user-1",
+            user_id="01920000-1000-7000-8000-000000000008",
             tenant_ids=[],
             tenant_id=None,
             is_authenticated=True,
@@ -39,7 +39,7 @@ async def test_send_message_rejects_missing_verified_tenant_before_service_call(
     )
     info = SimpleNamespace(
         context=GraphQLContext(
-            principal=Principal(user_id="user-1"),
+            principal=Principal(user_id="01920000-1000-7000-8000-000000000008"),
             message_write_service=service,
         ),
     )
@@ -54,7 +54,7 @@ async def test_send_message_rejects_missing_verified_tenant_before_service_call(
 def test_verified_tenant_must_be_selected_from_token_memberships() -> None:
     set_request_context(
         RequestContext(
-            user_id="user-1",
+            user_id="01920000-1000-7000-8000-000000000008",
             tenant_ids=[TENANT_ID],
             tenant_id=TENANT_ID,
             is_authenticated=True,
@@ -65,7 +65,7 @@ def test_verified_tenant_must_be_selected_from_token_memberships() -> None:
 
     set_request_context(
         RequestContext(
-            user_id="user-1",
+            user_id="01920000-1000-7000-8000-000000000008",
             tenant_ids=["22222222-2222-4222-8222-222222222222"],
             tenant_id=TENANT_ID,
             is_authenticated=True,

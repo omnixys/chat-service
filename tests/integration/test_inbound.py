@@ -73,7 +73,7 @@ class TestInboundEndpoint:
         app: FastAPI,
     ) -> None:
         original_chat_key = settings.chat_service_api_key
-        owner_id = "keycloak-sub-owner"
+        owner_id = "01920000-1000-7000-8000-000000000020"
         async with session_factory() as session:
             conversation_repo = SqlAlchemyConversationRepository(session)
 
@@ -152,7 +152,7 @@ class TestInboundEndpoint:
                 external_address="+49123456789",
             )
             await repo.save(conv)
-            await repo.add_participant("conv-1", "rachel")
+            await repo.add_participant("conv-1", "01920000-1000-7000-8000-000000000002")
             await repo.add_participant("conv-1", "phone-user")
             await session.commit()
 
@@ -163,7 +163,7 @@ class TestInboundEndpoint:
                 json={
                     "message_id": "evo-msg-123",
                     "channel": "WHATSAPP",
-                    "user_id": "rachel",
+                    "user_id": "01920000-1000-7000-8000-000000000002",
                     "from_": "+49123456789",
                     "body": "Hello from phone!",
                     "content_type": "TEXT",
@@ -186,7 +186,7 @@ class TestInboundEndpoint:
                 json={
                     "message_id": "evo-msg-456",
                     "channel": "WHATSAPP",
-                    "user_id": "unknown-user",
+                    "user_id": "01920000-1000-7000-8000-000000000011",
                     "from_": "+49999999999",
                     "body": "Hello?",
                     "content_type": "TEXT",
@@ -209,7 +209,7 @@ class TestInboundEndpoint:
                 external_address="+491701234567",
             )
             await repo.save(conversation)
-            await repo.add_participant(conversation.id, "user-1")
+            await repo.add_participant(conversation.id, "01920000-1000-7000-8000-000000000008")
             await session.commit()
 
         payload = {
@@ -247,7 +247,7 @@ class TestInboundEndpoint:
             message = Message(
                 id="message-status",
                 conversation_id=conversation.id,
-                sender_id="user-1",
+                sender_id="01920000-1000-7000-8000-000000000008",
                 body="status",
                 content_type=MessageContentType.TEXT,
                 channel=CommunicationChannel(type=ChannelType.WHATSAPP),
@@ -285,7 +285,7 @@ class TestInboundEndpoint:
                 "/api/v1/internal/inbound-message",
                 json={
                     "channel": "WHATSAPP",
-                    "user_id": "user-1",
+                    "user_id": "01920000-1000-7000-8000-000000000008",
                     "from_": "+111",
                     "body": "test",
                 },
