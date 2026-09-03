@@ -323,13 +323,13 @@ requires-dist = [
     { name = "fastapi", specifier = ">=0.137.1" },
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "hypercorn", specifier = ">=0.18.0" },
-    { name = "omnixys-cache", git = "https://github.com/omnixys/cache-python.git" },
-    { name = "omnixys-commons", git = "https://github.com/omnixys/commons-python.git" },
-    { name = "omnixys-config", git = "https://github.com/omnixys/config-python.git" },
+    { name = "omnixys-cache", specifier = ">=3.0.6" },
+    { name = "omnixys-commons", specifier = ">=3.0.2" },
+    { name = "omnixys-config", specifier = ">=3.0.2" },
     { name = "omnixys-database", git = "https://github.com/omnixys/database-python.git" },
-    { name = "omnixys-kafka", git = "https://github.com/omnixys/kafka-python.git" },
-    { name = "omnixys-observability", specifier = ">=4.0.1" },
-    { name = "omnixys-security", directory = "/Users/gentlebookpro/Projekte/Omnixys/packages/python/security" },
+    { name = "omnixys-kafka", specifier = ">=3.0.2" },
+    { name = "omnixys-observability", specifier = ">=4.1.3" },
+    { name = "omnixys-security", specifier = ">=4.0.0" },
     { name = "pydantic", specifier = ">=2.13.4" },
     { name = "pydantic-settings", specifier = ">=2.14.1" },
     { name = "python-multipart", specifier = ">=0.0.20" },
@@ -755,28 +755,40 @@ wheels = [
 
 [[package]]
 name = "omnixys-cache"
-version = "3.0.5"
-source = { git = "https://github.com/omnixys/cache-python.git#406f52e099400208344205017737773e050222fc" }
+version = "3.0.6"
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "redis" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/86/d7/27f4289725a3680313e5574715ed0fae4b49303e260108beb02f92b54bf2/omnixys_cache-3.0.6.tar.gz", hash = "sha256:ab7cfe7c4c0d17904196e93d3312b214b2059e53cfd682442cf532c73aee19b6", size = 62118, upload-time = "2026-09-02T23:34:47.232Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/07/f3/4532e267a57fc6817794538ba6d9f89fdb5a8ad93d955b19e3bc5c7f0b6d/omnixys_cache-3.0.6-py3-none-any.whl", hash = "sha256:1a2d298d1658b833e25399aa648fd56d3be5d0eed27ee1c76ca25c7b8433f6b5", size = 14090, upload-time = "2026-09-02T23:34:46.058Z" },
 ]
 
 [[package]]
 name = "omnixys-commons"
-version = "3.0.1"
-source = { git = "https://github.com/omnixys/commons-python.git#9f1ce95d942042eee4faeb603e0168ffb9691eba" }
+version = "3.0.2"
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pydantic" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/fb/f0/6bfe094df7a104a1d8b225a99910a9161e2e7a5922adb632d96c3543ad84/omnixys_commons-3.0.2.tar.gz", hash = "sha256:78bafc29977def90ddcb670941d8aa06ab6758cbb686cc0ca0980ab7330126c9", size = 73714, upload-time = "2026-09-02T23:42:53.246Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ed/d8/ac8123571a422f56ceb4ef6d1eaa4ae3aeeb939b1d14aca7b468b130f8b4/omnixys_commons-3.0.2-py3-none-any.whl", hash = "sha256:118497c6401b7b83d36fd33c2220e1b76a3a3a0a2d93e64ed3b88b2b2b2af2c4", size = 45075, upload-time = "2026-09-02T23:42:52.094Z" },
 ]
 
 [[package]]
 name = "omnixys-config"
-version = "3.0.1"
-source = { git = "https://github.com/omnixys/config-python.git#56295e3ef93f09e82f29b5466b48ec38f10fe3f7" }
+version = "3.0.2"
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pydantic" },
     { name = "pydantic-settings" },
     { name = "python-dotenv" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/41/64/7de91d1aa9689f5b5dc5d5d55f4cb638478d40c204d54f332790413c5c13/omnixys_config-3.0.2.tar.gz", hash = "sha256:97a29680702817a38391996d99a31dc98b074bb7a5fa0b1e07eb56f300ae2b51", size = 60652, upload-time = "2026-09-02T23:42:14.931Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/65/9f/08d993e9050fcee19a8f0cebe6a7a6db1de8f9153e04d5529d8188bd3370/omnixys_config-3.0.2-py3-none-any.whl", hash = "sha256:1afcd190c6ffb37f55946fc00a36371ea571112c9b605be438158576205a6e2c", size = 7296, upload-time = "2026-09-02T23:42:13.684Z" },
 ]
 
 [[package]]
@@ -793,18 +805,22 @@ dependencies = [
 
 [[package]]
 name = "omnixys-kafka"
-version = "3.0.1"
-source = { git = "https://github.com/omnixys/kafka-python.git#d63878f8dafafc95b63b6000dd2d132c6c8b84bb" }
+version = "3.0.2"
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiokafka" },
     { name = "opentelemetry-api" },
     { name = "opentelemetry-instrumentation-aiokafka" },
     { name = "opentelemetry-sdk" },
 ]
+sdist = { url = "https://files.pythonhosted.org/packages/b4/ab/66115c2abb47b330f597858d37cf767e5d55cfd74ad09d3aea6c782d7843/omnixys_kafka-3.0.2.tar.gz", hash = "sha256:781c1f4e6cd4a6a8631ff48a25a0a0e7588a86d653487ffc5ceabf5e56f99915", size = 64097, upload-time = "2026-09-02T23:42:32.335Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/af/0e/d34c48eccd9a1574e6ce65bc60eebf7eb18ea790e670d7cc0d7225809399/omnixys_kafka-3.0.2-py3-none-any.whl", hash = "sha256:9c4355dbf342911e3b98c87c2f07638556e8672106b8b0701b611dc0c67329fd", size = 13129, upload-time = "2026-09-02T23:42:31.248Z" },
+]
 
 [[package]]
 name = "omnixys-observability"
-version = "4.0.1"
+version = "4.1.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "fastapi" },
@@ -821,35 +837,23 @@ dependencies = [
     { name = "prometheus-client" },
     { name = "structlog" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/90/33/db9176417d2722d28920bb5d94b405b5b35fd522a630d0289a9550fd0e90/omnixys_observability-4.0.1.tar.gz", hash = "sha256:19c6c4e1e0bb44e170ea2a906935a149f2289420290942c7166ac081b512c6c5", size = 53641, upload-time = "2026-08-28T17:14:59.651Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/0f/ff/ce9672c8d5c2dba31d7052d1159c134e65525a430f76569eaa34d041bcce/omnixys_observability-4.1.3.tar.gz", hash = "sha256:912c07a5c00fe55af500c0f0c0ab161af265502c48742d003851b006ce8fdcb4", size = 77334, upload-time = "2026-09-02T23:38:27.793Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/48/c4/e400e015aa2de78b6e7249493471cca2e86780a8fbcdeb75df4473b77b7a/omnixys_observability-4.0.1-py3-none-any.whl", hash = "sha256:e4cd41d74fe54514bb3978d364e486a90f5bfd4909fe853171be9cb26a561134", size = 11153, upload-time = "2026-08-28T17:14:58.59Z" },
+    { url = "https://files.pythonhosted.org/packages/10/77/6db73b9ee4da480c23a963579fa468710acd00345dce5e09b078c158c5dc/omnixys_observability-4.1.3-py3-none-any.whl", hash = "sha256:dfe91f49e727f1d3f63790bfc2f82f70b6b30e959d37d5f25d48fd938d295e18", size = 11134, upload-time = "2026-09-02T23:38:26.758Z" },
 ]
 
 [[package]]
 name = "omnixys-security"
-source = { directory = "/Users/gentlebookpro/Projekte/Omnixys/packages/python/security" }
+version = "4.0.0"
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "argon2-cffi" },
     { name = "httpx" },
     { name = "python-jose", extra = ["cryptography"] },
 ]
-
-[package.metadata]
-requires-dist = [
-    { name = "argon2-cffi", specifier = ">=23.1.0" },
-    { name = "httpx", specifier = ">=0.28.0" },
-    { name = "python-jose", extras = ["cryptography"], specifier = ">=3.5.0" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "mypy", specifier = ">=2.3.0" },
-    { name = "pydantic", specifier = ">=2.13.4" },
-    { name = "pytest", specifier = ">=9.1.0" },
-    { name = "pytest-asyncio", specifier = ">=0.26.0" },
-    { name = "ruff", specifier = ">=0.15.21" },
-    { name = "types-python-jose", specifier = ">=3.5.0.20260408" },
+sdist = { url = "https://files.pythonhosted.org/packages/4f/74/b601488ed927f3d05dd69835ce6911ff1056c8d47fdd1af1f0fd6f1a13fe/omnixys_security-4.0.0.tar.gz", hash = "sha256:703bca6008e571e74f76a79c8e3785e15aa05576ad56f426e8fb4080fa100676", size = 53739, upload-time = "2026-08-22T20:37:09.186Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ce/26/e95592756a9a6689e93066ff5c0434a49df907146f24dcd6ced6b52aa058/omnixys_security-4.0.0-py3-none-any.whl", hash = "sha256:8a4d92340eb5042416859b2bd62305433b756903c312d1801bb7a50e1f9a2069", size = 9795, upload-time = "2026-08-22T20:37:08.155Z" },
 ]
 
 [[package]]

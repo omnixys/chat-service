@@ -15,13 +15,13 @@ dependencies = [
     "python-multipart>=0.0.20",
     "httpx>=0.28.1",
     "redis>=5.2.0",
-    "omnixys-commons @ git+https://github.com/omnixys/commons-python.git",
-    "omnixys-config @ git+https://github.com/omnixys/config-python.git",
+    "omnixys-commons>=3.0.2",
+    "omnixys-config>=3.0.2",
     "omnixys-database @ git+https://github.com/omnixys/database-python.git",
-    "omnixys-observability>=4.0.1",
-    "omnixys-cache @ git+https://github.com/omnixys/cache-python.git",
-    "omnixys-security @ file:///Users/gentlebookpro/Projekte/Omnixys/packages/python/security",
-    "omnixys-kafka @ git+https://github.com/omnixys/kafka-python.git",
+    "omnixys-observability>=4.1.3",
+    "omnixys-cache>=3.0.6",
+    "omnixys-security>=4.0.0",
+    "omnixys-kafka>=3.0.2",
 ]
 
 [project.scripts]

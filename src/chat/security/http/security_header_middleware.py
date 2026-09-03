@@ -2,11 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
-_CSP = (
-    "default-src 'self' https:; "
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; "
-    "img-src 'self' data:"
-)
+_CSP = "default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; img-src 'self' data:"
 _HSTS = "max-age=31536000"
 
 
