@@ -3,6 +3,33 @@
 All notable changes in this project will be documented in this file.
 
 
+## [2.0.0](https://github.com/omnixys/chat-service/compare/v1.3.1...v2.0.0) (2026-09-05)
+
+### Chat
+
+* **Chat:** point omnixys-security at local package ([](https://github.com/omnixys/chat-service/commit/a92777bd7151da0c8d5c886fc34d139ccec1a0a3))
+* **Chat:** resolve internal user id from omnixys_user_id claim ([](https://github.com/omnixys/chat-service/commit/6432d7b7cd41886b55d833a61c58b95a50b258c0))
+
+### Deps
+
+* **Deps:** update omnixys deps ([](https://github.com/omnixys/chat-service/commit/bce184dfa53e42915bc845e0e4bb278c5ea05c3b))
+
+### Identity
+
+* **Identity:** align test fixtures with distinct U/K UUIDv7 identities, document U/K conventions ([](https://github.com/omnixys/chat-service/commit/444caff57362446f6489426d3bdc1433afdad16e))
+
+### Other
+
+* **Other:** Merge pull request #1 from omnixys/migration/uuid-v7 ([](https://github.com/omnixys/chat-service/commit/7424995f653108cae2a7ed17ee763150e8ecd0dd)), closes [#1](https://github.com/omnixys/chat-service/issues/1)
+
+### Runtime
+
+* **Runtime:** require python 3.14.7 and node 26.8.1 ([](https://github.com/omnixys/chat-service/commit/bd93a9ccd42fcddbebfb1b8eaadb49b73629c453))
+
+### V7
+
+* **V7:** add UUIDv7 ([](https://github.com/omnixys/chat-service/commit/62d392cffc91ff1214e02716c4a0fa8387d6748b))
+
 ## [1.3.1](https://github.com/omnixys/chat-service/compare/v1.3.0...v1.3.1) (2026-08-28)
 
 ### Deps
