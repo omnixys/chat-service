@@ -14,10 +14,13 @@ class TestSendMessage:
         conversation_write_service: ConversationWriteService,
         message_write_service: MessageWriteService,
     ) -> None:
-        conv = await conversation_write_service.create_direct_conversation("caleb", "rachel")
-        msg = await message_write_service.send_message(conv.id, "caleb", "Hallo Rachel!")
+        conv = await conversation_write_service.create_direct_conversation(
+            "01920000-1000-7000-8000-000000000001",
+            "01920000-1000-7000-8000-000000000002",
+        )
+        msg = await message_write_service.send_message(conv.id, "01920000-1000-7000-8000-000000000001", "Hallo Rachel!")
         assert msg.body == "Hallo Rachel!"
-        assert msg.sender_id == "caleb"
+        assert msg.sender_id == "01920000-1000-7000-8000-000000000001"
         assert msg.conversation_id == conv.id
 
     async def test_message_is_persisted(
@@ -26,9 +29,12 @@ class TestSendMessage:
         message_write_service: MessageWriteService,
         message_read_service: MessageReadService,
     ) -> None:
-        conv = await conversation_write_service.create_direct_conversation("caleb", "rachel")
-        await message_write_service.send_message(conv.id, "caleb", "Persist me!")
-        msgs = await message_read_service.get_messages(conv.id, "caleb")
+        conv = await conversation_write_service.create_direct_conversation(
+            "01920000-1000-7000-8000-000000000001",
+            "01920000-1000-7000-8000-000000000002",
+        )
+        await message_write_service.send_message(conv.id, "01920000-1000-7000-8000-000000000001", "Persist me!")
+        msgs = await message_read_service.get_messages(conv.id, "01920000-1000-7000-8000-000000000001")
         assert len(msgs) == 1
         assert msgs[0].body == "Persist me!"
 
@@ -37,27 +43,36 @@ class TestSendMessage:
         conversation_write_service: ConversationWriteService,
         message_write_service: MessageWriteService,
     ) -> None:
-        conv = await conversation_write_service.create_direct_conversation("caleb", "rachel")
+        conv = await conversation_write_service.create_direct_conversation(
+            "01920000-1000-7000-8000-000000000001",
+            "01920000-1000-7000-8000-000000000002",
+        )
         with pytest.raises(EmptyMessageError):
-            await message_write_service.send_message(conv.id, "caleb", "")
+            await message_write_service.send_message(conv.id, "01920000-1000-7000-8000-000000000001", "")
 
     async def test_whitespace_only_message_rejected(
         self,
         conversation_write_service: ConversationWriteService,
         message_write_service: MessageWriteService,
     ) -> None:
-        conv = await conversation_write_service.create_direct_conversation("caleb", "rachel")
+        conv = await conversation_write_service.create_direct_conversation(
+            "01920000-1000-7000-8000-000000000001",
+            "01920000-1000-7000-8000-000000000002",
+        )
         with pytest.raises(EmptyMessageError):
-            await message_write_service.send_message(conv.id, "caleb", "   ")
+            await message_write_service.send_message(conv.id, "01920000-1000-7000-8000-000000000001", "   ")
 
     async def test_non_participant_cannot_send(
         self,
         conversation_write_service: ConversationWriteService,
         message_write_service: MessageWriteService,
     ) -> None:
-        conv = await conversation_write_service.create_direct_conversation("caleb", "rachel")
+        conv = await conversation_write_service.create_direct_conversation(
+            "01920000-1000-7000-8000-000000000001",
+            "01920000-1000-7000-8000-000000000002",
+        )
         with pytest.raises(NotParticipantError):
-            await message_write_service.send_message(conv.id, "eve", "Hello?")
+            await message_write_service.send_message(conv.id, "01920000-1000-7000-8000-000000000003", "Hello?")
 
 
 class TestReadMessages:
@@ -67,10 +82,13 @@ class TestReadMessages:
         message_write_service: MessageWriteService,
         message_read_service: MessageReadService,
     ) -> None:
-        conv = await conversation_write_service.create_direct_conversation("caleb", "rachel")
-        await message_write_service.send_message(conv.id, "caleb", "Secret message")
+        conv = await conversation_write_service.create_direct_conversation(
+            "01920000-1000-7000-8000-000000000001",
+            "01920000-1000-7000-8000-000000000002",
+        )
+        await message_write_service.send_message(conv.id, "01920000-1000-7000-8000-000000000001", "Secret message")
         with pytest.raises(NotParticipantError):
-            await message_read_service.get_messages(conv.id, "eve")
+            await message_read_service.get_messages(conv.id, "01920000-1000-7000-8000-000000000003")
 
     async def test_pagination_with_before(
         self,
@@ -80,21 +98,24 @@ class TestReadMessages:
     ) -> None:
         import asyncio
 
-        conv = await conversation_write_service.create_direct_conversation("caleb", "rachel")
+        conv = await conversation_write_service.create_direct_conversation(
+            "01920000-1000-7000-8000-000000000001",
+            "01920000-1000-7000-8000-000000000002",
+        )
         for i in range(5):
-            await message_write_service.send_message(conv.id, "caleb", f"Msg {i}")
+            await message_write_service.send_message(conv.id, "01920000-1000-7000-8000-000000000001", f"Msg {i}")
             await asyncio.sleep(0.01)
 
-        all_msgs = await message_read_service.get_messages(conv.id, "caleb", limit=50)
+        all_msgs = await message_read_service.get_messages(conv.id, "01920000-1000-7000-8000-000000000001", limit=50)
         assert len(all_msgs) == 5
 
-        first_two = await message_read_service.get_messages(conv.id, "caleb", limit=2)
+        first_two = await message_read_service.get_messages(conv.id, "01920000-1000-7000-8000-000000000001", limit=2)
         assert len(first_two) == 2
 
         before_time = all_msgs[3].created_at
         older_msgs = await message_read_service.get_messages(
             conv.id,
-            "caleb",
+            "01920000-1000-7000-8000-000000000001",
             limit=50,
             before=before_time,
         )
@@ -108,13 +129,16 @@ class TestUnreadCount:
         conversation_read_service: ConversationReadService,
         message_write_service: MessageWriteService,
     ) -> None:
-        conv = await conversation_write_service.create_direct_conversation("caleb", "rachel")
-        conv = await conversation_read_service.get_conversation(conv.id, "rachel")
+        conv = await conversation_write_service.create_direct_conversation(
+            "01920000-1000-7000-8000-000000000001",
+            "01920000-1000-7000-8000-000000000002",
+        )
+        conv = await conversation_read_service.get_conversation(conv.id, "01920000-1000-7000-8000-000000000002")
         assert conv.unread_count == 0
 
-        await message_write_service.send_message(conv.id, "caleb", "Hey Rachel!")
+        await message_write_service.send_message(conv.id, "01920000-1000-7000-8000-000000000001", "Hey Rachel!")
 
-        conv = await conversation_read_service.get_conversation(conv.id, "rachel")
+        conv = await conversation_read_service.get_conversation(conv.id, "01920000-1000-7000-8000-000000000002")
         assert conv.unread_count == 1
 
     async def test_mark_read_resets_unread_count(
@@ -123,14 +147,17 @@ class TestUnreadCount:
         conversation_read_service: ConversationReadService,
         message_write_service: MessageWriteService,
     ) -> None:
-        conv = await conversation_write_service.create_direct_conversation("caleb", "rachel")
-        await message_write_service.send_message(conv.id, "caleb", "Hey Rachel!")
-        await message_write_service.send_message(conv.id, "caleb", "Are you there?")
+        conv = await conversation_write_service.create_direct_conversation(
+            "01920000-1000-7000-8000-000000000001",
+            "01920000-1000-7000-8000-000000000002",
+        )
+        await message_write_service.send_message(conv.id, "01920000-1000-7000-8000-000000000001", "Hey Rachel!")
+        await message_write_service.send_message(conv.id, "01920000-1000-7000-8000-000000000001", "Are you there?")
 
-        conv = await conversation_read_service.get_conversation(conv.id, "rachel")
+        conv = await conversation_read_service.get_conversation(conv.id, "01920000-1000-7000-8000-000000000002")
         assert conv.unread_count == 2
 
-        await message_write_service.mark_read(conv.id, "rachel")
+        await message_write_service.mark_read(conv.id, "01920000-1000-7000-8000-000000000002")
 
-        conv = await conversation_read_service.get_conversation(conv.id, "rachel")
+        conv = await conversation_read_service.get_conversation(conv.id, "01920000-1000-7000-8000-000000000002")
         assert conv.unread_count == 0
