@@ -326,7 +326,7 @@ requires-dist = [
     { name = "omnixys-cache", specifier = ">=3.0.6" },
     { name = "omnixys-commons", specifier = ">=3.0.2" },
     { name = "omnixys-config", specifier = ">=3.0.2" },
-    { name = "omnixys-database", git = "https://github.com/omnixys/database-python.git" },
+    { name = "omnixys-database", specifier = ">=3.0.3" },
     { name = "omnixys-kafka", specifier = ">=3.0.2" },
     { name = "omnixys-observability", specifier = ">=4.1.3" },
     { name = "omnixys-security", specifier = ">=4.0.0" },
@@ -793,14 +793,18 @@ wheels = [
 
 [[package]]
 name = "omnixys-database"
-version = "3.0.1"
-source = { git = "https://github.com/omnixys/database-python.git#963634d61ff76ef63ac042a030915c329dc37a6d" }
+version = "3.0.3"
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "asyncpg" },
     { name = "greenlet" },
     { name = "psycopg" },
     { name = "psycopg-binary" },
     { name = "sqlalchemy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/d4/54/1f4dd03d5c97cf6f6a2ccd1a3b90f20225846d83a336259058d4b0c4a3cf/omnixys_database-3.0.3.tar.gz", hash = "sha256:78865da0ac262462db2da6c043d7215c13d9ce49406d6e1b68d855caefeb0eed", size = 62903, upload-time = "2026-09-04T17:55:43.835Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f7/f9/8c2051e50a5eaf9485b52df0fe0d5bd2f9852752ed52e3a154f1a9af25df/omnixys_database-3.0.3-py3-none-any.whl", hash = "sha256:c794f3a049f54e7aa70168b5a0ba870a97500e379c23924d5790d9cb811ec4f6", size = 5389, upload-time = "2026-09-04T17:55:42.864Z" },
 ]
 
 [[package]]

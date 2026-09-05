@@ -23,13 +23,6 @@ on:
   push:
     branches:
       - main
-      - '!release'
-    tags:
-      - 'v*'
-  pull_request:
-    branches:
-      - '**'
-      - '!release'
 
 concurrency:
   group: ci-${{ github.ref }}
