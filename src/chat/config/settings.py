@@ -30,13 +30,20 @@ settings = ChatSettings()
 def validate_production_settings() -> None:
     import os
 
-    if os.getenv("ENVIRONMENT", "development").lower() != "production":
+    environment = os.getenv("ENVIRONMENT")
+    if not environment:
+        raise RuntimeError("Missing required env: ENVIRONMENT")
+    if environment.lower() != "production":
         return
     required = {
         "CHAT_SERVICE_API_KEY": settings.chat_service_api_key,
         "COMMUNICATION_GATEWAY_API_KEY": settings.communication_gateway_api_key,
+        "COMMUNICATION_GATEWAY_URL": settings.communication_gateway_url,
+        "DATABASE_URL": settings.database.url,
         "KEYCLOAK_URL": settings.keycloak.url if settings.auth_enabled else "",
+        "KEYCLOAK_CLIENT_SECRET": settings.keycloak.client_secret if settings.auth_enabled else "",
         "CACHE_URL": settings.cache.url,
+        "CACHE_PASSWORD": settings.cache.password,
     }
     missing = [name for name, value in required.items() if not value]
     if missing:
