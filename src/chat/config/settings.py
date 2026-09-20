@@ -33,7 +33,7 @@ def validate_production_settings() -> None:
     environment = os.getenv("ENVIRONMENT")
     if not environment:
         raise RuntimeError("Missing required env: ENVIRONMENT")
-    if environment.lower() != "production":
+    if environment.lower() not in {"production", "development", "staging"}:
         return
     required = {
         "CHAT_SERVICE_API_KEY": settings.chat_service_api_key,
