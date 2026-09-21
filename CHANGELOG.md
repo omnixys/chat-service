@@ -3,6 +3,21 @@
 All notable changes in this project will be documented in this file.
 
 
+## [2.0.1](https://github.com/omnixys/chat-service/compare/v2.0.0...v2.0.1) (2026-09-21)
+
+### Chat
+
+* **Chat:** resolve ruff configuration warnings ([](https://github.com/omnixys/chat-service/commit/68eaac8bc9200c986d341bfd8f58b53c2bc71a3d))
+
+### Config
+
+* **Config:** require critical env vars in dev and staging ([](https://github.com/omnixys/chat-service/commit/54c345bc5ea099b7b69b91a5a993c99c7d38f0fb))
+* **Config:** require critical env vars in production ([](https://github.com/omnixys/chat-service/commit/63c4bda51808ddcbca53aff1ba48169fee03de52))
+
+### Deps
+
+* **Deps:** update omnixys packages ([](https://github.com/omnixys/chat-service/commit/67738d6b61985235e3512b0f81d861b9afd5755b))
+
 ## [2.0.0](https://github.com/omnixys/chat-service/compare/v1.3.1...v2.0.0) (2026-09-05)
 
 ### Chat
