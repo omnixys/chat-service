@@ -323,13 +323,13 @@ requires-dist = [
     { name = "fastapi", specifier = ">=0.137.1" },
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "hypercorn", specifier = ">=0.18.0" },
-    { name = "omnixys-cache", specifier = ">=3.0.6" },
-    { name = "omnixys-commons", specifier = ">=3.0.2" },
-    { name = "omnixys-config", specifier = ">=3.0.2" },
+    { name = "omnixys-cache", specifier = ">=3.0.7" },
+    { name = "omnixys-commons", specifier = ">=3.0.3" },
+    { name = "omnixys-config", specifier = ">=3.0.3" },
     { name = "omnixys-database", specifier = ">=3.0.3" },
-    { name = "omnixys-kafka", specifier = ">=3.0.2" },
-    { name = "omnixys-observability", specifier = ">=4.1.3" },
-    { name = "omnixys-security", specifier = ">=4.0.0" },
+    { name = "omnixys-kafka", specifier = ">=3.0.5" },
+    { name = "omnixys-observability", specifier = ">=4.2.0" },
+    { name = "omnixys-security", specifier = ">=4.1.0" },
     { name = "pydantic", specifier = ">=2.13.4" },
     { name = "pydantic-settings", specifier = ">=2.14.1" },
     { name = "python-multipart", specifier = ">=0.0.20" },
@@ -755,40 +755,40 @@ wheels = [
 
 [[package]]
 name = "omnixys-cache"
-version = "3.0.6"
+version = "3.0.7"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "redis" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/86/d7/27f4289725a3680313e5574715ed0fae4b49303e260108beb02f92b54bf2/omnixys_cache-3.0.6.tar.gz", hash = "sha256:ab7cfe7c4c0d17904196e93d3312b214b2059e53cfd682442cf532c73aee19b6", size = 62118, upload-time = "2026-09-02T23:34:47.232Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c3/35/498b3cea1febe258ed4aacf63f926acf6dce0eaa789d283ac6feb7531046/omnixys_cache-3.0.7.tar.gz", hash = "sha256:69ef26b3436028d95e3644859f7b39ad1e303ba76062a5d37fc485c8b14a0cd7", size = 62288, upload-time = "2026-09-19T15:05:08.931Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/07/f3/4532e267a57fc6817794538ba6d9f89fdb5a8ad93d955b19e3bc5c7f0b6d/omnixys_cache-3.0.6-py3-none-any.whl", hash = "sha256:1a2d298d1658b833e25399aa648fd56d3be5d0eed27ee1c76ca25c7b8433f6b5", size = 14090, upload-time = "2026-09-02T23:34:46.058Z" },
+    { url = "https://files.pythonhosted.org/packages/28/69/294799ff81bce7963296cfe3bc3378bc6f085ccc9298965a3b5055ee9d06/omnixys_cache-3.0.7-py3-none-any.whl", hash = "sha256:ed83561b0131cc3149004d277726aa50b70cda81c604f504e34850f035ad3960", size = 14091, upload-time = "2026-09-19T15:05:07.872Z" },
 ]
 
 [[package]]
 name = "omnixys-commons"
-version = "3.0.2"
+version = "3.0.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pydantic" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/fb/f0/6bfe094df7a104a1d8b225a99910a9161e2e7a5922adb632d96c3543ad84/omnixys_commons-3.0.2.tar.gz", hash = "sha256:78bafc29977def90ddcb670941d8aa06ab6758cbb686cc0ca0980ab7330126c9", size = 73714, upload-time = "2026-09-02T23:42:53.246Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d2/f1/324d63340c07f0375cc30441f8b8d558dbb0fb2900d8374a4449ab71f321/omnixys_commons-3.0.3.tar.gz", hash = "sha256:d9d325ec03f8f7a7fbd3e2af64402a5b893179808594053936db2ac16b314ccd", size = 73766, upload-time = "2026-09-19T15:05:16.516Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ed/d8/ac8123571a422f56ceb4ef6d1eaa4ae3aeeb939b1d14aca7b468b130f8b4/omnixys_commons-3.0.2-py3-none-any.whl", hash = "sha256:118497c6401b7b83d36fd33c2220e1b76a3a3a0a2d93e64ed3b88b2b2b2af2c4", size = 45075, upload-time = "2026-09-02T23:42:52.094Z" },
+    { url = "https://files.pythonhosted.org/packages/36/4a/08400cb75f323cf42f6d737e82681eb5deb35980b35e2552defde1cdef21/omnixys_commons-3.0.3-py3-none-any.whl", hash = "sha256:904bc647c7c40d06886dc94c5623e8cdc0ebe13b3760795f4f571de6097e249f", size = 45077, upload-time = "2026-09-19T15:05:14.86Z" },
 ]
 
 [[package]]
 name = "omnixys-config"
-version = "3.0.2"
+version = "3.0.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pydantic" },
     { name = "pydantic-settings" },
     { name = "python-dotenv" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/41/64/7de91d1aa9689f5b5dc5d5d55f4cb638478d40c204d54f332790413c5c13/omnixys_config-3.0.2.tar.gz", hash = "sha256:97a29680702817a38391996d99a31dc98b074bb7a5fa0b1e07eb56f300ae2b51", size = 60652, upload-time = "2026-09-02T23:42:14.931Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/33/6c/4c529c1a1e37f0667997c05d3bd445c7695ce5282bfbd7a0dd8a5c8382ef/omnixys_config-3.0.3.tar.gz", hash = "sha256:cba5ae8bea402fc8613081d628911f886bea8cb9233a63599e51cb73e25c6330", size = 60706, upload-time = "2026-09-19T15:04:53.754Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/65/9f/08d993e9050fcee19a8f0cebe6a7a6db1de8f9153e04d5529d8188bd3370/omnixys_config-3.0.2-py3-none-any.whl", hash = "sha256:1afcd190c6ffb37f55946fc00a36371ea571112c9b605be438158576205a6e2c", size = 7296, upload-time = "2026-09-02T23:42:13.684Z" },
+    { url = "https://files.pythonhosted.org/packages/1f/76/47f7ee669d3e2daa56e306b784b79d1684046e57c922454ce7271a067e10/omnixys_config-3.0.3-py3-none-any.whl", hash = "sha256:fcdc5ce721f6ea68a832f02ed41b7aca6e65d6576b6cde53ee956a2d2593bb8c", size = 7296, upload-time = "2026-09-19T15:04:52.631Z" },
 ]
 
 [[package]]
@@ -809,7 +809,7 @@ wheels = [
 
 [[package]]
 name = "omnixys-kafka"
-version = "3.0.2"
+version = "3.0.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiokafka" },
@@ -817,14 +817,14 @@ dependencies = [
     { name = "opentelemetry-instrumentation-aiokafka" },
     { name = "opentelemetry-sdk" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/b4/ab/66115c2abb47b330f597858d37cf767e5d55cfd74ad09d3aea6c782d7843/omnixys_kafka-3.0.2.tar.gz", hash = "sha256:781c1f4e6cd4a6a8631ff48a25a0a0e7588a86d653487ffc5ceabf5e56f99915", size = 64097, upload-time = "2026-09-02T23:42:32.335Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/fb/70/54b85e13df2fb41ccda43f536c15b13724bbc185d2d45f438766a70a47bd/omnixys_kafka-3.0.5.tar.gz", hash = "sha256:77db0ae5e4248d45cadcebd39458980c5d08297e6a4714e36e28cf960b6b42f5", size = 64478, upload-time = "2026-09-19T15:17:25.571Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/af/0e/d34c48eccd9a1574e6ce65bc60eebf7eb18ea790e670d7cc0d7225809399/omnixys_kafka-3.0.2-py3-none-any.whl", hash = "sha256:9c4355dbf342911e3b98c87c2f07638556e8672106b8b0701b611dc0c67329fd", size = 13129, upload-time = "2026-09-02T23:42:31.248Z" },
+    { url = "https://files.pythonhosted.org/packages/36/3e/2dc80b71126786fa3f56d5defab0179f32fbda3560fa440a7b1e26378b26/omnixys_kafka-3.0.5-py3-none-any.whl", hash = "sha256:24aab1be5e6f1c3ccfdddee1c105585cfa8a90da709b35044d5bb531ee939076", size = 13127, upload-time = "2026-09-19T15:17:24.633Z" },
 ]
 
 [[package]]
 name = "omnixys-observability"
-version = "4.1.3"
+version = "4.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "fastapi" },
@@ -841,23 +841,23 @@ dependencies = [
     { name = "prometheus-client" },
     { name = "structlog" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/0f/ff/ce9672c8d5c2dba31d7052d1159c134e65525a430f76569eaa34d041bcce/omnixys_observability-4.1.3.tar.gz", hash = "sha256:912c07a5c00fe55af500c0f0c0ab161af265502c48742d003851b006ce8fdcb4", size = 77334, upload-time = "2026-09-02T23:38:27.793Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/4a/83/e69d4f6ccc85113306db73bfeac4fd5de83126dceeccd08b7ca8d7b4c047/omnixys_observability-4.2.0.tar.gz", hash = "sha256:206e375e4bf3349c40ea7295279355a1594fc6e624f8245a39f20176b52e86f8", size = 79217, upload-time = "2026-09-19T15:04:15.341Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/10/77/6db73b9ee4da480c23a963579fa468710acd00345dce5e09b078c158c5dc/omnixys_observability-4.1.3-py3-none-any.whl", hash = "sha256:dfe91f49e727f1d3f63790bfc2f82f70b6b30e959d37d5f25d48fd938d295e18", size = 11134, upload-time = "2026-09-02T23:38:26.758Z" },
+    { url = "https://files.pythonhosted.org/packages/e8/c6/6f3609936fdcce78b9ae00463463214bdae9ec07e6a9337ec9261fa62ce6/omnixys_observability-4.2.0-py3-none-any.whl", hash = "sha256:687a32d7a40cc19081dba2844a96de9aba7feb7338243dc161eaee48e72b0eeb", size = 12423, upload-time = "2026-09-19T15:04:14.057Z" },
 ]
 
 [[package]]
 name = "omnixys-security"
-version = "4.0.0"
+version = "4.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "argon2-cffi" },
     { name = "httpx" },
     { name = "python-jose", extra = ["cryptography"] },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/4f/74/b601488ed927f3d05dd69835ce6911ff1056c8d47fdd1af1f0fd6f1a13fe/omnixys_security-4.0.0.tar.gz", hash = "sha256:703bca6008e571e74f76a79c8e3785e15aa05576ad56f426e8fb4080fa100676", size = 53739, upload-time = "2026-08-22T20:37:09.186Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/73/0e/af11aa3b444f9faad370d807c28f2417ad0ba86a197f5478ec52d1415d86/omnixys_security-4.1.0.tar.gz", hash = "sha256:5041f341324fdcdc3dbc1992fb94568d02e8732344f8c7a86a84cc6dec194ff1", size = 76724, upload-time = "2026-09-04T17:59:56.805Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ce/26/e95592756a9a6689e93066ff5c0434a49df907146f24dcd6ced6b52aa058/omnixys_security-4.0.0-py3-none-any.whl", hash = "sha256:8a4d92340eb5042416859b2bd62305433b756903c312d1801bb7a50e1f9a2069", size = 9795, upload-time = "2026-08-22T20:37:08.155Z" },
+    { url = "https://files.pythonhosted.org/packages/f2/0c/7247d955001ef15587f3bf3c6b9c56d0fd0a9b85a17c1f259a2fa1ea8988/omnixys_security-4.1.0-py3-none-any.whl", hash = "sha256:1ca63535e2d7118d294fda846ea32a84be8d523e844561773a6811638f32452a", size = 10207, upload-time = "2026-09-04T17:59:55.652Z" },
 ]
 
 [[package]]
