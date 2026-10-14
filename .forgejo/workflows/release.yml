@@ -1,0 +1,56 @@
+name: chat Forgejo SemVer release
+on:
+  workflow_dispatch:
+concurrency:
+  group: chat-release
+  cancel-in-progress: false
+jobs:
+  release:
+    if: forgejo.repository == 'omnixys/chat-service' && forgejo.ref == 'refs/heads/main'
+    runs-on: linux-amd64
+    timeout-minutes: 30
+    steps:
+      - name: Checkout complete reviewed history
+        uses: https://code.forgejo.org/actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with: { fetch-depth: 0, persist-credentials: false, ref: main }
+      - name: Install pinned toolchain
+        run: bash scripts/ci-toolchain.sh
+      - name: Configure protected package reader
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_READ_TOKEN }}
+          FORGEJO_PACKAGE_READ_TOKEN: ${{ secrets.NPM_READ_TOKEN }}
+          FORGEJO_PACKAGE_USERNAME: caleb
+          UV_INDEX_FORGEJO_USERNAME: caleb
+          UV_INDEX_FORGEJO_PASSWORD: ${{ secrets.NPM_READ_TOKEN }}
+        run: node scripts/ci-registry-auth.mjs
+      - name: Verify before exposing release credentials
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_READ_TOKEN }}
+          FORGEJO_PACKAGE_READ_TOKEN: ${{ secrets.NPM_READ_TOKEN }}
+          FORGEJO_PACKAGE_USERNAME: caleb
+          UV_INDEX_FORGEJO_USERNAME: caleb
+          UV_INDEX_FORGEJO_PASSWORD: ${{ secrets.NPM_READ_TOKEN }}
+        run: bash scripts/ci-verify.sh
+      - name: Automatic version, changelog, tag and Forgejo release only
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_READ_TOKEN }}
+          FORGEJO_PACKAGE_READ_TOKEN: ${{ secrets.NPM_READ_TOKEN }}
+          FORGEJO_PACKAGE_USERNAME: caleb
+          UV_INDEX_FORGEJO_USERNAME: caleb
+          UV_INDEX_FORGEJO_PASSWORD: ${{ secrets.NPM_READ_TOKEN }}
+          FORGEJO_RELEASE_TOKEN: ${{ secrets.SERVICE_RELEASE_TOKEN }}
+          FORGEJO_GIT_USERNAME: caleb
+        run: |
+          set -eu
+          test -n "$FORGEJO_RELEASE_TOKEN" || { echo 'Repository-restricted Caleb release credential required'; exit 1; }
+          git config user.name 'Caleb Gyamfi'
+          git config user.email caleb.gyamfi@omnixys.com
+          cp scripts/git-credential.mjs "${RUNNER_TEMP}/chat-git-credential.mjs"
+          chmod 700 "${RUNNER_TEMP}/chat-git-credential.mjs"
+          export GIT_CONFIG_COUNT=3
+          export GIT_CONFIG_KEY_0=credential.helper GIT_CONFIG_VALUE_0=''
+          export GIT_CONFIG_KEY_1=credential.helper GIT_CONFIG_VALUE_1="${RUNNER_TEMP}/chat-git-credential.mjs"
+          export GIT_CONFIG_KEY_2=credential.useHttpPath GIT_CONFIG_VALUE_2=true
+          export GIT_TERMINAL_PROMPT=0
+          unset GIT_CREDENTIALS GH_TOKEN GITHUB_TOKEN GL_TOKEN GITLAB_TOKEN
+          node scripts/ci-release.mjs

@@ -9,16 +9,15 @@
  # This program is distributed in the hope that it will be useful,
  # but WITHOUT ANY WARRANTY; without even the implied warranty of
  # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- # See the GNU General Public License for more details.
  #
  # For more information, visit <https://www.gnu.org/licenses/>.
  
  # ---------------------------------------------------------------------------------------
  # 🧱 docker-bake.hcl – Omnixys Bake Setup
  # ---------------------------------------------------------------------------------------
- # Build orchestration for Omnixys Python-based microservices using HashiCorp Docker Bake.
+ # Build orchestration for Omnixys Node-based microservices using HashiCorp Docker Bake.
  # Aufruf mit:
- # APP_VERSION=$(python3 -c "import tomllib; print(tomllib.load(open('pyproject.toml','rb'))['project']['version'])") docker buildx bake
+ # APP_VERSION=$(node -p "require('./package.json').version") docker buildx bake
  # ---------------------------------------------------------------------------------------
 
 variable "APP_NAME" {
@@ -30,8 +29,8 @@ variable "APP_VERSION" {
   default = "dev"
 }
 
-variable "PYTHON_VERSION" {
-  default = "3.14.7"
+variable "NODE_VERSION" {
+  default = "26.8.1"
 }
 
 variable "CREATED" {
@@ -55,11 +54,11 @@ target "build" {
   context = "."
 
   args = {
-    PYTHON_VERSION = "${PYTHON_VERSION}"
-    APP_NAME       = "${APP_NAME}"
-    APP_VERSION    = "${APP_VERSION}"
-    CREATED        = "${CREATED}"
-    REVISION       = "${REVISION}"
+    NODE_VERSION = "${NODE_VERSION}"
+    APP_NAME     = "${APP_NAME}"
+    APP_VERSION  = "${APP_VERSION}"
+    CREATED      = "${CREATED}"
+    REVISION     = "${REVISION}"
   }
 
   labels = {

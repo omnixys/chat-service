@@ -1,14 +1,31 @@
 {
   "editor.formatOnSave": true,
   "files.eol": "\n",
-  "[python]": {
-    "editor.defaultFormatter": "charliermarsh.ruff",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
   },
-  "ruff.nativeServer": true,
-  "python.analysis.typeCheckingMode": "strict",
-  "python.testing.pytestEnabled": true,
-  "python.testing.pytestArgs": [
-    "tests"
-  ]
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[prisma]": {
+    "editor.defaultFormatter": "prisma.prisma",
+    "editor.formatOnSave": true
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "eslint.useFlatConfig": true,
+  "eslint.validate": ["typescript", "javascript"],
+  "files.exclude": {
+    "**/dist": true,
+    "**/node_modules": true,
+    "**/.venv": true
+  },
+  "search.exclude": {
+    "**/dist": true,
+    "**/node_modules": true,
+    "**/.venv": true,
+    "**/src/prisma/generated": true
+  }
 }

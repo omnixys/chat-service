@@ -1,11 +1,98 @@
-profiles
+# @license GPL-3.0-or-later
+# Copyright (C) 2025 Caleb Gyamfi - Omnixys Technologies
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+# For more information, visit <https://www.gnu.org/licenses/>.
+
+# compiled output
+/dist
+/node_modules
+/build
+**/reports/**
+
+# TypeScript build cache
+*.tsbuildinfo
+
+volumes
+keys
+
+# Prisma generated client
+/src/prisma/generated/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# OS
+.DS_Store
+
+# Tests
+/coverage
+/.nyc_output
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# dotenv environment variable files
 .env
-.venv
-.ruff_cache
-.mypy_cache
-.pytest_cache
-__pycache__/
-*.py[cod]
-*$py.class
-node_modules/
-scripts
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+.env.docker
+
+# temp directory
+.temp
+.tmp
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# local tool artifacts
+.extras/doc
+.extras/json
+.extras/data
+.extras/sql
+.extras/scripts
+.npmrc
+.secrets
+log
+TODO.md
+node_profiles
+
+# Managed by the Omnixys repository-policy rollout: track VS Code workspace config
+!.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json

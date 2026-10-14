@@ -1,11 +1,14 @@
 {
   "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "prisma.prisma",
+    "ms-vscode-remote.remote-containers"
+  ],
+  "unwantedRecommendations": [
     "ms-python.python",
     "ms-python.vscode-pylance",
     "charliermarsh.ruff",
     "ms-python.mypy-type-checker"
-  ],
-  "unwantedRecommendations": [
-    "ms-python.black-formatter"
   ]
 }

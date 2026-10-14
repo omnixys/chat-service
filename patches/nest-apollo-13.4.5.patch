@@ -1,0 +1,28 @@
+diff --git a/dist/drivers/apollo-base.driver.js b/dist/drivers/apollo-base.driver.js
+index 1111111..2222222 100644
+--- a/dist/drivers/apollo-base.driver.js
++++ b/dist/drivers/apollo-base.driver.js
+@@ -3,7 +3,6 @@
+ exports.ApolloBaseDriver = void 0;
+ const tslib_1 = require("tslib");
+ const server_1 = require("@apollo/server");
+-const server_plugin_landing_page_graphql_playground_1 = require("@apollo/server-plugin-landing-page-graphql-playground");
+ const errors_1 = require("@apollo/server/errors");
+ const disabled_1 = require("@apollo/server/plugin/disabled");
+ const drainHttpServer_1 = require("@apollo/server/plugin/drainHttpServer");
+@@ -58,14 +57,8 @@
+         else if ((options.playground === undefined &&
+             process.env.NODE_ENV !== 'production') ||
+             options.playground) {
+-            const playgroundOptions = typeof options.playground === 'object' ? options.playground : undefined;
+-            defaults = {
+-                ...defaults,
+-                plugins: [
+-                    (0, server_plugin_landing_page_graphql_playground_1.ApolloServerPluginLandingPageGraphQLPlayground)(playgroundOptions),
+-                ],
+-            };
++            throw new Error("Legacy GraphQL Playground is not supported with Apollo5; configure playground:false");
+         }
+         else if ((options.playground === undefined &&
+             process.env.NODE_ENV === 'production') ||
+             options.playground === false) {

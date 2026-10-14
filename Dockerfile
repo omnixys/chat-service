@@ -9,47 +9,69 @@
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-# See the GNU General Public License for more details.
 #
 # For more information, visit <https://www.gnu.org/licenses/>.
 # ---------------------------------------------------------------------------------------
-# Dockerfile – Omnixys Communication Chat Service
+# Dockerfile – Omnixys Chat Service
 # Multi-stage build optimized for security, reproducibility, and minimal runtime size.
 # ---------------------------------------------------------------------------------------
 # syntax=docker/dockerfile:1.14.0
 
-ARG PYTHON_VERSION=3.14.7
+ARG NODE_VERSION=26.8.1
 
 # ---------------------------------------------------------------------------------------
 # Stage 0: Base image
 # - Common setup for all later build stages.
-# - uv is installed as the Python package manager.
+# - Corepack is enabled to support pnpm package manager.
 # ---------------------------------------------------------------------------------------
-FROM python:${PYTHON_VERSION}-slim-bookworm AS base
-RUN pip install --no-cache-dir uv
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends git && \
-    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/*
+FROM node:${NODE_VERSION}-bookworm-slim AS base
+WORKDIR /home/node
+RUN npm install -g pnpm@11.24.0
 
 # ---------------------------------------------------------------------------------------
-# Stage 1: Production dependencies
+# Stage 1: Build (dist)
+# - Installs all dependencies (including dev) and compiles the TypeScript project.
+# - Result: ./dist folder containing compiled JS files.
+# ---------------------------------------------------------------------------------------
+FROM base AS dist
+COPY --chown=node:node package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+
+RUN --mount=type=secret,id=omnixys_token \
+    TOKEN=$(cat /run/secrets/omnixys_token) && \
+    echo "@omnixys:registry=https://npm.pkg.github.com" > .npmrc && \
+    echo "//npm.pkg.github.com/:_authToken=${TOKEN}" >> .npmrc && \
+    pnpm install --frozen-lockfile --ignore-scripts && \
+    rm -f .npmrc
+
+COPY --chown=node:node . .
+ENV CI=true
+RUN pnpm exec prisma generate && pnpm run build
+
+# ---------------------------------------------------------------------------------------
+# Stage 2: Production dependencies
 # - Installs only production dependencies to keep image small.
 # - No dev packages or build tools are included.
 # ---------------------------------------------------------------------------------------
 FROM base AS dependencies
-WORKDIR /opt/app
-COPY pyproject.toml uv.lock ./
-RUN uv sync --frozen --no-dev
+
+COPY --chown=node:node package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+
+RUN --mount=type=secret,id=omnixys_token \
+    TOKEN=$(cat /run/secrets/omnixys_token) && \
+    echo "@omnixys:registry=https://npm.pkg.github.com" > .npmrc && \
+    echo "//npm.pkg.github.com/:_authToken=${TOKEN}" >> .npmrc && \
+    pnpm install --frozen-lockfile --ignore-scripts && \
+    rm -f .npmrc
 
 # ---------------------------------------------------------------------------------------
-# Stage 2: Final runtime image
-# - Copies only installed venv and application code.
+# Stage 3: Final runtime image
+# - Copies only compiled code and production node_modules.
 # - Runs the app as a non-root user for security.
 # ---------------------------------------------------------------------------------------
-FROM python:${PYTHON_VERSION}-slim-bookworm AS final
+FROM node:${NODE_VERSION}-bookworm-slim AS final
 
 # ----- Build-time arguments -----
-ARG PYTHON_VERSION
+ARG NODE_VERSION
 ARG APP_NAME
 ARG APP_VERSION
 ARG CREATED
@@ -57,12 +79,12 @@ ARG REVISION
 
 # ----- Image metadata (OCI compliant) -----
 LABEL org.opencontainers.image.title="${APP_NAME}-service" \
-      org.opencontainers.image.description="Omnixys ${APP_NAME}-service – Python ${PYTHON_VERSION}, built with FastAPI and Strawberry GraphQL, version ${APP_VERSION}, based on Debian Bookworm." \
+      org.opencontainers.image.description="Omnixys ${APP_NAME}-service – Node.js ${NODE_VERSION}, built with TypeScript, version ${APP_VERSION}, based on Debian Bookworm." \
       org.opencontainers.image.version="${APP_VERSION}" \
       org.opencontainers.image.licenses="GPL-3.0-or-later" \
       org.opencontainers.image.vendor="Omnixys Technologies" \
       org.opencontainers.image.authors="caleb.gyamfi@omnixys.com" \
-      org.opencontainers.image.base.name="python:${PYTHON_VERSION}-slim-bookworm" \
+      org.opencontainers.image.base.name="node:${NODE_VERSION}-bookworm-slim" \
       org.opencontainers.image.url="https://github.com/omnixys/${APP_NAME}-service" \
       org.opencontainers.image.source="https://github.com/omnixys/${APP_NAME}-service" \
       org.opencontainers.image.created="${CREATED}" \
@@ -73,44 +95,40 @@ LABEL org.opencontainers.image.title="${APP_NAME}-service" \
 WORKDIR /opt/app
 
 # ----- Environment configuration -----
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    PYTHONPATH="/opt/app/src" \
-    TZ=UTC
+# NODE_ENV=production ensures that dev dependencies are ignored and improves runtime performance.
+# TZ=UTC ensures consistent timestamps across environments.
+ENV NODE_ENV=production TZ=UTC PORT=8000
 
 # ----- Install required system packages -----
-# tini: lightweight init system for proper signal handling.
-# ca-certificates: used for secure HTTPS connections.
+# dumb-init: lightweight init system for proper signal handling.
+# wget + ca-certificates: used for health checks and secure HTTPS.
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends tini ca-certificates && \
-    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/*
+    apt-get install -y --no-install-recommends dumb-init wget ca-certificates && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* && \
+    mkdir -p /opt/app/log && chown -R node:node /opt/app
 
-# ----- Create non-root user -----
-RUN useradd --create-home --shell /bin/bash app && \
-    mkdir -p /opt/app/log && chown -R app:app /opt/app
+# ----- Enable pnpm (runtime) -----
+RUN npm install -g pnpm@11.24.0
 
 # ----- Switch to non-root user -----
-USER app
+USER node
 
-# ----- Copy installed dependencies from build stage -----
-COPY --from=dependencies --chown=app:app /opt/app/.venv ./.venv
-ENV PATH="/opt/app/.venv/bin:$PATH"
+# ----- Copy built artifacts and dependencies -----
+COPY --from=dependencies --chown=node:node /home/node/node_modules ./node_modules
+COPY --from=dist --chown=node:node /home/node/dist ./dist
+COPY --from=dist --chown=node:node /home/node/prisma ./prisma
+COPY --from=dist --chown=node:node /home/node/src/prisma/generated ./src/prisma/generated
+COPY --chown=node:node package.json prisma.config.ts ./
 
-# ----- Copy application code -----
-COPY --chown=app:app pyproject.toml ./
-COPY --chown=app:app src/ ./src/
-COPY --chown=app:app alembic.ini ./
-COPY --chown=app:app migrations/ ./migrations/
-
-# ----- Expose application port -----
+# ----- Expose application port (per Omnixys port conventions) -----
 EXPOSE 8000
 
 # ----- Healthcheck -----
 # Ensures that Docker and orchestration systems (e.g., Kubernetes) can detect unhealthy containers.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s \
-  CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')" || exit 1
+  CMD wget -qO- http://localhost:8000/health/liveness || exit 1
 
 # ----- Start command -----
-# tini ensures proper signal forwarding and zombie process cleanup.
-ENTRYPOINT ["tini", "--"]
-CMD ["sh", "-c", "alembic upgrade head && exec chat"]
+# dumb-init ensures proper signal forwarding and zombie process cleanup.
+ENTRYPOINT ["dumb-init", "--"]
+CMD ["sh", "-c", "pnpm exec prisma generate && pnpm exec prisma migrate deploy && exec node dist/main.js"]

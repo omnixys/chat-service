@@ -1,0 +1,71 @@
+/**
+ * @license GPL-3.0-or-later
+ * Copyright (C) 2025 Caleb Gyamfi - Omnixys Technologies
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Omnixys Chat Service",
+  "extends": ["@tsconfig/node23"],
+
+  "compilerOptions": {
+    /* ──────────────── 🌍 Allgemein ──────────────── */
+    "target": "ES2022",
+    "module": "NodeNext",
+    "lib": ["ES2024"],
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "sourceMap": true,
+    "incremental": true,
+    "skipLibCheck": true,
+    "removeComments": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* ──────────────── ⚙️ ESM & Decorators ──────────────── */
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
+    /* ──────────────── 🔒 Strikte Typen ──────────────── */
+    "strict": true,
+    "noImplicitAny": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+
+    /* ──────────────── 🧠 Developer Experience ──────────────── */
+    "preserveWatchOutput": true,
+    "noErrorTruncation": true
+  },
+
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "coverage", "__tests__/"],
+  "types": ["node", "fastify", "@types/node"],
+  "typeRoots": ["./node_modules/@types"],
+
+  /* ──────────────── 🧩 ts-node (nur DEV) ──────────────── */
+  "ts-node": {
+    "esm": true,
+    "swc": false,
+    "transpileOnly": true,
+    "files": true
+  }
+}
