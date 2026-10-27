@@ -38,8 +38,11 @@ RUN apt-get update && \
 # ---------------------------------------------------------------------------------------
 FROM base AS dependencies
 WORKDIR /opt/app
-COPY pyproject.toml uv.lock ./
-RUN uv sync --frozen --no-dev
+COPY pyproject.toml uv.lock README.md ./
+COPY src ./src
+RUN --mount=type=secret,id=forgejo_package_token,required=true \
+    UV_INDEX_FORGEJO_USERNAME=caleb UV_INDEX_FORGEJO_PASSWORD="$(cat /run/secrets/forgejo_package_token)" \
+    uv sync --frozen --no-dev
 
 # ---------------------------------------------------------------------------------------
 # Stage 2: Final runtime image
@@ -63,11 +66,11 @@ LABEL org.opencontainers.image.title="${APP_NAME}-service" \
       org.opencontainers.image.vendor="Omnixys Technologies" \
       org.opencontainers.image.authors="caleb.gyamfi@omnixys.com" \
       org.opencontainers.image.base.name="python:${PYTHON_VERSION}-slim-bookworm" \
-      org.opencontainers.image.url="https://github.com/omnixys/${APP_NAME}-service" \
-      org.opencontainers.image.source="https://github.com/omnixys/${APP_NAME}-service" \
+      org.opencontainers.image.url="https://git.omnixys.com/omnixys/${APP_NAME}-service" \
+      org.opencontainers.image.source="https://git.omnixys.com/omnixys/${APP_NAME}-service" \
       org.opencontainers.image.created="${CREATED}" \
       org.opencontainers.image.revision="${REVISION}" \
-      org.opencontainers.image.documentation="https://github.com/omnixys/${APP_NAME}-service/blob/main/README.md"
+      org.opencontainers.image.documentation="https://git.omnixys.com/omnixys/${APP_NAME}-service/blob/main/README.md"
 
 # ----- Set working directory -----
 WORKDIR /opt/app

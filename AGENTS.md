@@ -308,3 +308,11 @@ If a validation step cannot be executed, explicitly report it rather than silent
 Keep `AGENTS.md` synchronized with durable repository conventions. If work introduces a permanent repository rule — a new mandatory validation command, a new test category, a new architecture convention, a new shared-package requirement, a new code-generation workflow, a new package boundary, or a new migration convention — update `AGENTS.md`. Do not add temporary task notes to `AGENTS.md`.
 
 Keep `SKILL.md` current as well. If the repository changes in a way that invalidates the workflow described there — build system changes, test framework changes, new test suites, migration tooling changes, source structure changes, new API technology, Kafka introduced or removed, package publishing workflow changes, or validation command changes — update `SKILL.md` in the same logical change. Do not knowingly leave stale instructions behind.
+
+## Automatic service image release
+
+See `docs/forgejo-dockerhub.md`. `service-ci.yml` is the automatic main/PR
+validation entry. Trusted release-control owns automatic SemVer and Docker Hub
+publication; never give publisher secrets or a host Docker socket to source CI.
+Existing manual workflows remain compatibility-only. Do not infer successful
+image publication from successful YAML validation.

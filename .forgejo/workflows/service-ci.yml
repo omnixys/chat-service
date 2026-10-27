@@ -1,0 +1,47 @@
+name: chat Forgejo validation
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+concurrency:
+  group: service-ci-${{ forgejo.repository }}-${{ forgejo.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    if: forgejo.event_name != 'pull_request' || forgejo.event.pull_request.head.repo.full_name == forgejo.repository
+    runs-on: linux-amd64
+    timeout-minutes: 30
+    steps:
+      - name: Checkout source without persisting credentials
+        uses: https://code.forgejo.org/actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Install pinned Node and pnpm toolchain
+        run: bash scripts/ci-toolchain.sh
+      - name: Restore bounded uv download cache
+        uses: https://code.forgejo.org/actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
+        with:
+          path: ${{ runner.temp }}/uv-cache
+          key: uv-linux-amd64-py314-chat-${{ hashFiles('uv.lock') }}
+          restore-keys: uv-linux-amd64-py314-chat-
+      - name: Install pinned Python 3.14 and uv
+        run: bash scripts/ci-python-toolchain.sh
+      - name: Configure protected private package reader
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_READ_TOKEN }}
+          FORGEJO_PACKAGE_READ_TOKEN: ${{ secrets.NPM_READ_TOKEN }}
+          FORGEJO_PACKAGE_USERNAME: caleb
+          UV_INDEX_FORGEJO_USERNAME: caleb
+          UV_INDEX_FORGEJO_PASSWORD: ${{ secrets.NPM_READ_TOKEN }}
+        run: node scripts/ci-registry-auth.mjs
+      - name: Frozen install, build, typing, lint, formatting and complete unit contracts
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_READ_TOKEN }}
+          FORGEJO_PACKAGE_READ_TOKEN: ${{ secrets.NPM_READ_TOKEN }}
+          FORGEJO_PACKAGE_USERNAME: caleb
+          UV_INDEX_FORGEJO_USERNAME: caleb
+          UV_INDEX_FORGEJO_PASSWORD: ${{ secrets.NPM_READ_TOKEN }}
+        run: bash scripts/ci-verify.sh
