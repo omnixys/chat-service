@@ -2,7 +2,7 @@
 set -euo pipefail
 test "$(uname -s)" = Linux
 test "$(uname -m)" = x86_64
-task_tools_dir="${RUNNER_TEMP:?RUNNER_TEMP required}/inventory-toolchain"
+task_tools_dir="${RUNNER_TEMP:?RUNNER_TEMP required}/chat-toolchain"
 mkdir -p "$task_tools_dir"
 curl --fail --silent --show-error --location --retry 2 \
   https://nodejs.org/dist/v26.8.1/node-v26.8.1-linux-x64.tar.xz \

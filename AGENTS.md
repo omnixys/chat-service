@@ -1,98 +1,154 @@
-<!-- repository: services/chat | kind: SERVICE | stack: python -->
+<!-- repository: services/chat | kind: SERVICE | stack: typescript -->
 
 # chat
 
 > Repository development instructions for **chat** (Service).
-> Stack: python. Generated as part of the Omnixys repository-policy rollout.
+> Stack: typescript. NestJS + Fastify + Prisma, mirrored from the previous
+> FastAPI/Strawberry implementation; the externally observable contracts are
+> unchanged.
 
 ## Repository Overview
 
-Omnixys Chat Service – FastAPI + Strawberry GraphQL chat.
+Omnixys Chat Service - authenticated realtime chat over GraphQL HTTP and
+`graphql-transport-ws`.
 
 - Repository path: `services/chat` (relative to the Omnixys root)
-- Package: `chat` (version: 1.2.2)
-- Runtime: Python >=3.14 (uv)
+- Package: `chat` (GHCR image `omnixys-chat`, npm package `@omnixys/chat-ts`)
+- Runtime: Node >=26.8.1 <27, pnpm 11.24.0
 - Kind: Service
 
 ## Architecture
 
-src/chat/{api, application, domain, infrastructure} DDD layout; tests under tests/ (unit, integration, repository, security, contract, graphql)
+One chat context under `src/chat/`, with shared infrastructure alongside it:
+
+```
+src/
+  app.module.ts            composition root
+  main.ts                  Fastify bootstrap, middleware, shutdown hooks
+  config/                  environment contract, banner, CORS
+  chat/                    ChatModule and the chat bounded context
+    controllers/           internal gateway and provider endpoints
+    errors/                domain and request-identity errors
+    models/                dtos, entities, enums, inputs, mappers, GraphQL payloads
+    ports/                 repository and delivery contracts
+    persistence/           Chat-specific Prisma repositories and unit of work
+    resolvers/             GraphQL operations and verified identity boundary
+    services/              conversation and message application services
+  analytics/               transactional outbox and Kafka publisher
+  adapter/                 channel, realtime and Kafka adapters
+  health/                  liveness, readiness, dependency probes
+  prisma/                  shared Prisma module, service and generated client
+```
+
+Tests live in `__tests__/unit/` (application services, transports, security) and
+`__tests__/contract/` (the generated GraphQL schema).
 
 ## Database, APIs and Messaging
 
-- Database: PostgreSQL via SQLAlchemy 2 async + asyncpg
-- Migrations: Alembic (migrations/)
-- API: GraphQL (Strawberry) on FastAPI
-- Messaging: Kafka via omnixys-kafka
+- Database: PostgreSQL via Prisma (`prisma/schema.prisma`)
+- Migrations: Prisma (`prisma/migrations/`); the Alembic history is preserved as
+  the first migration, see `docs/PORTING-NOTES.md`
+- API: GraphQL on NestJS + Fastify, plus the internal REST endpoints for the gateway
+- Messaging: Kafka analytics events through a transactional outbox
 
 ## Shared Packages
 
-omnixys-commons, config, database, observability, cache, security, kafka
+`@omnixys/contracts-ts`, `logger-ts`, `security-ts`, `context-ts`, `http-ts`,
+`graphql-ts`, `kafka-ts`, `observability-ts`, `cache-ts`
 
 ## Commands
 
-Commands below are the authoritative validation commands for this repository. Run them
-with the appropriate tooling (observed versions: node 26.8.1, pnpm 11.24.0, uv 0.12.8, java 26.0.2).
+Commands below are the authoritative validation commands for this repository.
 
 ### Install
 
 ```bash
-uv sync --frozen
+pnpm install --frozen-lockfile
 ```
 
 ### Build
 
 ```bash
-uv build (hatchling)
+pnpm run build
 ```
 
 ### Formatting validation
 
 ```bash
-uv run ruff format --check src/ (ruff formatting configured)
+pnpm run format:check
 ```
 
 ### Linting
 
 ```bash
-uv run ruff check src/
+pnpm run lint:check
 ```
 
 ### Static analysis / type checking
 
 ```bash
-uv run mypy src/
+pnpm run typecheck
 ```
 
 ### Unit tests
 
 ```bash
-uv run pytest tests/unit
+pnpm run test:unit
 ```
 
-### Integration tests
+### Contract tests
 
 ```bash
-uv run pytest tests/integration
+pnpm run build && node --test __tests__/contract
 ```
+
+### End-to-end / smoke
+
+```bash
+pnpm run test:e2e
+```
+
+`test:e2e` runs on **vitest** with **Testcontainers** (isolated PostgreSQL,
+Valkey, Redpanda and Keycloak) and boots `dist/app.module.js` over HTTP/GraphQL
+(`__tests__/e2e/e2e.config.ts`, shared infrastructure in
+`test-tools/e2e/infrastructure.mjs`). A local HTTP double stands in for the
+gateway channel client because readiness probes it. It is a separate smoke layer
+with no `@covers`; it is not integration evidence and leaves
+`docs/testing-methods.json` untouched.
 
 ### Full verification
 
 ```bash
-uv run pytest --tb=short -q
+pnpm run typecheck && pnpm run lint:check && pnpm run format:check && pnpm test && pnpm run prisma:validate
 ```
 
 ## Tests
 
-pytest with pytest-asyncio (asyncio_mode=auto); tests/ directory
+`node --test` with in-memory port doubles. The doubles in
+`__tests__/support/in-memory.mjs` implement every repository and adapter port, so
+the suite never needs PostgreSQL, Kafka, Valkey or Keycloak. The service-internal
+E2E/smoke layer runs with `pnpm run test:e2e` (vitest + Testcontainers, booting
+`dist/app.module.js` against isolated PostgreSQL/Valkey/Redpanda/Keycloak); see
+`docs/TESTING.md`. E2E is not integration evidence.
 
 ## Repository-Specific Rules
 
-DDD (domain/application/infrastructure/api). Ruff select=ALL, mypy strict, SQLAlchemy mypy plugin.
+- The GraphQL schema, the internal REST endpoints, the Kafka topics and the Valkey
+  channel names are frozen contracts. `__tests__/contract/chat-graphql-schema.test.mjs`
+  guards the schema; change it deliberately and never to work around a test.
+- GraphQL resolvers validate the user and verified tenant from `@omnixys/context-ts`
+  before passing explicit IDs to application services. Never use a GraphQL
+  argument or request body as the caller identity.
+- Provider callbacks carry no tenant. They resolve globally and refuse ambiguous
+  matches instead of guessing.
+- Error details travel in `diagnostics`; `metadata` is filtered to the public keys
+  of the error code and silently drops everything else.
+- Pin `@apollo/subgraph` to `2.14.4`. Version 2.15.1 breaks the NestJS
+  federation code-first startup with `doc.definitions is not iterable`.
 
 ## Development Skill
 
-This repository ships `SKILL.md` — the development workflow skill. Read and follow it
+This repository ships `SKILL.md` - the development workflow skill. Read and follow it
 before starting work; it captures the repository's step-by-step workflow.
 
 ## Tests Are Part of the Implementation
@@ -237,7 +293,6 @@ Respect Semantic Versioning when changes affect versioned packages or externally
 
 Do not commit: build outputs unless intentionally versioned, temporary files, IDE caches, local environment files, secrets, logs, coverage output, OS metadata, or arbitrary generated files. Review `.gitignore` when introducing tooling that creates new local artifacts.
 
-
 ## VS Code Workspace Configuration
 
 The repository-specific VS Code configuration is part of the maintained project configuration. The following files MUST be kept up to date:
@@ -271,7 +326,6 @@ Maintain repository-specific settings necessary for consistent development. Rule
 - Never add secrets, tokens, credentials, personal settings, or machine-specific absolute paths.
 
 Before considering a task complete, verify that both files are valid JSON/JSONC, recommended extension IDs are valid, settings do not reference removed extensions or tooling, no secrets or machine-specific values were introduced, and the configuration reflects the repository's current technology stack.
-
 
 ## Definition of Done
 
@@ -316,3 +370,11 @@ validation entry. Trusted release-control owns automatic SemVer and Docker Hub
 publication; never give publisher secrets or a host Docker socket to source CI.
 Existing manual workflows remain compatibility-only. Do not infer successful
 image publication from successful YAML validation.
+## Test execution and coverage evidence
+
+Use the separate unit command documented in `docs/TESTING.md`. Container integration must use an isolated database initialized by the production migration mechanism. Unit results and skipped/unexecuted container tests are not integration evidence. Keep `docs/testing-methods.json` synchronized with public methods, manually reviewed scenarios, and executed commands. Checkpoint contracts remain a separate suite.
+
+### Native TS-Unit-Prüfung
+
+`pnpm run test:unit` baut zunächst frische `dist`-Artefakte und führt MJS-/TS-Unit-Tests sowie die vorhandene GraphQL-Vertragsschicht mit dem Node-Runner aus. `pnpm run test:typecheck` prüft Quellcode und neue TS-Unit-Dateien über `tsconfig.test.json`. TS-Tests laden `__tests__/unit/chat-fixtures.ts` vor Anwendungsmodulen; Entwickler-dotenv bleibt deaktiviert. Realtime-Abbruch mit kontrollierten Promises verifizieren und Listener zuverlässig schließen; Builds müssen vor Testläufen abgeschlossen sein. Prisma-Schemavalidierung braucht auch einen kontrollierten `SHADOW_DATABASE_URL`-Wert; ausschließlich Containerintegration darf Migrationen ausführen.
+

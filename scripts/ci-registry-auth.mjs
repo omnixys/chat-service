@@ -3,7 +3,7 @@ import { join } from "node:path";
 const root = process.env.RUNNER_TEMP;
 if (!root || !process.env.FORGEJO_ENV || !process.env.NODE_AUTH_TOKEN)
   throw new Error("Runner environment and private package credential required");
-const directory = await mkdtemp(join(root, "inventory-registry-"));
+const directory = await mkdtemp(join(root, "chat-registry-"));
 const path = join(directory, "npmrc");
 await writeFile(
   path,

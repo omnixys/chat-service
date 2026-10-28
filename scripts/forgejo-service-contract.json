@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "repository": "chat-service",
+  "manifestName": "chat-service",
+  "language": "typescript",
+  "profiles": [],
+  "versionFile": "package.json",
+  "releaseBranch": "main"
+}

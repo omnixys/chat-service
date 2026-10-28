@@ -1,0 +1,32 @@
+name: chat Forgejo validation
+on:
+  workflow_dispatch:
+jobs:
+  validate:
+    if: forgejo.repository == 'omnixys/chat-service'
+    runs-on: linux-amd64
+    timeout-minutes: 30
+    steps:
+      - name: Checkout source without persisting credentials
+        uses: https://code.forgejo.org/actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Install pinned Node and pnpm toolchain
+        run: bash scripts/ci-toolchain.sh
+      - name: Configure protected private package reader
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_READ_TOKEN }}
+          FORGEJO_PACKAGE_READ_TOKEN: ${{ secrets.NPM_READ_TOKEN }}
+          FORGEJO_PACKAGE_USERNAME: caleb
+          UV_INDEX_FORGEJO_USERNAME: caleb
+          UV_INDEX_FORGEJO_PASSWORD: ${{ secrets.NPM_READ_TOKEN }}
+        run: node scripts/ci-registry-auth.mjs
+      - name: Frozen install, build, typing, lint, formatting and complete unit contracts
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_READ_TOKEN }}
+          FORGEJO_PACKAGE_READ_TOKEN: ${{ secrets.NPM_READ_TOKEN }}
+          FORGEJO_PACKAGE_USERNAME: caleb
+          UV_INDEX_FORGEJO_USERNAME: caleb
+          UV_INDEX_FORGEJO_PASSWORD: ${{ secrets.NPM_READ_TOKEN }}
+        run: bash scripts/ci-verify.sh

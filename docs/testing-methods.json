@@ -1,0 +1,2781 @@
+{
+  "service": "chat",
+  "note": "Candidate references and @covers annotations identify tests for review; they do not prove behavioral or branch coverage. Reviewed entries require manual scenario verification and a successful test run.",
+  "methods": [
+    {
+      "role": "Provider",
+      "class": "InAppChannelAdapter",
+      "method": "send",
+      "file": "src/adapter/channels/channel-adapters.ts",
+      "line": 35,
+      "signature": "send(_message, _conversation)",
+      "sourceHash": "33657f3e8e0d0fca6f61a412db18e35ca3e2355950b9e5da4dcd4679934a4503",
+      "scenarios": [
+        "In-app delivery returns actual SENT/null provider outcome without contacting a dependency"
+      ],
+      "unitTests": [
+        "__tests__/unit/channel-gateway.test.ts"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "33657f3e8e0d0fca6f61a412db18e35ca3e2355950b9e5da4dcd4679934a4503",
+        "testHashes": {
+          "__tests__/unit/channel-gateway.test.ts": "47072b90712348509c54d494ced205e2779658079a5b0d01cd30b0620c69513f"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/channel-gateway.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Provider",
+      "class": "WhatsappChannelAdapter",
+      "method": "send",
+      "file": "src/adapter/channels/channel-adapters.ts",
+      "line": 56,
+      "signature": "send(message, conversation)",
+      "sourceHash": "33657f3e8e0d0fca6f61a412db18e35ca3e2355950b9e5da4dcd4679934a4503",
+      "scenarios": [
+        "Exact message/conversation forwarded; only delivery/provider projection returned",
+        "Missing recipient blocks gateway; gateway failure propagates"
+      ],
+      "unitTests": [
+        "__tests__/unit/channel-gateway.test.ts"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "33657f3e8e0d0fca6f61a412db18e35ca3e2355950b9e5da4dcd4679934a4503",
+        "testHashes": {
+          "__tests__/unit/channel-gateway.test.ts": "47072b90712348509c54d494ced205e2779658079a5b0d01cd30b0620c69513f"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/channel-gateway.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Provider",
+      "class": "HttpGatewayChannelClient",
+      "method": "send",
+      "file": "src/adapter/gateway/gateway.client.ts",
+      "line": 85,
+      "signature": "send(message, conversation)",
+      "sourceHash": "2285b6a12c6911d8b1db1268f15b7e41cc3a32854e5259db2d184b9a39ae5ef7",
+      "scenarios": [
+        "Real outbound request fields, prefixed URL cleanup, configured API key/timeout; absent key and short timeout",
+        "Accepted statuses normalized/defaulted; unsuccessful HTTP/body and malformed JSON become FAILED",
+        "Timeout, unreachable, Error and non-Error transport classification"
+      ],
+      "unitTests": [
+        "__tests__/unit/channel-gateway.test.ts"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "2285b6a12c6911d8b1db1268f15b7e41cc3a32854e5259db2d184b9a39ae5ef7",
+        "testHashes": {
+          "__tests__/unit/channel-gateway.test.ts": "47072b90712348509c54d494ced205e2779658079a5b0d01cd30b0620c69513f"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/channel-gateway.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Provider",
+      "class": "HttpGatewayChannelClient",
+      "method": "health",
+      "file": "src/adapter/gateway/gateway.client.ts",
+      "line": 155,
+      "signature": "health()",
+      "sourceHash": "2285b6a12c6911d8b1db1268f15b7e41cc3a32854e5259db2d184b9a39ae5ef7",
+      "scenarios": [
+        "Successful/failed HTTP and transport failure; timeout capped at five seconds",
+        "Configured delegated readiness does not issue gateway fetch"
+      ],
+      "unitTests": [
+        "__tests__/unit/channel-gateway.test.ts"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "2285b6a12c6911d8b1db1268f15b7e41cc3a32854e5259db2d184b9a39ae5ef7",
+        "testHashes": {
+          "__tests__/unit/channel-gateway.test.ts": "47072b90712348509c54d494ced205e2779658079a5b0d01cd30b0620c69513f"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/channel-gateway.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Provider",
+      "class": "ValkeyRealtimePublisher",
+      "method": "publish",
+      "file": "src/adapter/realtime/valkey-realtime.publisher.ts",
+      "line": 54,
+      "signature": "publish(channel, event)",
+      "sourceHash": "d2c48150baa3f2580dd9398630bacb595c624a72cf91a7226ba221aeefae5ed1",
+      "scenarios": [
+        "Prefixed transport channel and exact event; backend publish error propagates"
+      ],
+      "unitTests": [
+        "__tests__/unit/realtime-publisher.test.ts"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "d2c48150baa3f2580dd9398630bacb595c624a72cf91a7226ba221aeefae5ed1",
+        "testHashes": {
+          "__tests__/unit/realtime-publisher.test.ts": "1592ef7ae3bac7dc77b94f601679df34500d4c495a1ca3f4dab4d251c7257f5e"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/integration/chat-local.test.mjs",
+        "__tests__/unit/realtime-publisher.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Provider",
+      "class": "ValkeyRealtimePublisher",
+      "method": "subscribe",
+      "file": "src/adapter/realtime/valkey-realtime.publisher.ts",
+      "line": 58,
+      "signature": "subscribe(channel)",
+      "sourceHash": "d2c48150baa3f2580dd9398630bacb595c624a72cf91a7226ba221aeefae5ed1",
+      "scenarios": [
+        "First observer attaches backend (regression); same channel shares listener; FIFO callback forwarding",
+        "Last observer releases, cancellation during acquisition waits, replacement waits for previous release",
+        "Acquisition failure reaches observers and retries; malformed callback ignored; release failure closes local stream"
+      ],
+      "unitTests": [
+        "__tests__/unit/realtime-publisher.test.ts"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "d2c48150baa3f2580dd9398630bacb595c624a72cf91a7226ba221aeefae5ed1",
+        "testHashes": {
+          "__tests__/unit/realtime-publisher.test.ts": "1592ef7ae3bac7dc77b94f601679df34500d4c495a1ca3f4dab4d251c7257f5e"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/integration/chat-local.test.mjs",
+        "__tests__/unit/realtime-publisher.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Provider",
+      "class": "ValkeyRealtimePublisher",
+      "method": "health",
+      "file": "src/adapter/realtime/valkey-realtime.publisher.ts",
+      "line": 70,
+      "signature": "health()",
+      "sourceHash": "d2c48150baa3f2580dd9398630bacb595c624a72cf91a7226ba221aeefae5ed1",
+      "scenarios": [
+        "Backend healthy true/false forwarded; backend exception preserved"
+      ],
+      "unitTests": [
+        "__tests__/unit/realtime-publisher.test.ts"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "d2c48150baa3f2580dd9398630bacb595c624a72cf91a7226ba221aeefae5ed1",
+        "testHashes": {
+          "__tests__/unit/realtime-publisher.test.ts": "1592ef7ae3bac7dc77b94f601679df34500d4c495a1ca3f4dab4d251c7257f5e"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/realtime-publisher.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Provider",
+      "class": "ValkeyRealtimePublisher",
+      "method": "onModuleDestroy",
+      "file": "src/adapter/realtime/valkey-realtime.publisher.ts",
+      "line": 75,
+      "signature": "onModuleDestroy()",
+      "sourceHash": "d2c48150baa3f2580dd9398630bacb595c624a72cf91a7226ba221aeefae5ed1",
+      "scenarios": [
+        "Observers complete, all backend releases awaited, empty/repeated shutdown idempotent"
+      ],
+      "unitTests": [
+        "__tests__/unit/realtime-publisher.test.ts"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "d2c48150baa3f2580dd9398630bacb595c624a72cf91a7226ba221aeefae5ed1",
+        "testHashes": {
+          "__tests__/unit/realtime-publisher.test.ts": "1592ef7ae3bac7dc77b94f601679df34500d4c495a1ca3f4dab4d251c7257f5e"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/realtime-publisher.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Provider",
+      "class": "ValkeyRateLimitStore",
+      "method": "ttl",
+      "file": "src/adapter/valkey-rate-limit-store.adapter.ts",
+      "line": 9,
+      "signature": "ttl(key)",
+      "sourceHash": "5b67289cead47be190b1da558160eefc105b1b19c30cb9bc7a22c2db7d0e56af",
+      "scenarios": [
+        "Forward the bucket key to the Valkey client and preserve its result for TTL",
+        "Propagate a cache failure"
+      ],
+      "unitTests": [
+        "__tests__/unit/rate-limit-store.test.mjs"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "command": "pnpm run test:unit",
+        "sourceHash": "5b67289cead47be190b1da558160eefc105b1b19c30cb9bc7a22c2db7d0e56af",
+        "testHashes": {
+          "__tests__/unit/rate-limit-store.test.mjs": "f9e012f0514332ddd7c51cae424eddd56159918cce750e4265857e67d229c0fc"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/rate-limit-store.test.mjs"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Provider",
+      "class": "ValkeyRateLimitStore",
+      "method": "incr",
+      "file": "src/adapter/valkey-rate-limit-store.adapter.ts",
+      "line": 13,
+      "signature": "incr(key)",
+      "sourceHash": "5b67289cead47be190b1da558160eefc105b1b19c30cb9bc7a22c2db7d0e56af",
+      "scenarios": [
+        "Forward the bucket key to the Valkey client and preserve its result for increment",
+        "Propagate a cache failure"
+      ],
+      "unitTests": [
+        "__tests__/unit/rate-limit-store.test.mjs"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "command": "pnpm run test:unit",
+        "sourceHash": "5b67289cead47be190b1da558160eefc105b1b19c30cb9bc7a22c2db7d0e56af",
+        "testHashes": {
+          "__tests__/unit/rate-limit-store.test.mjs": "f9e012f0514332ddd7c51cae424eddd56159918cce750e4265857e67d229c0fc"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/rate-limit-store.test.mjs"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Provider",
+      "class": "ValkeyRateLimitStore",
+      "method": "expire",
+      "file": "src/adapter/valkey-rate-limit-store.adapter.ts",
+      "line": 17,
+      "signature": "expire(key, seconds)",
+      "sourceHash": "5b67289cead47be190b1da558160eefc105b1b19c30cb9bc7a22c2db7d0e56af",
+      "scenarios": [
+        "Forward the bucket key and TTL to set the key expiry",
+        "Propagate a cache failure"
+      ],
+      "unitTests": [
+        "__tests__/unit/rate-limit-store.test.mjs"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "command": "pnpm run test:unit",
+        "sourceHash": "5b67289cead47be190b1da558160eefc105b1b19c30cb9bc7a22c2db7d0e56af",
+        "testHashes": {
+          "__tests__/unit/rate-limit-store.test.mjs": "f9e012f0514332ddd7c51cae424eddd56159918cce750e4265857e67d229c0fc"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/rate-limit-store.test.mjs"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Provider",
+      "class": "AnalyticsOutboxPublisher",
+      "method": "onApplicationBootstrap",
+      "file": "src/analytics/analytics-outbox.ts",
+      "line": 116,
+      "signature": "onApplicationBootstrap()",
+      "sourceHash": "98c9ffecdc3e06468b1deda715d6b5c865404b17263fab0bb2bfaf56bd9b8dca",
+      "scenarios": [
+        "Configured enabled timer starts with real batch/attempt settings; disabled publisher schedules nothing"
+      ],
+      "unitTests": [
+        "__tests__/unit/outbox-publisher.test.ts"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "98c9ffecdc3e06468b1deda715d6b5c865404b17263fab0bb2bfaf56bd9b8dca",
+        "testHashes": {
+          "__tests__/unit/outbox-publisher.test.ts": "affd1ad8e113be117d8e0946feeb97e6122052dd2873e7149ab9cdbecf283e6e"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/chat-analytics-outbox.test.mjs",
+        "__tests__/unit/outbox-publisher.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Provider",
+      "class": "AnalyticsOutboxPublisher",
+      "method": "onApplicationShutdown",
+      "file": "src/analytics/analytics-outbox.ts",
+      "line": 130,
+      "signature": "onApplicationShutdown()",
+      "sourceHash": "98c9ffecdc3e06468b1deda715d6b5c865404b17263fab0bb2bfaf56bd9b8dca",
+      "scenarios": [
+        "Timer cleared once; repeated shutdown/stop safe"
+      ],
+      "unitTests": [
+        "__tests__/unit/outbox-publisher.test.ts"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "98c9ffecdc3e06468b1deda715d6b5c865404b17263fab0bb2bfaf56bd9b8dca",
+        "testHashes": {
+          "__tests__/unit/outbox-publisher.test.ts": "affd1ad8e113be117d8e0946feeb97e6122052dd2873e7149ab9cdbecf283e6e"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/chat-analytics-outbox.test.mjs",
+        "__tests__/unit/outbox-publisher.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Provider",
+      "class": "AnalyticsOutboxPublisher",
+      "method": "start",
+      "file": "src/analytics/analytics-outbox.ts",
+      "line": 134,
+      "signature": "start(intervalMs, batchSize, maxAttempts)",
+      "sourceHash": "98c9ffecdc3e06468b1deda715d6b5c865404b17263fab0bb2bfaf56bd9b8dca",
+      "scenarios": [
+        "One unref timer; repeated start does not duplicate; tick invokes configured bounded drain; restart after stop"
+      ],
+      "unitTests": [
+        "__tests__/unit/outbox-publisher.test.ts"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "98c9ffecdc3e06468b1deda715d6b5c865404b17263fab0bb2bfaf56bd9b8dca",
+        "testHashes": {
+          "__tests__/unit/outbox-publisher.test.ts": "affd1ad8e113be117d8e0946feeb97e6122052dd2873e7149ab9cdbecf283e6e"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/chat-analytics-outbox.test.mjs",
+        "__tests__/unit/outbox-publisher.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Provider",
+      "class": "AnalyticsOutboxPublisher",
+      "method": "stop",
+      "file": "src/analytics/analytics-outbox.ts",
+      "line": 149,
+      "signature": "stop()",
+      "sourceHash": "98c9ffecdc3e06468b1deda715d6b5c865404b17263fab0bb2bfaf56bd9b8dca",
+      "scenarios": [
+        "Active timer cleared once, repeated stop safe, subsequent start permitted"
+      ],
+      "unitTests": [
+        "__tests__/unit/outbox-publisher.test.ts"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "98c9ffecdc3e06468b1deda715d6b5c865404b17263fab0bb2bfaf56bd9b8dca",
+        "testHashes": {
+          "__tests__/unit/outbox-publisher.test.ts": "affd1ad8e113be117d8e0946feeb97e6122052dd2873e7149ab9cdbecf283e6e"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/chat-analytics-outbox.test.mjs",
+        "__tests__/unit/outbox-publisher.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Provider",
+      "class": "AnalyticsOutboxPublisher",
+      "method": "drainOnce",
+      "file": "src/analytics/analytics-outbox.ts",
+      "line": 156,
+      "signature": "drainOnce(batchSize, maxAttempts)",
+      "sourceHash": "98c9ffecdc3e06468b1deda715d6b5c865404b17263fab0bb2bfaf56bd9b8dca",
+      "scenarios": [
+        "Due unpublished/dead-letter-free rows ordered and bounded; conditional lease prevents duplicate publisher",
+        "Concurrent local drain returns zero; flag restored after errors",
+        "Publish/marking failures release lease with capped exponential backoff, bounded error and dead-letter date",
+        "Scalar payload wrapper; failures in selection/lease/retry persistence remain observable; next rows continue"
+      ],
+      "unitTests": [
+        "__tests__/unit/outbox-publisher.test.ts",
+        "__tests__/unit/chat-analytics-outbox.test.mjs"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "98c9ffecdc3e06468b1deda715d6b5c865404b17263fab0bb2bfaf56bd9b8dca",
+        "testHashes": {
+          "__tests__/unit/outbox-publisher.test.ts": "affd1ad8e113be117d8e0946feeb97e6122052dd2873e7149ab9cdbecf283e6e",
+          "__tests__/unit/chat-analytics-outbox.test.mjs": "4041109658f86abea3ca7c188e8094bd5c8c588dc4afdff8eec3102566097b1e"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a",
+          "__tests__/support/in-memory.mjs": "9edabbcc6426c907aea4aad258c3ed158bcf002bc4c633356ed3527b0c00df91"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/integration/chat-local.test.mjs",
+        "__tests__/unit/chat-analytics-outbox.test.mjs",
+        "__tests__/unit/outbox-publisher.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Provider",
+      "class": "KafkaAnalyticsEventPublisher",
+      "method": "publish",
+      "file": "src/analytics/kafka-analytics.publisher.ts",
+      "line": 39,
+      "signature": "publish(topic, payload)",
+      "sourceHash": "3c7300e68010ef00471dcc73f09161d7fb91da27206ee2b6607ebd2a3cb8040c",
+      "scenarios": [
+        "Exact raw Kafka envelope and allowlisted tenant/actor/correlation headers",
+        "Actual event/time defaults and absent optional headers; broker failure propagates"
+      ],
+      "unitTests": [
+        "__tests__/unit/outbox-publisher.test.ts"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "3c7300e68010ef00471dcc73f09161d7fb91da27206ee2b6607ebd2a3cb8040c",
+        "testHashes": {
+          "__tests__/unit/outbox-publisher.test.ts": "affd1ad8e113be117d8e0946feeb97e6122052dd2873e7149ab9cdbecf283e6e"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/outbox-publisher.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Provider",
+      "class": "InternalApiKeyGuard",
+      "method": "canActivate",
+      "file": "src/chat/controllers/internal-api-key.guard.ts",
+      "line": 40,
+      "signature": "canActivate(context)",
+      "sourceHash": "bca4bd63c42bc0efb967be6b6555846c7cea55c54b6f75ed4edc5b4ba8577b25",
+      "scenarios": [
+        "Configured key accepted; missing configuration/key fails closed",
+        "First repeated value only; wrong, unequal-length, multibyte and untrimmed key rejected"
+      ],
+      "unitTests": [
+        "__tests__/unit/transports.test.ts",
+        "__tests__/unit/chat-internal-key-configured.test.mjs",
+        "__tests__/unit/chat-internal-key-unconfigured.test.mjs"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "bca4bd63c42bc0efb967be6b6555846c7cea55c54b6f75ed4edc5b4ba8577b25",
+        "testHashes": {
+          "__tests__/unit/transports.test.ts": "0194c24c6ff6eafbc6d775fe677d5d6485ffdada1811a9baed76a5550c9f7ac6",
+          "__tests__/unit/chat-internal-key-configured.test.mjs": "dd74fd11b071a3c7f14c633d82516f09e5d20a98ba25b31186c24cb4b9eadcf5",
+          "__tests__/unit/chat-internal-key-unconfigured.test.mjs": "e966b8698e07d1dabdf6f8863ef58e34cd1d0d5846dca2f18acf1f54704b93ab"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a",
+          "__tests__/support/in-memory.mjs": "9edabbcc6426c907aea4aad258c3ed158bcf002bc4c633356ed3527b0c00df91"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/chat-internal-key-configured.test.mjs",
+        "__tests__/unit/chat-internal-key-unconfigured.test.mjs",
+        "__tests__/unit/transports.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Controller",
+      "class": "InternalChatController",
+      "method": "verifyParticipant",
+      "file": "src/chat/controllers/internal.controller.ts",
+      "line": 65,
+      "signature": "verifyParticipant(conversationId, userId)",
+      "sourceHash": "44441ab103c9602d976c58366338b943ab3cec64061066fa9195c4852b0482fb",
+      "scenarios": [
+        "Exact conversation/user forwarded; allowed maps to empty result and forbidden/missing to 403/404",
+        "Service failure remains observable"
+      ],
+      "unitTests": [
+        "__tests__/unit/transports.test.ts"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "44441ab103c9602d976c58366338b943ab3cec64061066fa9195c4852b0482fb",
+        "testHashes": {
+          "__tests__/unit/transports.test.ts": "0194c24c6ff6eafbc6d775fe677d5d6485ffdada1811a9baed76a5550c9f7ac6"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a"
+        }
+      },
+      "integrationTests": [
+        "__tests__/integration/chat-local.test.mjs"
+      ],
+      "integrationVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "OMNIXYS_TEST_DB_PASSWORD='postgres' node ../test-tools/run-local-integration.mjs chat -- pnpm run test:integration"
+        ],
+        "sourceHash": "44441ab103c9602d976c58366338b943ab3cec64061066fa9195c4852b0482fb",
+        "testHashes": {
+          "__tests__/integration/chat-local.test.mjs": "87b7fc067ba6b4181d9715d3bcb6c0ecdb02793796b8a464f7a4e0f522d076e4"
+        },
+        "supportHashes": {
+          "__tests__/integration/test.env": "460c40b32b7d8766aa5886a2af32fbf42a772d66d7020169069bcc508761653c",
+          "../test-tools/run-local-integration.mjs": "394c1b6407186b159035bc7bb13af71db832d211ea37755add95c79e73de78d0",
+          "../test-tools/local-nest-app.mjs": "3c00ea23b244f47825dc1015ed53b4125ca95566d308b9000c3bd5119aec7a27",
+          "../test-tools/local-nest-infrastructure.mjs": "379c167d653058d7628c6e4c2c4bb361db24b5803a494a988189b768ef2a92a3",
+          "../test-tools/local-kafka-observer.mjs": "b46d3f87f2bed679a285dedeae8a79975da75b4ebf8b9f62ce2009757f9ecb7d",
+          "../test-tools/local-postgres.mjs": "89447554c8eeb5ebab62edf5f1a57bf1579efda8ff2a697ed63b984553ea6a01"
+        }
+      },
+      "candidateTests": [
+        "__tests__/unit/chat-security-and-inbound.test.mjs",
+        "__tests__/unit/transports.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": null,
+      "status": "reviewed",
+      "integrationStatus": "verified"
+    },
+    {
+      "role": "Controller",
+      "class": "InternalChatController",
+      "method": "inboundMessage",
+      "file": "src/chat/controllers/internal.controller.ts",
+      "line": 83,
+      "signature": "inboundMessage(dto)",
+      "sourceHash": "44441ab103c9602d976c58366338b943ab3cec64061066fa9195c4852b0482fb",
+      "scenarios": [
+        "Actual request field mapping/defaults and UTC response projection; service failure propagates"
+      ],
+      "unitTests": [
+        "__tests__/unit/transports.test.ts"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "44441ab103c9602d976c58366338b943ab3cec64061066fa9195c4852b0482fb",
+        "testHashes": {
+          "__tests__/unit/transports.test.ts": "0194c24c6ff6eafbc6d775fe677d5d6485ffdada1811a9baed76a5550c9f7ac6"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a"
+        }
+      },
+      "integrationTests": [
+        "__tests__/integration/chat-local.test.mjs"
+      ],
+      "integrationVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "OMNIXYS_TEST_DB_PASSWORD='postgres' node ../test-tools/run-local-integration.mjs chat -- pnpm run test:integration"
+        ],
+        "sourceHash": "44441ab103c9602d976c58366338b943ab3cec64061066fa9195c4852b0482fb",
+        "testHashes": {
+          "__tests__/integration/chat-local.test.mjs": "87b7fc067ba6b4181d9715d3bcb6c0ecdb02793796b8a464f7a4e0f522d076e4"
+        },
+        "supportHashes": {
+          "__tests__/integration/test.env": "460c40b32b7d8766aa5886a2af32fbf42a772d66d7020169069bcc508761653c",
+          "../test-tools/run-local-integration.mjs": "394c1b6407186b159035bc7bb13af71db832d211ea37755add95c79e73de78d0",
+          "../test-tools/local-nest-app.mjs": "3c00ea23b244f47825dc1015ed53b4125ca95566d308b9000c3bd5119aec7a27",
+          "../test-tools/local-nest-infrastructure.mjs": "379c167d653058d7628c6e4c2c4bb361db24b5803a494a988189b768ef2a92a3",
+          "../test-tools/local-kafka-observer.mjs": "b46d3f87f2bed679a285dedeae8a79975da75b4ebf8b9f62ce2009757f9ecb7d",
+          "../test-tools/local-postgres.mjs": "89447554c8eeb5ebab62edf5f1a57bf1579efda8ff2a697ed63b984553ea6a01"
+        }
+      },
+      "candidateTests": [
+        "__tests__/unit/transports.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": null,
+      "status": "reviewed",
+      "integrationStatus": "verified"
+    },
+    {
+      "role": "Controller",
+      "class": "InternalChatController",
+      "method": "deliveryStatus",
+      "file": "src/chat/controllers/internal.controller.ts",
+      "line": 107,
+      "signature": "deliveryStatus(dto)",
+      "sourceHash": "44441ab103c9602d976c58366338b943ab3cec64061066fa9195c4852b0482fb",
+      "scenarios": [
+        "Message/provider references and correlation forwarded; returned stored status; service failure propagates"
+      ],
+      "unitTests": [
+        "__tests__/unit/transports.test.ts"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "44441ab103c9602d976c58366338b943ab3cec64061066fa9195c4852b0482fb",
+        "testHashes": {
+          "__tests__/unit/transports.test.ts": "0194c24c6ff6eafbc6d775fe677d5d6485ffdada1811a9baed76a5550c9f7ac6"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a"
+        }
+      },
+      "integrationTests": [
+        "__tests__/integration/chat-local.test.mjs"
+      ],
+      "integrationVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "OMNIXYS_TEST_DB_PASSWORD='postgres' node ../test-tools/run-local-integration.mjs chat -- pnpm run test:integration"
+        ],
+        "sourceHash": "44441ab103c9602d976c58366338b943ab3cec64061066fa9195c4852b0482fb",
+        "testHashes": {
+          "__tests__/integration/chat-local.test.mjs": "87b7fc067ba6b4181d9715d3bcb6c0ecdb02793796b8a464f7a4e0f522d076e4"
+        },
+        "supportHashes": {
+          "__tests__/integration/test.env": "460c40b32b7d8766aa5886a2af32fbf42a772d66d7020169069bcc508761653c",
+          "../test-tools/run-local-integration.mjs": "394c1b6407186b159035bc7bb13af71db832d211ea37755add95c79e73de78d0",
+          "../test-tools/local-nest-app.mjs": "3c00ea23b244f47825dc1015ed53b4125ca95566d308b9000c3bd5119aec7a27",
+          "../test-tools/local-nest-infrastructure.mjs": "379c167d653058d7628c6e4c2c4bb361db24b5803a494a988189b768ef2a92a3",
+          "../test-tools/local-kafka-observer.mjs": "b46d3f87f2bed679a285dedeae8a79975da75b4ebf8b9f62ce2009757f9ecb7d",
+          "../test-tools/local-postgres.mjs": "89447554c8eeb5ebab62edf5f1a57bf1579efda8ff2a697ed63b984553ea6a01"
+        }
+      },
+      "candidateTests": [
+        "__tests__/unit/transports.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": null,
+      "status": "reviewed",
+      "integrationStatus": "verified"
+    },
+    {
+      "role": "Provider",
+      "class": "PrismaUnitOfWork",
+      "method": "transaction",
+      "file": "src/chat/persistence/prisma-unit-of-work.ts",
+      "line": 45,
+      "signature": "transaction(work)",
+      "sourceHash": "2836d4ca61accf51a453ea4b3d54faacdd2e392a69248054c98805717a16554d",
+      "scenarios": [
+        "All repositories/writer use one transaction client, caller result preserved",
+        "Actual tenant-scoped repository reads and outbox insert execute inside callback",
+        "Transaction and callback exceptions propagate"
+      ],
+      "unitTests": [
+        "__tests__/unit/orm-lifecycle.test.ts"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "2836d4ca61accf51a453ea4b3d54faacdd2e392a69248054c98805717a16554d",
+        "testHashes": {
+          "__tests__/unit/orm-lifecycle.test.ts": "02730fc1c37a41c41292503d2d44d8bcc0e136ca93aa0c96e53fcd52d3663c83"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/orm-lifecycle.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Resolver",
+      "class": "ChatResolver",
+      "method": "listConversations",
+      "file": "src/chat/resolvers/chat.resolver.ts",
+      "line": 112,
+      "signature": "listConversations()",
+      "sourceHash": "331178d0283e0cd66bd0c3d81a600d3b06c7accd920528a3d0c94736dae12e7e",
+      "scenarios": [
+        "Mocked service receives canonical tenant/user and exact operation arguments; result and failure preserved",
+        "Missing/unverified/malformed/mismatched tenant and missing/non-user principal stop every service call"
+      ],
+      "unitTests": [
+        "__tests__/unit/transports.test.ts",
+        "__tests__/unit/chat-graphql-adapter.test.mjs"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "331178d0283e0cd66bd0c3d81a600d3b06c7accd920528a3d0c94736dae12e7e",
+        "testHashes": {
+          "__tests__/unit/transports.test.ts": "0194c24c6ff6eafbc6d775fe677d5d6485ffdada1811a9baed76a5550c9f7ac6",
+          "__tests__/unit/chat-graphql-adapter.test.mjs": "1a8d0fe16b56eac6eee64b3b793af0283f9b4172fa5fe09a0d5ad83141954f5d"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a",
+          "__tests__/support/in-memory.mjs": "9edabbcc6426c907aea4aad258c3ed158bcf002bc4c633356ed3527b0c00df91"
+        }
+      },
+      "integrationTests": [
+        "__tests__/integration/chat-local.test.mjs"
+      ],
+      "integrationVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "OMNIXYS_TEST_DB_PASSWORD='postgres' node ../test-tools/run-local-integration.mjs chat -- pnpm run test:integration"
+        ],
+        "sourceHash": "331178d0283e0cd66bd0c3d81a600d3b06c7accd920528a3d0c94736dae12e7e",
+        "testHashes": {
+          "__tests__/integration/chat-local.test.mjs": "87b7fc067ba6b4181d9715d3bcb6c0ecdb02793796b8a464f7a4e0f522d076e4"
+        },
+        "supportHashes": {
+          "__tests__/integration/test.env": "460c40b32b7d8766aa5886a2af32fbf42a772d66d7020169069bcc508761653c",
+          "../test-tools/run-local-integration.mjs": "394c1b6407186b159035bc7bb13af71db832d211ea37755add95c79e73de78d0",
+          "../test-tools/local-nest-app.mjs": "3c00ea23b244f47825dc1015ed53b4125ca95566d308b9000c3bd5119aec7a27",
+          "../test-tools/local-nest-infrastructure.mjs": "379c167d653058d7628c6e4c2c4bb361db24b5803a494a988189b768ef2a92a3",
+          "../test-tools/local-kafka-observer.mjs": "b46d3f87f2bed679a285dedeae8a79975da75b4ebf8b9f62ce2009757f9ecb7d",
+          "../test-tools/local-postgres.mjs": "89447554c8eeb5ebab62edf5f1a57bf1579efda8ff2a697ed63b984553ea6a01"
+        }
+      },
+      "candidateTests": [
+        "__tests__/unit/chat-graphql-adapter.test.mjs",
+        "__tests__/unit/transports.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": null,
+      "status": "reviewed",
+      "integrationStatus": "verified"
+    },
+    {
+      "role": "Resolver",
+      "class": "ChatResolver",
+      "method": "getConversation",
+      "file": "src/chat/resolvers/chat.resolver.ts",
+      "line": 118,
+      "signature": "getConversation(id)",
+      "sourceHash": "331178d0283e0cd66bd0c3d81a600d3b06c7accd920528a3d0c94736dae12e7e",
+      "scenarios": [
+        "Mocked service receives canonical tenant/user and exact operation arguments; result and failure preserved",
+        "Missing/unverified/malformed/mismatched tenant and missing/non-user principal stop every service call"
+      ],
+      "unitTests": [
+        "__tests__/unit/transports.test.ts",
+        "__tests__/unit/chat-graphql-adapter.test.mjs"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "331178d0283e0cd66bd0c3d81a600d3b06c7accd920528a3d0c94736dae12e7e",
+        "testHashes": {
+          "__tests__/unit/transports.test.ts": "0194c24c6ff6eafbc6d775fe677d5d6485ffdada1811a9baed76a5550c9f7ac6",
+          "__tests__/unit/chat-graphql-adapter.test.mjs": "1a8d0fe16b56eac6eee64b3b793af0283f9b4172fa5fe09a0d5ad83141954f5d"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a",
+          "__tests__/support/in-memory.mjs": "9edabbcc6426c907aea4aad258c3ed158bcf002bc4c633356ed3527b0c00df91"
+        }
+      },
+      "integrationTests": [
+        "__tests__/integration/chat-local.test.mjs"
+      ],
+      "integrationVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "OMNIXYS_TEST_DB_PASSWORD='postgres' node ../test-tools/run-local-integration.mjs chat -- pnpm run test:integration"
+        ],
+        "sourceHash": "331178d0283e0cd66bd0c3d81a600d3b06c7accd920528a3d0c94736dae12e7e",
+        "testHashes": {
+          "__tests__/integration/chat-local.test.mjs": "87b7fc067ba6b4181d9715d3bcb6c0ecdb02793796b8a464f7a4e0f522d076e4"
+        },
+        "supportHashes": {
+          "__tests__/integration/test.env": "460c40b32b7d8766aa5886a2af32fbf42a772d66d7020169069bcc508761653c",
+          "../test-tools/run-local-integration.mjs": "394c1b6407186b159035bc7bb13af71db832d211ea37755add95c79e73de78d0",
+          "../test-tools/local-nest-app.mjs": "3c00ea23b244f47825dc1015ed53b4125ca95566d308b9000c3bd5119aec7a27",
+          "../test-tools/local-nest-infrastructure.mjs": "379c167d653058d7628c6e4c2c4bb361db24b5803a494a988189b768ef2a92a3",
+          "../test-tools/local-kafka-observer.mjs": "b46d3f87f2bed679a285dedeae8a79975da75b4ebf8b9f62ce2009757f9ecb7d",
+          "../test-tools/local-postgres.mjs": "89447554c8eeb5ebab62edf5f1a57bf1579efda8ff2a697ed63b984553ea6a01"
+        }
+      },
+      "candidateTests": [
+        "__tests__/unit/transports.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": null,
+      "status": "reviewed",
+      "integrationStatus": "verified"
+    },
+    {
+      "role": "Resolver",
+      "class": "ChatResolver",
+      "method": "listMessages",
+      "file": "src/chat/resolvers/chat.resolver.ts",
+      "line": 126,
+      "signature": "listMessages(conversationId, limit, before, beforeId)",
+      "sourceHash": "331178d0283e0cd66bd0c3d81a600d3b06c7accd920528a3d0c94736dae12e7e",
+      "scenarios": [
+        "Mocked service receives canonical tenant/user and exact operation arguments; result and failure preserved",
+        "Missing/unverified/malformed/mismatched tenant and missing/non-user principal stop every service call"
+      ],
+      "unitTests": [
+        "__tests__/unit/transports.test.ts",
+        "__tests__/unit/chat-graphql-adapter.test.mjs"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "331178d0283e0cd66bd0c3d81a600d3b06c7accd920528a3d0c94736dae12e7e",
+        "testHashes": {
+          "__tests__/unit/transports.test.ts": "0194c24c6ff6eafbc6d775fe677d5d6485ffdada1811a9baed76a5550c9f7ac6",
+          "__tests__/unit/chat-graphql-adapter.test.mjs": "1a8d0fe16b56eac6eee64b3b793af0283f9b4172fa5fe09a0d5ad83141954f5d"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a",
+          "__tests__/support/in-memory.mjs": "9edabbcc6426c907aea4aad258c3ed158bcf002bc4c633356ed3527b0c00df91"
+        }
+      },
+      "integrationTests": [
+        "__tests__/integration/chat-local.test.mjs"
+      ],
+      "integrationVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "OMNIXYS_TEST_DB_PASSWORD='postgres' node ../test-tools/run-local-integration.mjs chat -- pnpm run test:integration"
+        ],
+        "sourceHash": "331178d0283e0cd66bd0c3d81a600d3b06c7accd920528a3d0c94736dae12e7e",
+        "testHashes": {
+          "__tests__/integration/chat-local.test.mjs": "87b7fc067ba6b4181d9715d3bcb6c0ecdb02793796b8a464f7a4e0f522d076e4"
+        },
+        "supportHashes": {
+          "__tests__/integration/test.env": "460c40b32b7d8766aa5886a2af32fbf42a772d66d7020169069bcc508761653c",
+          "../test-tools/run-local-integration.mjs": "394c1b6407186b159035bc7bb13af71db832d211ea37755add95c79e73de78d0",
+          "../test-tools/local-nest-app.mjs": "3c00ea23b244f47825dc1015ed53b4125ca95566d308b9000c3bd5119aec7a27",
+          "../test-tools/local-nest-infrastructure.mjs": "379c167d653058d7628c6e4c2c4bb361db24b5803a494a988189b768ef2a92a3",
+          "../test-tools/local-kafka-observer.mjs": "b46d3f87f2bed679a285dedeae8a79975da75b4ebf8b9f62ce2009757f9ecb7d",
+          "../test-tools/local-postgres.mjs": "89447554c8eeb5ebab62edf5f1a57bf1579efda8ff2a697ed63b984553ea6a01"
+        }
+      },
+      "candidateTests": [
+        "__tests__/unit/transports.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": null,
+      "status": "reviewed",
+      "integrationStatus": "verified"
+    },
+    {
+      "role": "Resolver",
+      "class": "ChatResolver",
+      "method": "createInAppConversation",
+      "file": "src/chat/resolvers/chat.resolver.ts",
+      "line": 151,
+      "signature": "createInAppConversation(participantUserId, conversationType)",
+      "sourceHash": "331178d0283e0cd66bd0c3d81a600d3b06c7accd920528a3d0c94736dae12e7e",
+      "scenarios": [
+        "Mocked service receives canonical tenant/user and exact operation arguments; result and failure preserved",
+        "Missing/unverified/malformed/mismatched tenant and missing/non-user principal stop every service call"
+      ],
+      "unitTests": [
+        "__tests__/unit/transports.test.ts",
+        "__tests__/unit/chat-graphql-adapter.test.mjs"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "331178d0283e0cd66bd0c3d81a600d3b06c7accd920528a3d0c94736dae12e7e",
+        "testHashes": {
+          "__tests__/unit/transports.test.ts": "0194c24c6ff6eafbc6d775fe677d5d6485ffdada1811a9baed76a5550c9f7ac6",
+          "__tests__/unit/chat-graphql-adapter.test.mjs": "1a8d0fe16b56eac6eee64b3b793af0283f9b4172fa5fe09a0d5ad83141954f5d"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a",
+          "__tests__/support/in-memory.mjs": "9edabbcc6426c907aea4aad258c3ed158bcf002bc4c633356ed3527b0c00df91"
+        }
+      },
+      "integrationTests": [
+        "__tests__/integration/chat-local.test.mjs"
+      ],
+      "integrationVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "OMNIXYS_TEST_DB_PASSWORD='postgres' node ../test-tools/run-local-integration.mjs chat -- pnpm run test:integration"
+        ],
+        "sourceHash": "331178d0283e0cd66bd0c3d81a600d3b06c7accd920528a3d0c94736dae12e7e",
+        "testHashes": {
+          "__tests__/integration/chat-local.test.mjs": "87b7fc067ba6b4181d9715d3bcb6c0ecdb02793796b8a464f7a4e0f522d076e4"
+        },
+        "supportHashes": {
+          "__tests__/integration/test.env": "460c40b32b7d8766aa5886a2af32fbf42a772d66d7020169069bcc508761653c",
+          "../test-tools/run-local-integration.mjs": "394c1b6407186b159035bc7bb13af71db832d211ea37755add95c79e73de78d0",
+          "../test-tools/local-nest-app.mjs": "3c00ea23b244f47825dc1015ed53b4125ca95566d308b9000c3bd5119aec7a27",
+          "../test-tools/local-nest-infrastructure.mjs": "379c167d653058d7628c6e4c2c4bb361db24b5803a494a988189b768ef2a92a3",
+          "../test-tools/local-kafka-observer.mjs": "b46d3f87f2bed679a285dedeae8a79975da75b4ebf8b9f62ce2009757f9ecb7d",
+          "../test-tools/local-postgres.mjs": "89447554c8eeb5ebab62edf5f1a57bf1579efda8ff2a697ed63b984553ea6a01"
+        }
+      },
+      "candidateTests": [
+        "__tests__/contract/chat-graphql-schema.test.mjs",
+        "__tests__/integration/chat-local.test.mjs",
+        "__tests__/unit/chat-graphql-adapter.test.mjs",
+        "__tests__/unit/transports.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": null,
+      "status": "reviewed",
+      "integrationStatus": "verified"
+    },
+    {
+      "role": "Resolver",
+      "class": "ChatResolver",
+      "method": "createWhatsappConversation",
+      "file": "src/chat/resolvers/chat.resolver.ts",
+      "line": 171,
+      "signature": "createWhatsappConversation(phoneNumber, displayName)",
+      "sourceHash": "331178d0283e0cd66bd0c3d81a600d3b06c7accd920528a3d0c94736dae12e7e",
+      "scenarios": [
+        "Mocked service receives canonical tenant/user and exact operation arguments; result and failure preserved",
+        "Missing/unverified/malformed/mismatched tenant and missing/non-user principal stop every service call"
+      ],
+      "unitTests": [
+        "__tests__/unit/transports.test.ts",
+        "__tests__/unit/chat-graphql-adapter.test.mjs"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "331178d0283e0cd66bd0c3d81a600d3b06c7accd920528a3d0c94736dae12e7e",
+        "testHashes": {
+          "__tests__/unit/transports.test.ts": "0194c24c6ff6eafbc6d775fe677d5d6485ffdada1811a9baed76a5550c9f7ac6",
+          "__tests__/unit/chat-graphql-adapter.test.mjs": "1a8d0fe16b56eac6eee64b3b793af0283f9b4172fa5fe09a0d5ad83141954f5d"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a",
+          "__tests__/support/in-memory.mjs": "9edabbcc6426c907aea4aad258c3ed158bcf002bc4c633356ed3527b0c00df91"
+        }
+      },
+      "integrationTests": [
+        "__tests__/integration/chat-local.test.mjs"
+      ],
+      "integrationVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "OMNIXYS_TEST_DB_PASSWORD='postgres' node ../test-tools/run-local-integration.mjs chat -- pnpm run test:integration"
+        ],
+        "sourceHash": "331178d0283e0cd66bd0c3d81a600d3b06c7accd920528a3d0c94736dae12e7e",
+        "testHashes": {
+          "__tests__/integration/chat-local.test.mjs": "87b7fc067ba6b4181d9715d3bcb6c0ecdb02793796b8a464f7a4e0f522d076e4"
+        },
+        "supportHashes": {
+          "__tests__/integration/test.env": "460c40b32b7d8766aa5886a2af32fbf42a772d66d7020169069bcc508761653c",
+          "../test-tools/run-local-integration.mjs": "394c1b6407186b159035bc7bb13af71db832d211ea37755add95c79e73de78d0",
+          "../test-tools/local-nest-app.mjs": "3c00ea23b244f47825dc1015ed53b4125ca95566d308b9000c3bd5119aec7a27",
+          "../test-tools/local-nest-infrastructure.mjs": "379c167d653058d7628c6e4c2c4bb361db24b5803a494a988189b768ef2a92a3",
+          "../test-tools/local-kafka-observer.mjs": "b46d3f87f2bed679a285dedeae8a79975da75b4ebf8b9f62ce2009757f9ecb7d",
+          "../test-tools/local-postgres.mjs": "89447554c8eeb5ebab62edf5f1a57bf1579efda8ff2a697ed63b984553ea6a01"
+        }
+      },
+      "candidateTests": [
+        "__tests__/contract/chat-graphql-schema.test.mjs",
+        "__tests__/integration/chat-local.test.mjs",
+        "__tests__/unit/chat-graphql-adapter.test.mjs",
+        "__tests__/unit/transports.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": null,
+      "status": "reviewed",
+      "integrationStatus": "verified"
+    },
+    {
+      "role": "Resolver",
+      "class": "ChatResolver",
+      "method": "sendMessage",
+      "file": "src/chat/resolvers/chat.resolver.ts",
+      "line": 186,
+      "signature": "sendMessage(conversationId, body, contentType)",
+      "sourceHash": "331178d0283e0cd66bd0c3d81a600d3b06c7accd920528a3d0c94736dae12e7e",
+      "scenarios": [
+        "Mocked service receives canonical tenant/user and exact operation arguments; result and failure preserved",
+        "Missing/unverified/malformed/mismatched tenant and missing/non-user principal stop every service call"
+      ],
+      "unitTests": [
+        "__tests__/unit/transports.test.ts",
+        "__tests__/unit/chat-graphql-adapter.test.mjs"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "331178d0283e0cd66bd0c3d81a600d3b06c7accd920528a3d0c94736dae12e7e",
+        "testHashes": {
+          "__tests__/unit/transports.test.ts": "0194c24c6ff6eafbc6d775fe677d5d6485ffdada1811a9baed76a5550c9f7ac6",
+          "__tests__/unit/chat-graphql-adapter.test.mjs": "1a8d0fe16b56eac6eee64b3b793af0283f9b4172fa5fe09a0d5ad83141954f5d"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a",
+          "__tests__/support/in-memory.mjs": "9edabbcc6426c907aea4aad258c3ed158bcf002bc4c633356ed3527b0c00df91"
+        }
+      },
+      "integrationTests": [
+        "__tests__/integration/chat-local.test.mjs"
+      ],
+      "integrationVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "OMNIXYS_TEST_DB_PASSWORD='postgres' node ../test-tools/run-local-integration.mjs chat -- pnpm run test:integration"
+        ],
+        "sourceHash": "331178d0283e0cd66bd0c3d81a600d3b06c7accd920528a3d0c94736dae12e7e",
+        "testHashes": {
+          "__tests__/integration/chat-local.test.mjs": "87b7fc067ba6b4181d9715d3bcb6c0ecdb02793796b8a464f7a4e0f522d076e4"
+        },
+        "supportHashes": {
+          "__tests__/integration/test.env": "460c40b32b7d8766aa5886a2af32fbf42a772d66d7020169069bcc508761653c",
+          "../test-tools/run-local-integration.mjs": "394c1b6407186b159035bc7bb13af71db832d211ea37755add95c79e73de78d0",
+          "../test-tools/local-nest-app.mjs": "3c00ea23b244f47825dc1015ed53b4125ca95566d308b9000c3bd5119aec7a27",
+          "../test-tools/local-nest-infrastructure.mjs": "379c167d653058d7628c6e4c2c4bb361db24b5803a494a988189b768ef2a92a3",
+          "../test-tools/local-kafka-observer.mjs": "b46d3f87f2bed679a285dedeae8a79975da75b4ebf8b9f62ce2009757f9ecb7d",
+          "../test-tools/local-postgres.mjs": "89447554c8eeb5ebab62edf5f1a57bf1579efda8ff2a697ed63b984553ea6a01"
+        }
+      },
+      "candidateTests": [
+        "__tests__/contract/chat-graphql-schema.test.mjs",
+        "__tests__/integration/chat-local.test.mjs",
+        "__tests__/unit/chat-graphql-adapter.test.mjs",
+        "__tests__/unit/transports.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": null,
+      "status": "reviewed",
+      "integrationStatus": "verified"
+    },
+    {
+      "role": "Resolver",
+      "class": "ChatResolver",
+      "method": "markRead",
+      "file": "src/chat/resolvers/chat.resolver.ts",
+      "line": 208,
+      "signature": "markRead(conversationId, lastReadAt, lastReadMessageId)",
+      "sourceHash": "331178d0283e0cd66bd0c3d81a600d3b06c7accd920528a3d0c94736dae12e7e",
+      "scenarios": [
+        "Mocked service receives canonical tenant/user and exact operation arguments; result and failure preserved",
+        "Missing/unverified/malformed/mismatched tenant and missing/non-user principal stop every service call"
+      ],
+      "unitTests": [
+        "__tests__/unit/transports.test.ts",
+        "__tests__/unit/chat-graphql-adapter.test.mjs"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "331178d0283e0cd66bd0c3d81a600d3b06c7accd920528a3d0c94736dae12e7e",
+        "testHashes": {
+          "__tests__/unit/transports.test.ts": "0194c24c6ff6eafbc6d775fe677d5d6485ffdada1811a9baed76a5550c9f7ac6",
+          "__tests__/unit/chat-graphql-adapter.test.mjs": "1a8d0fe16b56eac6eee64b3b793af0283f9b4172fa5fe09a0d5ad83141954f5d"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a",
+          "__tests__/support/in-memory.mjs": "9edabbcc6426c907aea4aad258c3ed158bcf002bc4c633356ed3527b0c00df91"
+        }
+      },
+      "integrationTests": [
+        "__tests__/integration/chat-local.test.mjs"
+      ],
+      "integrationVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "OMNIXYS_TEST_DB_PASSWORD='postgres' node ../test-tools/run-local-integration.mjs chat -- pnpm run test:integration"
+        ],
+        "sourceHash": "331178d0283e0cd66bd0c3d81a600d3b06c7accd920528a3d0c94736dae12e7e",
+        "testHashes": {
+          "__tests__/integration/chat-local.test.mjs": "87b7fc067ba6b4181d9715d3bcb6c0ecdb02793796b8a464f7a4e0f522d076e4"
+        },
+        "supportHashes": {
+          "__tests__/integration/test.env": "460c40b32b7d8766aa5886a2af32fbf42a772d66d7020169069bcc508761653c",
+          "../test-tools/run-local-integration.mjs": "394c1b6407186b159035bc7bb13af71db832d211ea37755add95c79e73de78d0",
+          "../test-tools/local-nest-app.mjs": "3c00ea23b244f47825dc1015ed53b4125ca95566d308b9000c3bd5119aec7a27",
+          "../test-tools/local-nest-infrastructure.mjs": "379c167d653058d7628c6e4c2c4bb361db24b5803a494a988189b768ef2a92a3",
+          "../test-tools/local-kafka-observer.mjs": "b46d3f87f2bed679a285dedeae8a79975da75b4ebf8b9f62ce2009757f9ecb7d",
+          "../test-tools/local-postgres.mjs": "89447554c8eeb5ebab62edf5f1a57bf1579efda8ff2a697ed63b984553ea6a01"
+        }
+      },
+      "candidateTests": [
+        "__tests__/contract/chat-graphql-schema.test.mjs",
+        "__tests__/integration/chat-local.test.mjs",
+        "__tests__/unit/chat-graphql-adapter.test.mjs",
+        "__tests__/unit/transports.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": null,
+      "status": "reviewed",
+      "integrationStatus": "verified"
+    },
+    {
+      "role": "Resolver",
+      "class": "ChatResolver",
+      "method": "unreadCount",
+      "file": "src/chat/resolvers/chat.resolver.ts",
+      "line": 226,
+      "signature": "unreadCount(conversation)",
+      "sourceHash": "331178d0283e0cd66bd0c3d81a600d3b06c7accd920528a3d0c94736dae12e7e",
+      "scenarios": [
+        "Mocked service receives canonical tenant/user and exact operation arguments; result and failure preserved",
+        "Missing/unverified/malformed/mismatched tenant and missing/non-user principal stop every service call"
+      ],
+      "unitTests": [
+        "__tests__/unit/transports.test.ts",
+        "__tests__/unit/chat-graphql-adapter.test.mjs"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "331178d0283e0cd66bd0c3d81a600d3b06c7accd920528a3d0c94736dae12e7e",
+        "testHashes": {
+          "__tests__/unit/transports.test.ts": "0194c24c6ff6eafbc6d775fe677d5d6485ffdada1811a9baed76a5550c9f7ac6",
+          "__tests__/unit/chat-graphql-adapter.test.mjs": "1a8d0fe16b56eac6eee64b3b793af0283f9b4172fa5fe09a0d5ad83141954f5d"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a",
+          "__tests__/support/in-memory.mjs": "9edabbcc6426c907aea4aad258c3ed158bcf002bc4c633356ed3527b0c00df91"
+        }
+      },
+      "integrationTests": [
+        "__tests__/integration/chat-local.test.mjs"
+      ],
+      "integrationVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "OMNIXYS_TEST_DB_PASSWORD='postgres' node ../test-tools/run-local-integration.mjs chat -- pnpm run test:integration"
+        ],
+        "sourceHash": "331178d0283e0cd66bd0c3d81a600d3b06c7accd920528a3d0c94736dae12e7e",
+        "testHashes": {
+          "__tests__/integration/chat-local.test.mjs": "87b7fc067ba6b4181d9715d3bcb6c0ecdb02793796b8a464f7a4e0f522d076e4"
+        },
+        "supportHashes": {
+          "__tests__/integration/test.env": "460c40b32b7d8766aa5886a2af32fbf42a772d66d7020169069bcc508761653c",
+          "../test-tools/run-local-integration.mjs": "394c1b6407186b159035bc7bb13af71db832d211ea37755add95c79e73de78d0",
+          "../test-tools/local-nest-app.mjs": "3c00ea23b244f47825dc1015ed53b4125ca95566d308b9000c3bd5119aec7a27",
+          "../test-tools/local-nest-infrastructure.mjs": "379c167d653058d7628c6e4c2c4bb361db24b5803a494a988189b768ef2a92a3",
+          "../test-tools/local-kafka-observer.mjs": "b46d3f87f2bed679a285dedeae8a79975da75b4ebf8b9f62ce2009757f9ecb7d",
+          "../test-tools/local-postgres.mjs": "89447554c8eeb5ebab62edf5f1a57bf1579efda8ff2a697ed63b984553ea6a01"
+        }
+      },
+      "candidateTests": [
+        "__tests__/unit/chat-graphql-adapter.test.mjs",
+        "__tests__/unit/transports.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": null,
+      "status": "reviewed",
+      "integrationStatus": "verified"
+    },
+    {
+      "role": "Resolver",
+      "class": "ChatResolver",
+      "method": "messageReceived",
+      "file": "src/chat/resolvers/chat.resolver.ts",
+      "line": 239,
+      "signature": "messageReceived(conversationId)",
+      "sourceHash": "331178d0283e0cd66bd0c3d81a600d3b06c7accd920528a3d0c94736dae12e7e",
+      "scenarios": [
+        "Participant authorization resolves before subscribing; exact conversation channel and independent event projection",
+        "Denied access or identity opens no listener; first result/observable teardown removes observer"
+      ],
+      "unitTests": [
+        "__tests__/unit/transports.test.ts",
+        "__tests__/unit/chat-graphql-adapter.test.mjs"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "331178d0283e0cd66bd0c3d81a600d3b06c7accd920528a3d0c94736dae12e7e",
+        "testHashes": {
+          "__tests__/unit/transports.test.ts": "0194c24c6ff6eafbc6d775fe677d5d6485ffdada1811a9baed76a5550c9f7ac6",
+          "__tests__/unit/chat-graphql-adapter.test.mjs": "1a8d0fe16b56eac6eee64b3b793af0283f9b4172fa5fe09a0d5ad83141954f5d"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a",
+          "__tests__/support/in-memory.mjs": "9edabbcc6426c907aea4aad258c3ed158bcf002bc4c633356ed3527b0c00df91"
+        }
+      },
+      "integrationTests": [
+        "__tests__/integration/chat-local.test.mjs"
+      ],
+      "integrationVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "OMNIXYS_TEST_DB_PASSWORD='postgres' node ../test-tools/run-local-integration.mjs chat -- pnpm run test:integration"
+        ],
+        "sourceHash": "331178d0283e0cd66bd0c3d81a600d3b06c7accd920528a3d0c94736dae12e7e",
+        "testHashes": {
+          "__tests__/integration/chat-local.test.mjs": "87b7fc067ba6b4181d9715d3bcb6c0ecdb02793796b8a464f7a4e0f522d076e4"
+        },
+        "supportHashes": {
+          "__tests__/integration/test.env": "460c40b32b7d8766aa5886a2af32fbf42a772d66d7020169069bcc508761653c",
+          "../test-tools/run-local-integration.mjs": "394c1b6407186b159035bc7bb13af71db832d211ea37755add95c79e73de78d0",
+          "../test-tools/local-nest-app.mjs": "3c00ea23b244f47825dc1015ed53b4125ca95566d308b9000c3bd5119aec7a27",
+          "../test-tools/local-nest-infrastructure.mjs": "379c167d653058d7628c6e4c2c4bb361db24b5803a494a988189b768ef2a92a3",
+          "../test-tools/local-kafka-observer.mjs": "b46d3f87f2bed679a285dedeae8a79975da75b4ebf8b9f62ce2009757f9ecb7d",
+          "../test-tools/local-postgres.mjs": "89447554c8eeb5ebab62edf5f1a57bf1579efda8ff2a697ed63b984553ea6a01"
+        }
+      },
+      "candidateTests": [
+        "__tests__/contract/chat-graphql-schema.test.mjs",
+        "__tests__/integration/chat-local.test.mjs",
+        "__tests__/unit/chat-graphql-adapter.test.mjs",
+        "__tests__/unit/transports.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": null,
+      "status": "reviewed",
+      "integrationStatus": "verified"
+    },
+    {
+      "role": "Resolver",
+      "class": "ChatResolver",
+      "method": "conversationUpdated",
+      "file": "src/chat/resolvers/chat.resolver.ts",
+      "line": 263,
+      "signature": "conversationUpdated()",
+      "sourceHash": "331178d0283e0cd66bd0c3d81a600d3b06c7accd920528a3d0c94736dae12e7e",
+      "scenarios": [
+        "Canonical user channel; each event re-reads authorized conversation in captured tenant/user and projects it",
+        "Lost access or missing identity errors and tears down stream"
+      ],
+      "unitTests": [
+        "__tests__/unit/transports.test.ts",
+        "__tests__/unit/chat-graphql-adapter.test.mjs"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "331178d0283e0cd66bd0c3d81a600d3b06c7accd920528a3d0c94736dae12e7e",
+        "testHashes": {
+          "__tests__/unit/transports.test.ts": "0194c24c6ff6eafbc6d775fe677d5d6485ffdada1811a9baed76a5550c9f7ac6",
+          "__tests__/unit/chat-graphql-adapter.test.mjs": "1a8d0fe16b56eac6eee64b3b793af0283f9b4172fa5fe09a0d5ad83141954f5d"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a",
+          "__tests__/support/in-memory.mjs": "9edabbcc6426c907aea4aad258c3ed158bcf002bc4c633356ed3527b0c00df91"
+        }
+      },
+      "integrationTests": [
+        "__tests__/integration/chat-local.test.mjs"
+      ],
+      "integrationVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "OMNIXYS_TEST_DB_PASSWORD='postgres' node ../test-tools/run-local-integration.mjs chat -- pnpm run test:integration"
+        ],
+        "sourceHash": "331178d0283e0cd66bd0c3d81a600d3b06c7accd920528a3d0c94736dae12e7e",
+        "testHashes": {
+          "__tests__/integration/chat-local.test.mjs": "87b7fc067ba6b4181d9715d3bcb6c0ecdb02793796b8a464f7a4e0f522d076e4"
+        },
+        "supportHashes": {
+          "__tests__/integration/test.env": "460c40b32b7d8766aa5886a2af32fbf42a772d66d7020169069bcc508761653c",
+          "../test-tools/run-local-integration.mjs": "394c1b6407186b159035bc7bb13af71db832d211ea37755add95c79e73de78d0",
+          "../test-tools/local-nest-app.mjs": "3c00ea23b244f47825dc1015ed53b4125ca95566d308b9000c3bd5119aec7a27",
+          "../test-tools/local-nest-infrastructure.mjs": "379c167d653058d7628c6e4c2c4bb361db24b5803a494a988189b768ef2a92a3",
+          "../test-tools/local-kafka-observer.mjs": "b46d3f87f2bed679a285dedeae8a79975da75b4ebf8b9f62ce2009757f9ecb7d",
+          "../test-tools/local-postgres.mjs": "89447554c8eeb5ebab62edf5f1a57bf1579efda8ff2a697ed63b984553ea6a01"
+        }
+      },
+      "candidateTests": [
+        "__tests__/contract/chat-graphql-schema.test.mjs",
+        "__tests__/integration/chat-local.test.mjs",
+        "__tests__/unit/chat-graphql-adapter.test.mjs",
+        "__tests__/unit/transports.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": null,
+      "status": "reviewed",
+      "integrationStatus": "verified"
+    },
+    {
+      "role": "Service",
+      "class": "ConversationReadService",
+      "method": "listForUser",
+      "file": "src/chat/services/conversation-read.service.ts",
+      "line": 34,
+      "signature": "listForUser(tenantId, userId)",
+      "sourceHash": "fb7480a618009873b78a37c14a9332e43451d081aa3ac8eecc3cba748b0d7621",
+      "scenarios": [
+        "Canonical tenant/user repository scope, returned/empty rows and dependency failure"
+      ],
+      "unitTests": [
+        "__tests__/unit/conversation-services.test.ts",
+        "__tests__/unit/chat-conversation-flow.test.mjs"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "fb7480a618009873b78a37c14a9332e43451d081aa3ac8eecc3cba748b0d7621",
+        "testHashes": {
+          "__tests__/unit/conversation-services.test.ts": "34ff3469e78008d08b4b95f132b1ea66f945d5a148111bf45ea40f177dc61d2b",
+          "__tests__/unit/chat-conversation-flow.test.mjs": "d0871f2f9c9750dcaf49c803ed86e26e7e924515d8e909aae2bc7d8b669feb27"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a",
+          "__tests__/support/in-memory.mjs": "9edabbcc6426c907aea4aad258c3ed158bcf002bc4c633356ed3527b0c00df91"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/chat-conversation-flow.test.mjs",
+        "__tests__/unit/conversation-services.test.ts",
+        "__tests__/unit/graphql-services.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Service",
+      "class": "ConversationReadService",
+      "method": "getForParticipant",
+      "file": "src/chat/services/conversation-read.service.ts",
+      "line": 40,
+      "signature": "getForParticipant(tenantId, userId, conversationId)",
+      "sourceHash": "fb7480a618009873b78a37c14a9332e43451d081aa3ac8eecc3cba748b0d7621",
+      "scenarios": [
+        "Membership before existence hides unknown/foreign conversations; missing row after authorization rejected",
+        "Authorized participant result and tenant isolation"
+      ],
+      "unitTests": [
+        "__tests__/unit/conversation-services.test.ts",
+        "__tests__/unit/chat-conversation-flow.test.mjs"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "fb7480a618009873b78a37c14a9332e43451d081aa3ac8eecc3cba748b0d7621",
+        "testHashes": {
+          "__tests__/unit/conversation-services.test.ts": "34ff3469e78008d08b4b95f132b1ea66f945d5a148111bf45ea40f177dc61d2b",
+          "__tests__/unit/chat-conversation-flow.test.mjs": "d0871f2f9c9750dcaf49c803ed86e26e7e924515d8e909aae2bc7d8b669feb27"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a",
+          "__tests__/support/in-memory.mjs": "9edabbcc6426c907aea4aad258c3ed158bcf002bc4c633356ed3527b0c00df91"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/chat-conversation-flow.test.mjs",
+        "__tests__/unit/conversation-services.test.ts",
+        "__tests__/unit/graphql-services.test.ts",
+        "__tests__/unit/transports.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Service",
+      "class": "ConversationReadService",
+      "method": "checkParticipantAccess",
+      "file": "src/chat/services/conversation-read.service.ts",
+      "line": 69,
+      "signature": "checkParticipantAccess(conversationId, userId)",
+      "sourceHash": "fb7480a618009873b78a37c14a9332e43451d081aa3ac8eecc3cba748b0d7621",
+      "scenarios": [
+        "Allowed/forbidden/missing outcomes; tenant derived from global conversation lookup; no participant query for missing row"
+      ],
+      "unitTests": [
+        "__tests__/unit/conversation-services.test.ts"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "fb7480a618009873b78a37c14a9332e43451d081aa3ac8eecc3cba748b0d7621",
+        "testHashes": {
+          "__tests__/unit/conversation-services.test.ts": "34ff3469e78008d08b4b95f132b1ea66f945d5a148111bf45ea40f177dc61d2b"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/conversation-services.test.ts",
+        "__tests__/unit/transports.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Service",
+      "class": "ConversationWriteService",
+      "method": "createDirectConversation",
+      "file": "src/chat/services/conversation-write.service.ts",
+      "line": 62,
+      "signature": "createDirectConversation(tenantId, actorId, participantUserId, conversationType)",
+      "sourceHash": "c96e9e110e2457a4ec661b1f86ec63071eaf22631aad7ff3bfc33113f383bac4",
+      "scenarios": [
+        "Default/direct mirrored idempotency and tenant isolation; separate support namespace",
+        "Fixed IDs/time, participants and exact outbox in same transaction",
+        "Self/empty/unsupported type rejected; P2002 winner reread in fresh transaction; no winner rethrows; write/participant/outbox failures"
+      ],
+      "unitTests": [
+        "__tests__/unit/conversation-services.test.ts",
+        "__tests__/unit/chat-conversation-flow.test.mjs"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "c96e9e110e2457a4ec661b1f86ec63071eaf22631aad7ff3bfc33113f383bac4",
+        "testHashes": {
+          "__tests__/unit/conversation-services.test.ts": "34ff3469e78008d08b4b95f132b1ea66f945d5a148111bf45ea40f177dc61d2b",
+          "__tests__/unit/chat-conversation-flow.test.mjs": "d0871f2f9c9750dcaf49c803ed86e26e7e924515d8e909aae2bc7d8b669feb27"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a",
+          "__tests__/support/in-memory.mjs": "9edabbcc6426c907aea4aad258c3ed158bcf002bc4c633356ed3527b0c00df91"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/chat-conversation-flow.test.mjs",
+        "__tests__/unit/chat-security-and-inbound.test.mjs",
+        "__tests__/unit/conversation-services.test.ts",
+        "__tests__/unit/graphql-services.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Service",
+      "class": "ConversationWriteService",
+      "method": "createWhatsappConversation",
+      "file": "src/chat/services/conversation-write.service.ts",
+      "line": 113,
+      "signature": "createWhatsappConversation(tenantId, ownerUserId, phoneNumber, displayName)",
+      "sourceHash": "c96e9e110e2457a4ec661b1f86ec63071eaf22631aad7ff3bfc33113f383bac4",
+      "scenarios": [
+        "Normalized E164/display and owner participant; empty owner/bad address before persistence",
+        "Existing address cannot be claimed by another owner; unique-race winner ownership checked; transactional fact"
+      ],
+      "unitTests": [
+        "__tests__/unit/conversation-services.test.ts",
+        "__tests__/unit/chat-conversation-flow.test.mjs"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "c96e9e110e2457a4ec661b1f86ec63071eaf22631aad7ff3bfc33113f383bac4",
+        "testHashes": {
+          "__tests__/unit/conversation-services.test.ts": "34ff3469e78008d08b4b95f132b1ea66f945d5a148111bf45ea40f177dc61d2b",
+          "__tests__/unit/chat-conversation-flow.test.mjs": "d0871f2f9c9750dcaf49c803ed86e26e7e924515d8e909aae2bc7d8b669feb27"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a",
+          "__tests__/support/in-memory.mjs": "9edabbcc6426c907aea4aad258c3ed158bcf002bc4c633356ed3527b0c00df91"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/chat-conversation-flow.test.mjs",
+        "__tests__/unit/chat-graphql-adapter.test.mjs",
+        "__tests__/unit/chat-security-and-inbound.test.mjs",
+        "__tests__/unit/conversation-services.test.ts",
+        "__tests__/unit/graphql-services.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Service",
+      "class": "GraphqlChatReadService",
+      "method": "conversations",
+      "file": "src/chat/services/graphql-chat-read.service.ts",
+      "line": 43,
+      "signature": "conversations(tenantId, userId)",
+      "sourceHash": "698fc070c31d424a2e88c1d77bc53fa8adbcd16ec197ff261549e3e316f1e776",
+      "scenarios": [
+        "Canonical scope; full independent conversation projection; empty rows; propagated service failure"
+      ],
+      "unitTests": [
+        "__tests__/unit/graphql-services.test.ts"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "698fc070c31d424a2e88c1d77bc53fa8adbcd16ec197ff261549e3e316f1e776",
+        "testHashes": {
+          "__tests__/unit/graphql-services.test.ts": "aa870c4d0dbb0957d4a3fbc3d8e5386e2f17224e58c896122f5e771a912fb571"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/chat-graphql-adapter.test.mjs",
+        "__tests__/unit/graphql-services.test.ts",
+        "__tests__/unit/transports.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Service",
+      "class": "GraphqlChatReadService",
+      "method": "conversation",
+      "file": "src/chat/services/graphql-chat-read.service.ts",
+      "line": 48,
+      "signature": "conversation(tenantId, userId, conversationId)",
+      "sourceHash": "698fc070c31d424a2e88c1d77bc53fa8adbcd16ec197ff261549e3e316f1e776",
+      "scenarios": [
+        "Trimmed UUID and canonical scope; independent result projection; application failure"
+      ],
+      "unitTests": [
+        "__tests__/unit/graphql-services.test.ts"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "698fc070c31d424a2e88c1d77bc53fa8adbcd16ec197ff261549e3e316f1e776",
+        "testHashes": {
+          "__tests__/unit/graphql-services.test.ts": "aa870c4d0dbb0957d4a3fbc3d8e5386e2f17224e58c896122f5e771a912fb571"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/chat-graphql-adapter.test.mjs",
+        "__tests__/unit/graphql-services.test.ts",
+        "__tests__/unit/transports.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Service",
+      "class": "GraphqlChatReadService",
+      "method": "messages",
+      "file": "src/chat/services/graphql-chat-read.service.ts",
+      "line": 61,
+      "signature": "messages(tenantId, userId, conversationId, limit, before, beforeId)",
+      "sourceHash": "698fc070c31d424a2e88c1d77bc53fa8adbcd16ec197ff261549e3e316f1e776",
+      "scenarios": [
+        "Validated page/date/UUID and absent defaults; full independent message projection",
+        "Invalid scalars stop service call; application failure preserved"
+      ],
+      "unitTests": [
+        "__tests__/unit/graphql-services.test.ts"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "698fc070c31d424a2e88c1d77bc53fa8adbcd16ec197ff261549e3e316f1e776",
+        "testHashes": {
+          "__tests__/unit/graphql-services.test.ts": "aa870c4d0dbb0957d4a3fbc3d8e5386e2f17224e58c896122f5e771a912fb571"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/chat-graphql-adapter.test.mjs",
+        "__tests__/unit/graphql-services.test.ts",
+        "__tests__/unit/transports.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Service",
+      "class": "GraphqlChatWriteService",
+      "method": "createInAppConversation",
+      "file": "src/chat/services/graphql-chat-write.service.ts",
+      "line": 62,
+      "signature": "createInAppConversation(tenantId, actorId, participantUserId, conversationType)",
+      "sourceHash": "def336db185ece8f18db0888397ec3b5f6c6491bad2e709d6d379e4524fbf0d9",
+      "scenarios": [
+        "Trimmed participant and default/direct vs explicit support; full projection",
+        "Invalid participant/enum before service; application failure"
+      ],
+      "unitTests": [
+        "__tests__/unit/graphql-services.test.ts"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "def336db185ece8f18db0888397ec3b5f6c6491bad2e709d6d379e4524fbf0d9",
+        "testHashes": {
+          "__tests__/unit/graphql-services.test.ts": "aa870c4d0dbb0957d4a3fbc3d8e5386e2f17224e58c896122f5e771a912fb571"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/chat-graphql-adapter.test.mjs",
+        "__tests__/unit/graphql-services.test.ts",
+        "__tests__/unit/transports.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Service",
+      "class": "GraphqlChatWriteService",
+      "method": "createWhatsappConversation",
+      "file": "src/chat/services/graphql-chat-write.service.ts",
+      "line": 77,
+      "signature": "createWhatsappConversation(tenantId, actorId, phoneNumber, displayName)",
+      "sourceHash": "def336db185ece8f18db0888397ec3b5f6c6491bad2e709d6d379e4524fbf0d9",
+      "scenarios": [
+        "Normalized phone/display and absent name; result projection",
+        "Bad address/non-string/oversized name before service; application failure"
+      ],
+      "unitTests": [
+        "__tests__/unit/graphql-services.test.ts"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "def336db185ece8f18db0888397ec3b5f6c6491bad2e709d6d379e4524fbf0d9",
+        "testHashes": {
+          "__tests__/unit/graphql-services.test.ts": "aa870c4d0dbb0957d4a3fbc3d8e5386e2f17224e58c896122f5e771a912fb571"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/chat-graphql-adapter.test.mjs",
+        "__tests__/unit/graphql-services.test.ts",
+        "__tests__/unit/transports.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Service",
+      "class": "GraphqlChatWriteService",
+      "method": "sendMessage",
+      "file": "src/chat/services/graphql-chat-write.service.ts",
+      "line": 92,
+      "signature": "sendMessage(tenantId, senderId, conversationId, body, contentType, correlationId)",
+      "sourceHash": "def336db185ece8f18db0888397ec3b5f6c6491bad2e709d6d379e4524fbf0d9",
+      "scenarios": [
+        "Exact validated command/correlation; persistence must resolve before dispatch; returned persisted delivery projection",
+        "Post-commit Error/non-Error dispatch failure returns committed pending row",
+        "Invalid/oversized body before write; maximum length accepted; application failure stops dispatch"
+      ],
+      "unitTests": [
+        "__tests__/unit/graphql-services.test.ts"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "def336db185ece8f18db0888397ec3b5f6c6491bad2e709d6d379e4524fbf0d9",
+        "testHashes": {
+          "__tests__/unit/graphql-services.test.ts": "aa870c4d0dbb0957d4a3fbc3d8e5386e2f17224e58c896122f5e771a912fb571"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/chat-graphql-adapter.test.mjs",
+        "__tests__/unit/graphql-services.test.ts",
+        "__tests__/unit/transports.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Service",
+      "class": "GraphqlChatWriteService",
+      "method": "markRead",
+      "file": "src/chat/services/graphql-chat-write.service.ts",
+      "line": 132,
+      "signature": "markRead(tenantId, userId, conversationId, lastReadAt, lastReadMessageId)",
+      "sourceHash": "def336db185ece8f18db0888397ec3b5f6c6491bad2e709d6d379e4524fbf0d9",
+      "scenarios": [
+        "Fixed clock default and explicit date/message UUID; Boolean acknowledgement",
+        "Invalid cursors stop write; service failure propagates"
+      ],
+      "unitTests": [
+        "__tests__/unit/graphql-services.test.ts"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "def336db185ece8f18db0888397ec3b5f6c6491bad2e709d6d379e4524fbf0d9",
+        "testHashes": {
+          "__tests__/unit/graphql-services.test.ts": "aa870c4d0dbb0957d4a3fbc3d8e5386e2f17224e58c896122f5e771a912fb571"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/chat-graphql-adapter.test.mjs",
+        "__tests__/unit/graphql-services.test.ts",
+        "__tests__/unit/transports.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Service",
+      "class": "InboundMessageService",
+      "method": "handle",
+      "file": "src/chat/services/inbound-message.service.ts",
+      "line": 81,
+      "signature": "handle(payload)",
+      "sourceHash": "4068e7395fbb6bab7a2b97f16eaed2129651cedc52bb6a9bf7999930fd1ff8f2",
+      "scenarios": [
+        "Canonical tenant derived from globally resolved conversation; external sender and exact bounded outbox fact",
+        "Duplicate remains idempotent even with removed conversation; ambiguous provider/address denied",
+        "Missing/invalid payload, explicit missing conversation and unmatched address stop write",
+        "Post-commit realtime failure does not fail write; participant lookup fallback; persistence/outbox failures propagate"
+      ],
+      "unitTests": [
+        "__tests__/unit/inbound-dispatch.test.ts",
+        "__tests__/unit/chat-security-and-inbound.test.mjs"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "4068e7395fbb6bab7a2b97f16eaed2129651cedc52bb6a9bf7999930fd1ff8f2",
+        "testHashes": {
+          "__tests__/unit/inbound-dispatch.test.ts": "885dfa2891c7f4201fd6b031bb683d1acb6404fe7d24357ed11549340a521f54",
+          "__tests__/unit/chat-security-and-inbound.test.mjs": "efef1b915bf103d191cb1a9b6cf9888a578841886d8848944ff8479fab5dd4ef"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a",
+          "__tests__/support/in-memory.mjs": "9edabbcc6426c907aea4aad258c3ed158bcf002bc4c633356ed3527b0c00df91"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/chat-security-and-inbound.test.mjs",
+        "__tests__/unit/inbound-dispatch.test.ts",
+        "__tests__/unit/transports.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Service",
+      "class": "MessageDispatcher",
+      "method": "dispatch",
+      "file": "src/chat/services/message-dispatcher.service.ts",
+      "line": 62,
+      "signature": "dispatch(messageId, tenantId)",
+      "sourceHash": "413c8e7953b82c9adf8c0f7f32bc2bf45706c380b8a7c945776e5537e0d60f57",
+      "scenarios": [
+        "Tenant-scoped reads, adapter outcome persisted before exact realtime event/channel fanout",
+        "Missing adapter/targets still publishes original message; unknown message/conversation rejected",
+        "Adapter failure persists FAILED; lost delivery race attempts recovery; realtime failure propagates after commit"
+      ],
+      "unitTests": [
+        "__tests__/unit/inbound-dispatch.test.ts",
+        "__tests__/unit/chat-conversation-flow.test.mjs"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "413c8e7953b82c9adf8c0f7f32bc2bf45706c380b8a7c945776e5537e0d60f57",
+        "testHashes": {
+          "__tests__/unit/inbound-dispatch.test.ts": "885dfa2891c7f4201fd6b031bb683d1acb6404fe7d24357ed11549340a521f54",
+          "__tests__/unit/chat-conversation-flow.test.mjs": "d0871f2f9c9750dcaf49c803ed86e26e7e924515d8e909aae2bc7d8b669feb27"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a",
+          "__tests__/support/in-memory.mjs": "9edabbcc6426c907aea4aad258c3ed158bcf002bc4c633356ed3527b0c00df91"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/chat-conversation-flow.test.mjs",
+        "__tests__/unit/graphql-services.test.ts",
+        "__tests__/unit/inbound-dispatch.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Service",
+      "class": "MessageReadService",
+      "method": "listMessages",
+      "file": "src/chat/services/message-read.service.ts",
+      "line": 41,
+      "signature": "listMessages(tenantId, userId, conversationId, options)",
+      "sourceHash": "41229dfa3febf57d4a7e3714306f58362c62621f04c94bc1303a590438d51654",
+      "scenarios": [
+        "Membership before message reads; tenant isolation; exact bounded page and keyset/date cursor",
+        "Newest window returned oldest-first; page limit min/max/default and tie cursor behavior"
+      ],
+      "unitTests": [
+        "__tests__/unit/conversation-services.test.ts",
+        "__tests__/unit/chat-conversation-flow.test.mjs"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "41229dfa3febf57d4a7e3714306f58362c62621f04c94bc1303a590438d51654",
+        "testHashes": {
+          "__tests__/unit/conversation-services.test.ts": "34ff3469e78008d08b4b95f132b1ea66f945d5a148111bf45ea40f177dc61d2b",
+          "__tests__/unit/chat-conversation-flow.test.mjs": "d0871f2f9c9750dcaf49c803ed86e26e7e924515d8e909aae2bc7d8b669feb27"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a",
+          "__tests__/support/in-memory.mjs": "9edabbcc6426c907aea4aad258c3ed158bcf002bc4c633356ed3527b0c00df91"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/chat-conversation-flow.test.mjs",
+        "__tests__/unit/conversation-services.test.ts",
+        "__tests__/unit/graphql-services.test.ts",
+        "__tests__/unit/transports.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Service",
+      "class": "MessageReadService",
+      "method": "countUnread",
+      "file": "src/chat/services/message-read.service.ts",
+      "line": 80,
+      "signature": "countUnread(tenantId, userId, conversationId)",
+      "sourceHash": "41229dfa3febf57d4a7e3714306f58362c62621f04c94bc1303a590438d51654",
+      "scenarios": [
+        "Tenant/user/conversation scope and persisted read cursor/null; denied membership stops cursor/count lookup",
+        "Only foreign unread messages counted in independently prepared unit doubles"
+      ],
+      "unitTests": [
+        "__tests__/unit/conversation-services.test.ts",
+        "__tests__/unit/chat-conversation-flow.test.mjs"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "41229dfa3febf57d4a7e3714306f58362c62621f04c94bc1303a590438d51654",
+        "testHashes": {
+          "__tests__/unit/conversation-services.test.ts": "34ff3469e78008d08b4b95f132b1ea66f945d5a148111bf45ea40f177dc61d2b",
+          "__tests__/unit/chat-conversation-flow.test.mjs": "d0871f2f9c9750dcaf49c803ed86e26e7e924515d8e909aae2bc7d8b669feb27"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a",
+          "__tests__/support/in-memory.mjs": "9edabbcc6426c907aea4aad258c3ed158bcf002bc4c633356ed3527b0c00df91"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/chat-graphql-adapter.test.mjs",
+        "__tests__/unit/conversation-services.test.ts",
+        "__tests__/unit/transports.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Service",
+      "class": "MessageWriteService",
+      "method": "send",
+      "file": "src/chat/services/message-write.service.ts",
+      "line": 64,
+      "signature": "send(command)",
+      "sourceHash": "dfc2d88b1915114d4e69ecfe1cef547afe051fd09c1c8b5dd8c6da2e7cf33129",
+      "scenarios": [
+        "Fixed ID/time, exact pending row, conversation touch/projection and atomic fact",
+        "Actual supported content types/default; blank body/bad type before transaction",
+        "Membership/foreign/missing conversation rejects write; stage failures stop later effects"
+      ],
+      "unitTests": [
+        "__tests__/unit/message-services.test.ts",
+        "__tests__/unit/chat-conversation-flow.test.mjs"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "dfc2d88b1915114d4e69ecfe1cef547afe051fd09c1c8b5dd8c6da2e7cf33129",
+        "testHashes": {
+          "__tests__/unit/message-services.test.ts": "e631de05856c9e850628e1ebb9574053f7f4c4f73d9ebe7648fa728746794acd",
+          "__tests__/unit/chat-conversation-flow.test.mjs": "d0871f2f9c9750dcaf49c803ed86e26e7e924515d8e909aae2bc7d8b669feb27"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a",
+          "__tests__/support/in-memory.mjs": "9edabbcc6426c907aea4aad258c3ed158bcf002bc4c633356ed3527b0c00df91"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/chat-conversation-flow.test.mjs",
+        "__tests__/unit/chat-graphql-adapter.test.mjs",
+        "__tests__/unit/chat-security-and-inbound.test.mjs",
+        "__tests__/unit/graphql-services.test.ts",
+        "__tests__/unit/message-services.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Service",
+      "class": "MessageWriteService",
+      "method": "applyDeliveryStatus",
+      "file": "src/chat/services/message-write.service.ts",
+      "line": 151,
+      "signature": "applyDeliveryStatus(options)",
+      "sourceHash": "dfc2d88b1915114d4e69ecfe1cef547afe051fd09c1c8b5dd8c6da2e7cf33129",
+      "scenarios": [
+        "Internal vs provider resolution and precedence; tenant derived from row; exact transition fact",
+        "Unknown/missing/ambiguous references rejected; invalid and nonmonotonic transitions denied",
+        "Same status idempotent without provider change/fact; lost update race and stage failures"
+      ],
+      "unitTests": [
+        "__tests__/unit/message-services.test.ts",
+        "__tests__/unit/chat-security-and-inbound.test.mjs"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "dfc2d88b1915114d4e69ecfe1cef547afe051fd09c1c8b5dd8c6da2e7cf33129",
+        "testHashes": {
+          "__tests__/unit/message-services.test.ts": "e631de05856c9e850628e1ebb9574053f7f4c4f73d9ebe7648fa728746794acd",
+          "__tests__/unit/chat-security-and-inbound.test.mjs": "efef1b915bf103d191cb1a9b6cf9888a578841886d8848944ff8479fab5dd4ef"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a",
+          "__tests__/support/in-memory.mjs": "9edabbcc6426c907aea4aad258c3ed158bcf002bc4c633356ed3527b0c00df91"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/chat-security-and-inbound.test.mjs",
+        "__tests__/unit/message-services.test.ts",
+        "__tests__/unit/transports.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Service",
+      "class": "ReadStateService",
+      "method": "markRead",
+      "file": "src/chat/services/read-state.service.ts",
+      "line": 47,
+      "signature": "markRead(tenantId, conversationId, userId, lastReadAt, lastReadMessageId)",
+      "sourceHash": "008f7fc31a0dc9f4db8cc3d1228161330327125441cee43533ae5e1b3109826b",
+      "scenarios": [
+        "Membership/existence and referenced message checked before upsert; timestamp-only skips ID lookup",
+        "Actual saved cursor used for unread count; persisted cursor cannot regress in unit-double scenario",
+        "Absent cursors and invalid target fail before mutation"
+      ],
+      "unitTests": [
+        "__tests__/unit/conversation-services.test.ts",
+        "__tests__/unit/chat-conversation-flow.test.mjs"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "008f7fc31a0dc9f4db8cc3d1228161330327125441cee43533ae5e1b3109826b",
+        "testHashes": {
+          "__tests__/unit/conversation-services.test.ts": "34ff3469e78008d08b4b95f132b1ea66f945d5a148111bf45ea40f177dc61d2b",
+          "__tests__/unit/chat-conversation-flow.test.mjs": "d0871f2f9c9750dcaf49c803ed86e26e7e924515d8e909aae2bc7d8b669feb27"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a",
+          "__tests__/support/in-memory.mjs": "9edabbcc6426c907aea4aad258c3ed158bcf002bc4c633356ed3527b0c00df91"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/chat-conversation-flow.test.mjs",
+        "__tests__/unit/chat-graphql-adapter.test.mjs",
+        "__tests__/unit/conversation-services.test.ts",
+        "__tests__/unit/graphql-services.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Service",
+      "class": "BannerService",
+      "method": "onApplicationBootstrap",
+      "file": "src/config/banner.service.ts",
+      "line": 23,
+      "signature": "onApplicationBootstrap()",
+      "sourceHash": "c0229fe8c05e917fada54d82c488b2f2e170503efcf1539e773f20d0e73879ec",
+      "scenarios": [
+        "Actual logger banner and controlled platform details; sensitive gateway keys masked",
+        "Default/custom logger branches; logging failure before subsequent details",
+        "Incomplete production configuration rejected before startup details"
+      ],
+      "unitTests": [
+        "__tests__/unit/banner-lifecycle.test.ts"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "c0229fe8c05e917fada54d82c488b2f2e170503efcf1539e773f20d0e73879ec",
+        "testHashes": {
+          "__tests__/unit/banner-lifecycle.test.ts": "686ec232a1220386df841687dd145043c0fe8ed57258a11281dd8e9abaa8cbcf"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/banner-lifecycle.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Controller",
+      "class": "HealthController",
+      "method": "liveness",
+      "file": "src/health/health.controller.ts",
+      "line": 56,
+      "signature": "liveness()",
+      "sourceHash": "b14948f974354225b628d170e8bbca163af49931fe97c53846797d9ea094f4ae",
+      "scenarios": [
+        "Probe only the application without touching external dependencies",
+        "Return the health aggregator result"
+      ],
+      "unitTests": [
+        "__tests__/unit/health-probes.test.mjs"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "node --test __tests__/unit/health-probes.test.mjs"
+        ],
+        "sourceHash": "b14948f974354225b628d170e8bbca163af49931fe97c53846797d9ea094f4ae",
+        "testHashes": {
+          "__tests__/unit/health-probes.test.mjs": "c0c4be1c6217e3784f3ec40ad826b5a503bfe6ae13d72002c6ae55767769cbf6"
+        },
+        "supportHashes": {}
+      },
+      "integrationTests": [
+        "__tests__/integration/chat-local.test.mjs"
+      ],
+      "integrationVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "OMNIXYS_TEST_DB_PASSWORD='postgres' node ../test-tools/run-local-integration.mjs chat -- pnpm run test:integration"
+        ],
+        "sourceHash": "b14948f974354225b628d170e8bbca163af49931fe97c53846797d9ea094f4ae",
+        "testHashes": {
+          "__tests__/integration/chat-local.test.mjs": "87b7fc067ba6b4181d9715d3bcb6c0ecdb02793796b8a464f7a4e0f522d076e4"
+        },
+        "supportHashes": {
+          "__tests__/integration/test.env": "460c40b32b7d8766aa5886a2af32fbf42a772d66d7020169069bcc508761653c",
+          "../test-tools/run-local-integration.mjs": "394c1b6407186b159035bc7bb13af71db832d211ea37755add95c79e73de78d0",
+          "../test-tools/local-nest-app.mjs": "3c00ea23b244f47825dc1015ed53b4125ca95566d308b9000c3bd5119aec7a27",
+          "../test-tools/local-nest-infrastructure.mjs": "379c167d653058d7628c6e4c2c4bb361db24b5803a494a988189b768ef2a92a3",
+          "../test-tools/local-kafka-observer.mjs": "b46d3f87f2bed679a285dedeae8a79975da75b4ebf8b9f62ce2009757f9ecb7d",
+          "../test-tools/local-postgres.mjs": "89447554c8eeb5ebab62edf5f1a57bf1579efda8ff2a697ed63b984553ea6a01"
+        }
+      },
+      "candidateTests": [
+        "__tests__/integration/chat-local.test.mjs",
+        "__tests__/unit/health-probes.test.mjs"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": null,
+      "status": "reviewed",
+      "integrationStatus": "verified"
+    },
+    {
+      "role": "Controller",
+      "class": "HealthController",
+      "method": "readiness",
+      "file": "src/health/health.controller.ts",
+      "line": 62,
+      "signature": "readiness()",
+      "sourceHash": "b14948f974354225b628d170e8bbca163af49931fe97c53846797d9ea094f4ae",
+      "scenarios": [
+        "Execute the actual configured dependency probes",
+        "Return the health aggregator result and project individual dependency status",
+        "Preserve relevant dependency failures",
+        "Require both realtime and pubsub for the realtime path",
+        "Map database, gateway and HTTP errors including non-Error causes",
+        "Map successful and unsuccessful HTTP statuses with a controlled 3000ms timeout",
+        "Skip empty external URLs"
+      ],
+      "unitTests": [
+        "__tests__/unit/health-probes.test.mjs"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "node --test __tests__/unit/health-probes.test.mjs"
+        ],
+        "sourceHash": "b14948f974354225b628d170e8bbca163af49931fe97c53846797d9ea094f4ae",
+        "testHashes": {
+          "__tests__/unit/health-probes.test.mjs": "c0c4be1c6217e3784f3ec40ad826b5a503bfe6ae13d72002c6ae55767769cbf6"
+        },
+        "supportHashes": {}
+      },
+      "integrationTests": [
+        "__tests__/integration/chat-local.test.mjs"
+      ],
+      "integrationVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "OMNIXYS_TEST_DB_PASSWORD='postgres' node ../test-tools/run-local-integration.mjs chat -- pnpm run test:integration"
+        ],
+        "sourceHash": "b14948f974354225b628d170e8bbca163af49931fe97c53846797d9ea094f4ae",
+        "testHashes": {
+          "__tests__/integration/chat-local.test.mjs": "87b7fc067ba6b4181d9715d3bcb6c0ecdb02793796b8a464f7a4e0f522d076e4"
+        },
+        "supportHashes": {
+          "__tests__/integration/test.env": "460c40b32b7d8766aa5886a2af32fbf42a772d66d7020169069bcc508761653c",
+          "../test-tools/run-local-integration.mjs": "394c1b6407186b159035bc7bb13af71db832d211ea37755add95c79e73de78d0",
+          "../test-tools/local-nest-app.mjs": "3c00ea23b244f47825dc1015ed53b4125ca95566d308b9000c3bd5119aec7a27",
+          "../test-tools/local-nest-infrastructure.mjs": "379c167d653058d7628c6e4c2c4bb361db24b5803a494a988189b768ef2a92a3",
+          "../test-tools/local-kafka-observer.mjs": "b46d3f87f2bed679a285dedeae8a79975da75b4ebf8b9f62ce2009757f9ecb7d",
+          "../test-tools/local-postgres.mjs": "89447554c8eeb5ebab62edf5f1a57bf1579efda8ff2a697ed63b984553ea6a01"
+        }
+      },
+      "candidateTests": [
+        "__tests__/integration/chat-local.test.mjs",
+        "__tests__/unit/health-probes.test.mjs"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": null,
+      "status": "reviewed",
+      "integrationStatus": "verified"
+    },
+    {
+      "role": "Provider",
+      "class": "KafkaIndicator",
+      "method": "isHealthy",
+      "file": "src/health/kafka.indicator.ts",
+      "line": 17,
+      "signature": "isHealthy()",
+      "sourceHash": "c6913324b88d930c0dcc07645ba989a28a2a9c5ec70371e2d28719b07f596b66",
+      "scenarios": [
+        "Project healthy and unhealthy lifecycle snapshots with producer and consumer status",
+        "Log degraded health only",
+        "Preserve unexpected lifecycle errors"
+      ],
+      "unitTests": [
+        "__tests__/unit/kafka-indicator.test.mjs"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "node --test __tests__/unit/kafka-indicator.test.mjs"
+        ],
+        "sourceHash": "c6913324b88d930c0dcc07645ba989a28a2a9c5ec70371e2d28719b07f596b66",
+        "testHashes": {
+          "__tests__/unit/kafka-indicator.test.mjs": "2ad7de3a280c131a7351bec15f704bffdb6237a93117ec2186c30cc087c11da6"
+        },
+        "supportHashes": {}
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/kafka-indicator.test.mjs"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Service",
+      "class": "PrismaService",
+      "method": "onModuleInit",
+      "file": "src/prisma/prisma.service.ts",
+      "line": 39,
+      "signature": "onModuleInit()",
+      "sourceHash": "fa612f482e93e0c00a82f33848acac1fae8b67ef5bfb5e3bceab0a382e06cae9",
+      "scenarios": [
+        "Observability instrumentation and connect before success log; connect failure propagates without successful startup"
+      ],
+      "unitTests": [
+        "__tests__/unit/orm-lifecycle.test.ts"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "fa612f482e93e0c00a82f33848acac1fae8b67ef5bfb5e3bceab0a382e06cae9",
+        "testHashes": {
+          "__tests__/unit/orm-lifecycle.test.ts": "02730fc1c37a41c41292503d2d44d8bcc0e136ca93aa0c96e53fcd52d3663c83"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/orm-lifecycle.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    },
+    {
+      "role": "Service",
+      "class": "PrismaService",
+      "method": "onModuleDestroy",
+      "file": "src/prisma/prisma.service.ts",
+      "line": 46,
+      "signature": "onModuleDestroy()",
+      "sourceHash": "fa612f482e93e0c00a82f33848acac1fae8b67ef5bfb5e3bceab0a382e06cae9",
+      "scenarios": [
+        "Awaited disconnect before completion log; failure remains observable"
+      ],
+      "unitTests": [
+        "__tests__/unit/orm-lifecycle.test.ts"
+      ],
+      "unitVerification": {
+        "result": "passed",
+        "date": "2026-10-12",
+        "commands": [
+          "DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test node --experimental-test-module-mocks --test __tests__/unit/*.test.mjs __tests__/unit/*.test.ts __tests__/contract/*.test.mjs"
+        ],
+        "sourceHash": "fa612f482e93e0c00a82f33848acac1fae8b67ef5bfb5e3bceab0a382e06cae9",
+        "testHashes": {
+          "__tests__/unit/orm-lifecycle.test.ts": "02730fc1c37a41c41292503d2d44d8bcc0e136ca93aa0c96e53fcd52d3663c83"
+        },
+        "supportHashes": {
+          "__tests__/unit/chat-fixtures.ts": "544cae881f506fb2b9d1541eb9dbf08d45d58b3a9d75b34a6dced00361044ddf",
+          "__tests__/unit/service-fixtures.ts": "288f354e395a484173f4f22de6cb8b0efeb886e55ebb6f7158eb07265e81969a"
+        }
+      },
+      "integrationTests": [],
+      "integrationVerification": null,
+      "candidateTests": [
+        "__tests__/unit/orm-lifecycle.test.ts"
+      ],
+      "reviewed": true,
+      "excludedReason": null,
+      "integrationExcludedReason": "No standalone integration scenario: reached only through its resolver/controller/guard boundary (covered by a passing @covers integration test) or through framework lifecycle/health wiring; isolated behavior covered by unit tests.",
+      "status": "reviewed",
+      "integrationStatus": "excluded"
+    }
+  ]
+}

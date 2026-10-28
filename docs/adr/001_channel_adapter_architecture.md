@@ -27,14 +27,14 @@ Communication Gateway  — future external provider integration
 
 ### Key components
 
-| Component | Responsibility | Location |
-|-----------|----------------|----------|
-| `CommunicationChannel` | Value object wrapping `ChannelType` + future metadata | Domain |
-| `DeliveryPolicy` | Determines which channels to deliver to | Port (interface) |
-| `MessageRouter` | Resolves `CommunicationChannel` → `ChannelAdapter` | Application service |
-| `MessageDispatcher` | Coordinates policy → router → adapter chain | Application service |
-| `ChannelAdapter` | Outbound delivery contract; `send()`, `capabilities()` | Port (interface) |
-| `ChannelCapabilities` | Per-channel feature flags | Domain model |
+| Component              | Responsibility                                         | Location            |
+| ---------------------- | ------------------------------------------------------ | ------------------- |
+| `CommunicationChannel` | Value object wrapping `ChannelType` + future metadata  | Domain              |
+| `DeliveryPolicy`       | Determines which channels to deliver to                | Port (interface)    |
+| `MessageRouter`        | Resolves `CommunicationChannel` → `ChannelAdapter`     | Application service |
+| `MessageDispatcher`    | Coordinates policy → router → adapter chain            | Application service |
+| `ChannelAdapter`       | Outbound delivery contract; `send()`, `capabilities()` | Port (interface)    |
+| `ChannelCapabilities`  | Per-channel feature flags                              | Domain model        |
 
 ### Design decisions
 

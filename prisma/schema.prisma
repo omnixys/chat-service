@@ -1,0 +1,134 @@
+// @license GPL-3.0-or-later
+// Copyright (C) 2025 Caleb Gyamfi - Omnixys Technologies
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+//
+// For more information, visit <https://www.gnu.org/licenses/>.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/prisma/generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+//
+// ──────────────────────────────────────────────────────────
+// CONVERSATION
+// ──────────────────────────────────────────────────────────
+//
+model Conversation {
+  id                  String   @id @db.VarChar(36)
+  tenantId            String   @map("tenant_id") @db.VarChar(36)
+  type                String   @default("DIRECT") @db.VarChar(20)
+  participantPairKey  String   @map("participant_pair_key") @db.VarChar(500)
+  channel             String   @default("IN_APP") @db.VarChar(20)
+  externalAddress     String?  @map("external_address") @db.VarChar(32)
+  externalDisplayName String?  @map("external_display_name") @db.VarChar(255)
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @default(now()) @map("updated_at")
+
+  participants ConversationParticipant[]
+  messages     Message[]
+  readStates   ReadState[]
+
+  @@unique([tenantId, participantPairKey], name: "uq_conversation_tenant_pair_key")
+  @@unique([tenantId, externalAddress], name: "uq_conversation_tenant_external_address")
+  @@index([tenantId])
+  @@index([participantPairKey])
+  @@index([externalAddress])
+  @@index([updatedAt])
+  @@map("conversations")
+}
+
+model ConversationParticipant {
+  id             String   @id @default(uuid()) @db.VarChar(36)
+  tenantId       String   @map("tenant_id") @db.VarChar(36)
+  conversationId String   @map("conversation_id") @db.VarChar(36)
+  userId         String   @map("user_id") @db.VarChar(255)
+  joinedAt       DateTime @default(now()) @map("joined_at")
+
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@unique([conversationId, userId], name: "uq_conversation_participant")
+  @@index([tenantId])
+  @@index([userId])
+  @@map("conversation_participants")
+}
+
+//
+// ──────────────────────────────────────────────────────────
+// MESSAGE
+// ──────────────────────────────────────────────────────────
+//
+model Message {
+  id                String    @id @default(uuid()) @db.VarChar(36)
+  tenantId          String    @map("tenant_id") @db.VarChar(36)
+  conversationId    String    @map("conversation_id") @db.VarChar(36)
+  senderId          String    @map("sender_id") @db.VarChar(255)
+  body              String    @db.Text
+  contentType       String    @default("TEXT") @map("content_type") @db.VarChar(20)
+  channel           String    @default("IN_APP") @db.VarChar(20)
+  deliveryStatus    String    @default("PENDING") @map("delivery_status") @db.VarChar(20)
+  providerMessageId String?   @map("provider_message_id") @db.VarChar(255)
+  createdAt         DateTime  @default(now()) @map("created_at")
+  editedAt          DateTime? @map("edited_at")
+  deletedAt         DateTime? @map("deleted_at")
+
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, providerMessageId], name: "uq_message_tenant_provider_id")
+  @@index([tenantId])
+  @@index([providerMessageId])
+  @@index([conversationId, createdAt, id])
+  @@map("messages")
+}
+
+model ReadState {
+  id                String    @id @default(uuid()) @db.VarChar(36)
+  tenantId          String    @map("tenant_id") @db.VarChar(36)
+  conversationId    String    @map("conversation_id") @db.VarChar(36)
+  userId            String    @map("user_id") @db.VarChar(255)
+  lastReadAt        DateTime? @map("last_read_at")
+  lastReadMessageId String?   @map("last_read_message_id") @db.VarChar(36)
+
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@unique([conversationId, userId], name: "uq_read_state_conversation_user")
+  @@index([tenantId])
+  @@map("read_states")
+}
+
+//
+// ──────────────────────────────────────────────────────────
+// ANALYTICS OUTBOX
+// ──────────────────────────────────────────────────────────
+model AnalyticsOutbox {
+  id             String    @id @db.VarChar(36)
+  tenantId       String    @map("tenant_id") @db.VarChar(36)
+  topic          String    @db.VarChar(200)
+  payload        Json
+  correlationId  String?   @map("correlation_id") @db.VarChar(255)
+  actorId        String?   @map("actor_id") @db.VarChar(255)
+  attempts       Int       @default(0)
+  nextAttemptAt  DateTime  @default(now()) @map("next_attempt_at")
+  lockedAt       DateTime? @map("locked_at")
+  lockedBy       String?   @map("locked_by") @db.VarChar(36)
+  publishedAt    DateTime? @map("published_at")
+  deadLetteredAt DateTime? @map("dead_lettered_at")
+  lastError      String?   @map("last_error")
+  createdAt      DateTime  @default(now()) @map("created_at")
+
+  @@index([tenantId])
+  @@index([publishedAt, deadLetteredAt, nextAttemptAt])
+  @@map("analytics_outbox")
+}
