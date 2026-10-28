@@ -8,7 +8,7 @@
 ## Repository Facts
 
 - Kind: Service
-- Package: `chat` (GHCR image `omnixys-chat`)
+- Package: `chat-service` (Docker Hub image `omnixys/chat-service`)
 - Runtime: Node >=26.8.1 <27, pnpm 11.24.0
 - Description: Omnixys Chat Service - GraphQL HTTP plus `graphql-transport-ws` chat.
 - Architecture: one `ChatModule` under `src/chat/` with `controllers`, `errors`,
@@ -85,3 +85,7 @@ Follow `docs/TESTING.md` for the separate unit command and migration-backed cont
 ### Native TS-Unit-Prüfung
 
 `pnpm run test:unit` baut zunächst frische `dist`-Artefakte und führt MJS-/TS-Unit-Tests sowie die vorhandene GraphQL-Vertragsschicht mit dem Node-Runner aus. `pnpm run test:typecheck` prüft Quellcode und neue TS-Unit-Dateien über `tsconfig.test.json`. TS-Tests laden `__tests__/unit/chat-fixtures.ts` vor Anwendungsmodulen; Entwickler-dotenv bleibt deaktiviert. Realtime-Abbruch mit kontrollierten Promises verifizieren und Listener zuverlässig schließen; Builds müssen vor Testläufen abgeschlossen sein. Prisma-Schemavalidierung braucht auch einen kontrollierten `SHADOW_DATABASE_URL`-Wert; ausschließlich Containerintegration darf Migrationen ausführen.
+
+## Release integration
+
+The existing TypeScript migration is retained. service-ci.yml validates Node/Prisma; release-control owns versioning and Docker Hub publication. The startup Prisma CLI is a production dependency. No production migration or deployment is performed by preparing/publishing the image. Additional local tests were NOT RUN at the user's explicit request; normal Forgejo CI remains required.

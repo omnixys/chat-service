@@ -6,5 +6,10 @@ dist
 *.md
 coverage
 __tests__
-tsconfig.build.json
 *.tsbuildinfo
+.env.*
+keys
+.ssh
+*.pat
+.secrets
+.pnpm-store

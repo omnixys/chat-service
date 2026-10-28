@@ -24,51 +24,32 @@ ARG NODE_VERSION=26.8.1
 # - Common setup for all later build stages.
 # - Corepack is enabled to support pnpm package manager.
 # ---------------------------------------------------------------------------------------
-FROM node:${NODE_VERSION}-bookworm-slim AS base
+FROM docker.io/library/node:${NODE_VERSION}-bookworm-slim AS base
 WORKDIR /home/node
 RUN npm install -g pnpm@11.24.0
 
-# ---------------------------------------------------------------------------------------
-# Stage 1: Build (dist)
-# - Installs all dependencies (including dev) and compiles the TypeScript project.
-# - Result: ./dist folder containing compiled JS files.
-# ---------------------------------------------------------------------------------------
 FROM base AS dist
-COPY --chown=node:node package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-
-RUN --mount=type=secret,id=omnixys_token \
-    TOKEN=$(cat /run/secrets/omnixys_token) && \
-    echo "@omnixys:registry=https://npm.pkg.github.com" > .npmrc && \
-    echo "//npm.pkg.github.com/:_authToken=${TOKEN}" >> .npmrc && \
-    pnpm install --frozen-lockfile --ignore-scripts && \
-    rm -f .npmrc
-
+# Patches, Prisma configuration and build tsconfig must exist at frozen install.
+# The trusted builder supplies a filtered Git archive, never a developer .env.
 COPY --chown=node:node . .
-ENV CI=true
-RUN pnpm exec prisma generate && pnpm run build
+ENV CI=true HUSKY=0 DOTENV_CONFIG_PATH=/dev/null NODE_ENV=test ACTIVE_PROFILE=test SCHEMA_TARGET=false
+ENV DATABASE_URL=postgresql://isolated:isolated@127.0.0.1:1/isolated SHADOW_DATABASE_URL=postgresql://isolated:isolated@127.0.0.1:1/isolated
+RUN --mount=type=secret,id=npm_auth,target=/root/.npmrc,required=true \
+    pnpm install --frozen-lockfile --ignore-scripts
+RUN --mount=type=secret,id=npm_auth,target=/root/.npmrc,required=true \
+    pnpm rebuild argon2 esbuild @prisma/engines prisma sharp
+RUN --mount=type=secret,id=npm_auth,target=/root/.npmrc,required=true \
+    pnpm exec prisma generate
+RUN --mount=type=secret,id=npm_auth,target=/root/.npmrc,required=true pnpm run build
 
-# ---------------------------------------------------------------------------------------
-# Stage 2: Production dependencies
-# - Installs only production dependencies to keep image small.
-# - No dev packages or build tools are included.
-# ---------------------------------------------------------------------------------------
-FROM base AS dependencies
+FROM dist AS dependencies
+# Root hooks already ran before pruning; the runtime manifest is copied from source.
+RUN node -e "const fs=require('node:fs');const p=JSON.parse(fs.readFileSync('package.json','utf8'));if(p.scripts){delete p.scripts.prepare;delete p.scripts.postinstall;}fs.writeFileSync('package.json',JSON.stringify(p));"
+# Preserve the generated client/native modules, remove only development packages.
+RUN --mount=type=secret,id=npm_auth,target=/root/.npmrc,required=true \
+    pnpm prune --prod
 
-COPY --chown=node:node package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-
-RUN --mount=type=secret,id=omnixys_token \
-    TOKEN=$(cat /run/secrets/omnixys_token) && \
-    echo "@omnixys:registry=https://npm.pkg.github.com" > .npmrc && \
-    echo "//npm.pkg.github.com/:_authToken=${TOKEN}" >> .npmrc && \
-    pnpm install --frozen-lockfile --ignore-scripts && \
-    rm -f .npmrc
-
-# ---------------------------------------------------------------------------------------
-# Stage 3: Final runtime image
-# - Copies only compiled code and production node_modules.
-# - Runs the app as a non-root user for security.
-# ---------------------------------------------------------------------------------------
-FROM node:${NODE_VERSION}-bookworm-slim AS final
+FROM docker.io/library/node:${NODE_VERSION}-bookworm-slim AS final
 
 # ----- Build-time arguments -----
 ARG NODE_VERSION

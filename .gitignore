@@ -96,3 +96,6 @@ node_profiles
 !.vscode/
 !.vscode/extensions.json
 !.vscode/settings.json
+
+# Local package-manager cache is not application source.
+/.pnpm-store/
