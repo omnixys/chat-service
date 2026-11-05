@@ -99,3 +99,6 @@ node_profiles
 
 # Local package-manager cache is not application source.
 /.pnpm-store/
+
+docker-bake.local.hcl
+.npmrc.local
